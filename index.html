@@ -90,12 +90,12 @@
             
             <form id="login-form" class="space-y-5">
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Full Name</label>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Email ID</label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <i data-lucide="user" class="h-5 w-5 text-slate-400"></i>
+                            <i data-lucide="mail" class="h-5 w-5 text-slate-400"></i>
                         </div>
-                        <input type="text" id="login-name" required class="w-full pl-10 px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all" placeholder="Enter your registered name">
+                        <input type="email" id="login-email" required class="w-full pl-10 px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all" placeholder="Enter your registered email">
                     </div>
                 </div>
                 <div>
@@ -131,6 +131,10 @@
                 <div>
                     <label class="block text-sm font-medium text-slate-700 mb-1">Full Name</label>
                     <input type="text" id="reg-name" required class="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="e.g., Dr. Jane Doe">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Email ID</label>
+                    <input type="email" id="reg-email" required class="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="your.email@example.com">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-slate-700 mb-1">Role</label>
@@ -468,11 +472,6 @@
         const getColRef = (colName) => collection(db, 'artifacts', appId, 'public', 'data', colName);
         const getDocRef = (colName, docId) => doc(db, 'artifacts', appId, 'public', 'data', colName, docId);
 
-        // Name to Email Converter (For Firebase Auth under the hood)
-        const generatePseudoEmail = (name) => {
-            return name.trim().toLowerCase().replace(/[^a-z0-9]/g, '') + '@labtrack.local';
-        };
-
         // --- Utility Functions ---
         window.showToast = (message, type = 'success') => {
             const container = document.getElementById('toast-container');
@@ -488,7 +487,7 @@
                 toast.classList.remove('toast-enter');
                 toast.classList.add('toast-exit');
                 setTimeout(() => toast.remove(), 300);
-            }, 3000); 
+            }, type === 'error' ? 5000 : 3000); // Error message ektu beshi shomoy thakbe
         };
 
         let confirmCallback = null;
@@ -608,7 +607,7 @@
             lucide.createIcons();
         };
 
-        // Name & Password Login Logic
+        // Email & Password Login Logic
         document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = e.target.querySelector('button');
@@ -616,9 +615,8 @@
             btn.disabled = true;
             btn.innerText = "Logging in...";
 
-            const name = document.getElementById('login-name').value.trim();
+            const email = document.getElementById('login-email').value.trim();
             const pass = document.getElementById('login-pass').value;
-            const email = generatePseudoEmail(name);
 
             try {
                 await signInWithEmailAndPassword(auth, email, pass);
@@ -626,13 +624,19 @@
                 btn.innerText = "Success";
             } catch (error) {
                 console.error("Login error", error);
-                showToast("Invalid name or password", "error");
+                if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
+                    showToast("Invalid email or password", "error");
+                } else if (error.code === 'auth/operation-not-allowed') {
+                    showToast("Error: Enable 'Email/Password' sign-in method in Firebase Console.", "error");
+                } else {
+                    showToast(`Error: ${error.message}`, "error");
+                }
                 btn.disabled = false;
                 btn.innerText = originalText;
             }
         });
 
-        // Name & Password Registration Logic
+        // Email & Password Registration Logic
         document.getElementById('profile-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = e.target.querySelector('button[type="submit"]');
@@ -642,18 +646,19 @@
             window.isRegistering = true; // Prevent checkProfile redirection during setDoc
 
             const name = document.getElementById('reg-name').value.trim();
+            const email = document.getElementById('reg-email').value.trim();
             const pass = document.getElementById('reg-pass').value;
             const role = document.getElementById('reg-role').value;
-            const email = generatePseudoEmail(name);
 
             try {
-                // This checks for duplicates natively via Firebase Email uniqueness
+                // Creates user securely with Email and Password
                 const userCred = await createUserWithEmailAndPassword(auth, email, pass);
                 
                 const status = role === ROLES.PI ? 'approved' : 'pending';
                 const newProfile = {
                     uid: userCred.user.uid,
                     name: name,
+                    email: email,
                     role: role,
                     labName: document.getElementById('reg-lab').value,
                     institution: document.getElementById('reg-inst').value,
@@ -673,9 +678,13 @@
                 console.error("Setup error", error);
                 
                 if (error.code === 'auth/email-already-in-use') {
-                    showToast("This name is already registered. Please login.", "error");
+                    showToast("This email is already registered. Please login.", "error");
                 } else if (error.code === 'auth/weak-password') {
                     showToast("Password must be at least 6 characters.", "error");
+                } else if (error.code === 'auth/invalid-email') {
+                    showToast("Please enter a valid email address.", "error");
+                } else if (error.code === 'auth/operation-not-allowed') {
+                    showToast("Error: Enable 'Email/Password' sign-in method in Firebase Console.", "error");
                 } else if (error.code === 'permission-denied') {
                     showToast("Permission Denied: Firebase Rules allow korche na.", "error");
                 } else {
