@@ -39,11 +39,11 @@
     <!-- Confirmation Modal -->
     <div id="confirm-modal" class="fixed inset-0 z-50 hidden modal-bg flex items-center justify-center p-4">
         <div class="bg-white rounded-xl shadow-xl max-w-sm w-full p-6 transform transition-all">
-            <h3 class="text-lg font-bold text-slate-800 mb-2" id="confirm-title">Confirm Action</h3>
-            <p class="text-slate-600 mb-6" id="confirm-message">Are you sure you want to proceed?</p>
+            <h3 class="text-lg font-bold text-slate-800 mb-2" id="confirm-title">Nischit Karun</h3>
+            <p class="text-slate-600 mb-6" id="confirm-message">Apni ki nischit bhabe egiye jete chan?</p>
             <div class="flex justify-end gap-3">
-                <button onclick="closeConfirm()" class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-medium transition-colors">Cancel</button>
-                <button id="confirm-btn" class="px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors">Confirm</button>
+                <button onclick="closeConfirm()" class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-medium transition-colors">Batil</button>
+                <button id="confirm-btn" class="px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors">Nischit Karun</button>
             </div>
         </div>
     </div>
@@ -54,20 +54,20 @@
             <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
                 <i data-lucide="flask-conical" class="w-8 h-8"></i>
             </div>
-            <h2 class="text-2xl font-bold text-slate-800 mb-2">Welcome to LabTrack</h2>
-            <p class="text-slate-500 mb-6">Please set up your profile to continue.</p>
+            <h2 class="text-2xl font-bold text-slate-800 mb-2">LabTrack-e Swagotom</h2>
+            <p class="text-slate-500 mb-6">Egiye jete apnar profile setup karun.</p>
             
             <form id="profile-form" class="space-y-4 text-left">
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Full Name</label>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Puro Nam</label>
                     <input type="text" id="setup-name" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all" placeholder="Dr. Jane Doe">
                 </div>
                 <div class="p-3 bg-blue-50 text-blue-800 rounded-lg text-sm">
                     <i data-lucide="info" class="w-4 h-4 inline mr-1 -mt-0.5"></i>
-                    The first user to register will automatically become the Admin. Others will default to Scholar.
+                    Prothom je register korbe se automatic Admin hobe. Baki shobai Scholar hisebe jukto hobe.
                 </div>
                 <button type="submit" class="w-full bg-blue-600 text-white py-2.5 rounded-lg font-medium hover:bg-blue-700 transition-colors shadow-sm">
-                    Complete Setup
+                    Setup Sesh Karun
                 </button>
             </form>
         </div>
@@ -88,7 +88,7 @@
 
             <div class="px-6 pb-4">
                 <div class="bg-slate-800 rounded-lg p-3">
-                    <p class="text-sm font-medium text-white truncate" id="user-name-display">Loading...</p>
+                    <p class="text-sm font-medium text-white truncate" id="user-name-display">Load hocche...</p>
                     <p class="text-xs text-blue-400 font-semibold mt-0.5" id="user-role-display">Role</p>
                 </div>
             </div>
@@ -98,7 +98,7 @@
             </nav>
             
             <div class="p-4 border-t border-slate-800">
-                <div class="text-xs text-slate-500 text-center">LabTrack System v1.0</div>
+                <div class="text-xs text-slate-500 text-center">LabTrack System (Demo Mode)</div>
             </div>
         </aside>
 
@@ -125,22 +125,22 @@
         <div id="modal-chemical" class="fixed inset-0 z-40 hidden modal-bg flex items-center justify-center p-4">
             <div class="bg-white rounded-xl shadow-xl max-w-md w-full p-6">
                 <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-lg font-bold text-slate-800" id="chem-modal-title">Add Chemical</h3>
+                    <h3 class="text-lg font-bold text-slate-800" id="chem-modal-title">Chemical Jukto Karun</h3>
                     <button onclick="closeModal('modal-chemical')" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
                 </div>
                 <form id="form-chemical" class="space-y-4">
                     <input type="hidden" id="chem-id">
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Chemical Name</label>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Chemical-er Nam</label>
                         <input type="text" id="chem-name" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
                     </div>
                     <div class="flex gap-4">
                         <div class="flex-1">
-                            <label class="block text-sm font-medium text-slate-700 mb-1">Quantity</label>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Poriman</label>
                             <input type="number" id="chem-qty" step="0.01" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
                         </div>
                         <div class="w-24">
-                            <label class="block text-sm font-medium text-slate-700 mb-1">Unit</label>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Ekok (Unit)</label>
                             <select id="chem-unit" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white">
                                 <option value="g">g</option>
                                 <option value="mg">mg</option>
@@ -152,12 +152,12 @@
                         </div>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Low Stock Threshold</label>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Low Stock Threshold (Koto hole warning asbe)</label>
                         <input type="number" id="chem-threshold" step="0.01" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" value="10">
                     </div>
                     <div class="pt-2 flex justify-end gap-3">
-                        <button type="button" onclick="closeModal('modal-chemical')" class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-medium">Cancel</button>
-                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700">Save Chemical</button>
+                        <button type="button" onclick="closeModal('modal-chemical')" class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-medium">Batil</button>
+                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700">Save Karun</button>
                     </div>
                 </form>
             </div>
@@ -167,28 +167,28 @@
         <div id="modal-usage" class="fixed inset-0 z-40 hidden modal-bg flex items-center justify-center p-4">
             <div class="bg-white rounded-xl shadow-xl max-w-md w-full p-6">
                 <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-lg font-bold text-slate-800">Log Chemical Usage</h3>
+                    <h3 class="text-lg font-bold text-slate-800">Chemical Bebohar Log Karun</h3>
                     <button onclick="closeModal('modal-usage')" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
                 </div>
                 <form id="form-usage" class="space-y-4">
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Select Chemical</label>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Chemical Bachhai Karun</label>
                         <select id="usage-chem" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white">
                             <!-- Populated dynamically -->
                         </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Quantity Used <span id="usage-unit-display" class="text-slate-400 font-normal"></span></label>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Koto Poriman Bebohar Hoyeche <span id="usage-unit-display" class="text-slate-400 font-normal"></span></label>
                         <input type="number" id="usage-qty" step="0.01" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
                         <p class="text-xs text-slate-500 mt-1" id="usage-available-display"></p>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Purpose / Experiment</label>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Uddeshyo / Experiment-er Nam</label>
                         <input type="text" id="usage-purpose" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="e.g., DNA Extraction">
                     </div>
                     <div class="pt-2 flex justify-end gap-3">
-                        <button type="button" onclick="closeModal('modal-usage')" class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-medium">Cancel</button>
-                        <button type="submit" class="px-4 py-2 bg-purple-600 text-white rounded-lg font-medium hover:bg-purple-700">Submit Log</button>
+                        <button type="button" onclick="closeModal('modal-usage')" class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-medium">Batil</button>
+                        <button type="submit" class="px-4 py-2 bg-purple-600 text-white rounded-lg font-medium hover:bg-purple-700">Log Submit Karun</button>
                     </div>
                 </form>
             </div>
@@ -198,26 +198,26 @@
         <div id="modal-dailylog" class="fixed inset-0 z-40 hidden modal-bg flex items-center justify-center p-4">
             <div class="bg-white rounded-xl shadow-xl max-w-lg w-full p-6">
                 <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-lg font-bold text-slate-800" id="log-modal-title">Daily Research Log</h3>
+                    <h3 class="text-lg font-bold text-slate-800" id="log-modal-title">Doinondin Research Log</h3>
                     <button onclick="closeModal('modal-dailylog')" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
                 </div>
                 <form id="form-dailylog" class="space-y-4">
                     <input type="hidden" id="log-id">
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Work Done</label>
-                        <textarea id="log-work" required rows="3" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none resize-none" placeholder="Describe the experiments and tasks completed today..."></textarea>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Ki Kaj Kora Hoyeche (Work Done)</label>
+                        <textarea id="log-work" required rows="3" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none resize-none" placeholder="Ajker experiment ba kajer biboron din..."></textarea>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Results & Observations</label>
-                        <textarea id="log-result" required rows="2" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none resize-none" placeholder="Key findings, data points..."></textarea>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Folafol (Results & Observations)</label>
+                        <textarea id="log-result" required rows="2" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none resize-none" placeholder="Kajer folafol, data points..."></textarea>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Issues Faced (Optional)</label>
-                        <textarea id="log-issues" rows="2" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none resize-none" placeholder="Equipment malfunction, failed reactions..."></textarea>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Kono Samossa (Optional)</label>
+                        <textarea id="log-issues" rows="2" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none resize-none" placeholder="Jontropatite samossa, failed reaction..."></textarea>
                     </div>
                     <div class="pt-2 flex justify-end gap-3">
-                        <button type="button" onclick="closeModal('modal-dailylog')" class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-medium">Cancel</button>
-                        <button type="submit" class="px-4 py-2 bg-emerald-600 text-white rounded-lg font-medium hover:bg-emerald-700">Save Log</button>
+                        <button type="button" onclick="closeModal('modal-dailylog')" class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-medium">Batil</button>
+                        <button type="submit" class="px-4 py-2 bg-emerald-600 text-white rounded-lg font-medium hover:bg-emerald-700">Log Save Karun</button>
                     </div>
                 </form>
             </div>
@@ -227,22 +227,22 @@
         <div id="modal-project" class="fixed inset-0 z-40 hidden modal-bg flex items-center justify-center p-4">
             <div class="bg-white rounded-xl shadow-xl max-w-md w-full p-6">
                 <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-lg font-bold text-slate-800" id="project-modal-title">Create Project</h3>
+                    <h3 class="text-lg font-bold text-slate-800" id="project-modal-title">Project Toiri Karun</h3>
                     <button onclick="closeModal('modal-project')" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
                 </div>
                 <form id="form-project" class="space-y-4">
                     <input type="hidden" id="project-id">
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Project Name</label>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Project-er Nam</label>
                         <input type="text" id="project-name" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Progress (%)</label>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Ogrogotir Har (%)</label>
                         <input type="range" id="project-progress" min="0" max="100" value="0" class="w-full" oninput="document.getElementById('prog-val').innerText = this.value + '%'">
                         <div class="text-right text-xs text-slate-500" id="prog-val">0%</div>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Assign Scholars</label>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Scholar Assign Karun</label>
                         <div id="project-scholars" class="max-h-32 overflow-y-auto border border-slate-200 rounded-lg p-2 space-y-1">
                             <!-- Checkboxes injected here -->
                         </div>
@@ -252,42 +252,74 @@
                         <textarea id="project-notes" rows="2" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none resize-none"></textarea>
                     </div>
                     <div class="pt-2 flex justify-end gap-3">
-                        <button type="button" onclick="closeModal('modal-project')" class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-medium">Cancel</button>
-                        <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700">Save Project</button>
+                        <button type="button" onclick="closeModal('modal-project')" class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-medium">Batil</button>
+                        <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700">Project Save Karun</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- Firebase SDK Setup -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, doc, setDoc, getDoc, addDoc, updateDoc, deleteDoc, onSnapshot, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    <!-- Demo Offline Logic Script (No Firebase) -->
+    <script>
+        // --- Demo jonno amra LocalStorage byabohar korchi. Pore Firebase add kora hobe. ---
+        
+        const generateId = () => Math.random().toString(36).substr(2, 9);
+        const ROLES = { ADMIN: 'Admin', GUIDE: 'Guide', SCHOLAR: 'Scholar' };
 
-        // Global State & Config
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
-            apiKey: "dummy", authDomain: "dummy", projectId: "dummy", storageBucket: "dummy", messagingSenderId: "dummy", appId: "dummy"
+        // Database porichalona
+        const loadDb = () => {
+            const defaultDb = { profiles: [], chemicals: [], usageLogs: [], dailyLogs: [], projects: [] };
+            const stored = localStorage.getItem('labTrackDb_v1');
+            return stored ? JSON.parse(stored) : defaultDb;
         };
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-lab-app';
+
+        const saveDb = (data) => {
+            localStorage.setItem('labTrackDb_v1', JSON.stringify(data));
+            syncStore();
+        };
 
         window.dbStore = {
-            currentUser: null,
+            currentUser: JSON.parse(localStorage.getItem('labTrackUser_v1') || 'null'),
             profile: null,
-            chemicals: [],
-            usageLogs: [],
-            dailyLogs: [],
-            projects: [],
-            profiles: [],
-            unsubscribes: [],
-            currentView: 'dashboard'
+            currentView: 'dashboard',
+            ...loadDb()
         };
 
-        const ROLES = { ADMIN: 'Admin', GUIDE: 'Guide', SCHOLAR: 'Scholar' };
+        const syncStore = () => {
+            const db = loadDb();
+            Object.assign(window.dbStore, db);
+            if (window.dbStore.currentUser) {
+                window.dbStore.profile = window.dbStore.profiles.find(p => p.uid === window.dbStore.currentUser.uid);
+            }
+            if(document.getElementById('view-container').innerHTML !== '') {
+                renderView();
+            }
+        };
+
+        // Offline CRUD functions
+        window.addDoc = async (colName, data) => {
+            const db = loadDb();
+            const newDoc = { id: generateId(), ...data };
+            db[colName].push(newDoc);
+            saveDb(db);
+            return newDoc;
+        };
+
+        window.updateDoc = async (colName, id, data) => {
+            const db = loadDb();
+            const index = db[colName].findIndex(item => item.id === id || item.uid === id);
+            if (index > -1) {
+                db[colName][index] = { ...db[colName][index], ...data };
+                saveDb(db);
+            }
+        };
+
+        window.deleteDoc = async (colName, id) => {
+            const db = loadDb();
+            db[colName] = db[colName].filter(item => item.id !== id && item.uid !== id);
+            saveDb(db);
+        };
 
         // --- Utility Functions ---
         window.showToast = (message, type = 'success') => {
@@ -326,7 +358,6 @@
         window.openModal = (id) => document.getElementById(id).classList.remove('hidden');
         window.closeModal = (id) => {
             document.getElementById(id).classList.add('hidden');
-            // reset form if inside modal
             const form = document.querySelector(`#${id} form`);
             if(form) form.reset();
         };
@@ -346,46 +377,22 @@
             return new Date(isoString).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric'});
         };
 
-        // --- Data Layer Paths ---
-        // RULE 1 Enforcement: Using public/data path for all shared lab data.
-        const getColRef = (colName) => collection(db, 'artifacts', appId, 'public', 'data', colName);
-        const getDocRef = (colName, docId) => doc(db, 'artifacts', appId, 'public', 'data', colName, docId);
-
-        // --- Authentication Flow ---
-        async function initAuth() {
-            try {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
-                } else {
-                    await signInAnonymously(auth);
-                }
-            } catch (error) {
-                console.error("Auth init error:", error);
-                showToast("Authentication Failed", "error");
+        // --- Authentication Flow Simulation ---
+        function initAuth() {
+            if (window.dbStore.currentUser) {
+                checkProfile();
+            } else {
+                document.getElementById('auth-screen').classList.remove('hidden');
+                document.getElementById('app').classList.add('hidden');
             }
         }
 
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                window.dbStore.currentUser = user;
-                await checkProfile();
-            } else {
-                document.getElementById('app').classList.add('hidden');
-            }
-        });
-
         async function checkProfile() {
-            const uid = window.dbStore.currentUser.uid;
-            try {
-                const profileSnap = await getDoc(getDocRef('profiles', uid));
-                if (profileSnap.exists()) {
-                    window.dbStore.profile = profileSnap.data();
-                    startApp();
-                } else {
-                    document.getElementById('auth-screen').classList.remove('hidden');
-                }
-            } catch (e) {
-                console.error("Profile check error", e);
+            syncStore();
+            if (window.dbStore.profile) {
+                startApp();
+            } else {
+                document.getElementById('auth-screen').classList.remove('hidden');
             }
         }
 
@@ -394,32 +401,37 @@
             const name = document.getElementById('setup-name').value;
             const btn = e.target.querySelector('button');
             btn.disabled = true;
-            btn.innerText = "Setting up...";
+            btn.innerText = "Setup hocche...";
 
             try {
-                // Check if any profiles exist to determine Admin
-                const profilesSnap = await getDocs(getColRef('profiles'));
-                const role = profilesSnap.empty ? ROLES.ADMIN : ROLES.SCHOLAR;
+                const db = loadDb();
+                const role = db.profiles.length === 0 ? ROLES.ADMIN : ROLES.SCHOLAR;
+                const uid = "demo_" + generateId();
                 
                 const newProfile = {
-                    uid: window.dbStore.currentUser.uid,
+                    uid: uid,
                     name: name,
                     role: role,
-                    email: window.dbStore.currentUser.email || `user_${window.dbStore.currentUser.uid.substring(0,5)}@lab.local`,
+                    email: `user_${uid.substring(0,5)}@lab.local`,
                     createdAt: new Date().toISOString(),
                     lastActive: new Date().toISOString()
                 };
 
-                await setDoc(getDocRef('profiles', newProfile.uid), newProfile);
-                window.dbStore.profile = newProfile;
+                db.profiles.push(newProfile);
+                saveDb(db);
+                
+                const fakeUser = { uid: uid, email: newProfile.email };
+                localStorage.setItem('labTrackUser_v1', JSON.stringify(fakeUser));
+                window.dbStore.currentUser = fakeUser;
+
                 document.getElementById('auth-screen').classList.add('hidden');
-                showToast(`Welcome ${name}! Assigned Role: ${role}`);
+                showToast(`Swagotom ${name}! Apnar Role: ${role}`);
                 startApp();
             } catch (error) {
                 console.error("Setup error", error);
-                showToast("Failed to create profile", "error");
+                showToast("Profile toiri korte samossa hoyeche", "error");
                 btn.disabled = false;
-                btn.innerText = "Complete Setup";
+                btn.innerText = "Setup Sesh Karun";
             }
         });
 
@@ -429,14 +441,12 @@
             document.getElementById('user-name-display').innerText = window.dbStore.profile.name;
             document.getElementById('user-role-display').innerText = window.dbStore.profile.role;
             
-            // Apply role-based visibility globally via classes
             document.body.classList.remove('hide-role-Admin', 'hide-role-Guide', 'hide-role-Scholar');
             Object.values(ROLES).forEach(r => {
                 if(window.dbStore.profile.role !== r) document.body.classList.add(`hide-role-${r}`);
             });
 
             setupNavigation();
-            startListeners();
         }
 
         function setupNavigation() {
@@ -444,12 +454,12 @@
             const role = window.dbStore.profile.role;
             
             const links = [
-                { id: 'dashboard', icon: 'layout-dashboard', label: 'Dashboard', roles: [ROLES.ADMIN, ROLES.GUIDE, ROLES.SCHOLAR] },
-                { id: 'inventory', icon: 'flask-round', label: 'Chemical Inventory', roles: [ROLES.ADMIN, ROLES.GUIDE, ROLES.SCHOLAR] },
-                { id: 'usage', icon: 'clipboard-list', label: 'Usage Logs', roles: [ROLES.ADMIN, ROLES.GUIDE, ROLES.SCHOLAR] },
-                { id: 'daily', icon: 'book-open', label: 'Daily Research Log', roles: [ROLES.ADMIN, ROLES.GUIDE, ROLES.SCHOLAR] },
-                { id: 'projects', icon: 'folder-kanban', label: 'Projects', roles: [ROLES.ADMIN, ROLES.GUIDE, ROLES.SCHOLAR] },
-                { id: 'guidedash', icon: 'users', label: 'Guide Dashboard', roles: [ROLES.ADMIN, ROLES.GUIDE] },
+                { id: 'dashboard', icon: 'layout-dashboard', label: 'Ek Nojore (Dashboard)', roles: [ROLES.ADMIN, ROLES.GUIDE, ROLES.SCHOLAR] },
+                { id: 'inventory', icon: 'flask-round', label: 'Chemical er Talika', roles: [ROLES.ADMIN, ROLES.GUIDE, ROLES.SCHOLAR] },
+                { id: 'usage', icon: 'clipboard-list', label: 'Bebohar Log Karun', roles: [ROLES.ADMIN, ROLES.GUIDE, ROLES.SCHOLAR] },
+                { id: 'daily', icon: 'book-open', label: 'Doinondin Research Log', roles: [ROLES.ADMIN, ROLES.GUIDE, ROLES.SCHOLAR] },
+                { id: 'projects', icon: 'folder-kanban', label: 'Project Gulo', roles: [ROLES.ADMIN, ROLES.GUIDE, ROLES.SCHOLAR] },
+                { id: 'guidedash', icon: 'users', label: 'Guide er Overview', roles: [ROLES.ADMIN, ROLES.GUIDE] },
                 { id: 'admin', icon: 'settings', label: 'Admin Panel', roles: [ROLES.ADMIN] }
             ];
 
@@ -471,7 +481,6 @@
 
         window.navigate = (viewId) => {
             window.dbStore.currentView = viewId;
-            // Update Active Link State
             document.querySelectorAll('[id^="nav-btn-"]').forEach(btn => {
                 btn.classList.remove('bg-blue-600', 'text-white');
                 btn.classList.add('text-slate-400', 'hover:bg-slate-800');
@@ -482,37 +491,11 @@
                 activeBtn.classList.add('bg-blue-600', 'text-white');
             }
 
-            // On mobile, auto close sidebar
             if(window.innerWidth < 768) {
                 document.getElementById('sidebar').classList.add('-translate-x-full');
             }
-
             renderView();
         };
-
-        // --- Data Listeners ---
-        function startListeners() {
-            const collections = ['chemicals', 'usageLogs', 'dailyLogs', 'projects', 'profiles'];
-            collections.forEach(colName => {
-                const unsubscribe = onSnapshot(getColRef(colName), (snapshot) => {
-                    window.dbStore[colName] = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-                    renderView(); // Re-render current view on any data change
-                    
-                    // Update activity timestamp passively if current user profile changes
-                    if(colName === 'profiles') {
-                         const myProf = window.dbStore.profiles.find(p => p.uid === window.dbStore.currentUser.uid);
-                         if(myProf && myProf.role !== window.dbStore.profile.role) {
-                             window.dbStore.profile.role = myProf.role;
-                             showToast("Your role has been updated. Reloading layout...");
-                             setTimeout(() => startApp(), 1000);
-                         }
-                    }
-                }, (error) => {
-                    console.error(`Error fetching ${colName}`, error);
-                });
-                window.dbStore.unsubscribes.push(unsubscribe);
-            });
-        }
 
         // --- View Rendering Engine ---
         function renderView() {
@@ -537,39 +520,38 @@
         function generateDashboardHTML() {
             const { chemicals, usageLogs, dailyLogs, projects } = window.dbStore;
             const lowStock = chemicals.filter(c => c.quantity <= c.lowStockThreshold);
-            
             const recentLogs = [...dailyLogs].sort((a,b) => new Date(b.date) - new Date(a.date)).slice(0, 3);
             
             return `
-                <h1 class="text-2xl font-bold text-slate-800 mb-6">Overview</h1>
+                <h1 class="text-2xl font-bold text-slate-800 mb-6">Ek Nojore</h1>
                 
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
                     <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4">
                         <div class="p-3 bg-blue-100 text-blue-600 rounded-lg"><i data-lucide="flask-round"></i></div>
-                        <div><p class="text-sm text-slate-500 font-medium">Total Chemicals</p><p class="text-2xl font-bold text-slate-800">${chemicals.length}</p></div>
+                        <div><p class="text-sm text-slate-500 font-medium">Mot Chemical</p><p class="text-2xl font-bold text-slate-800">${chemicals.length}</p></div>
                     </div>
                     <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4">
                         <div class="p-3 bg-red-100 text-red-600 rounded-lg"><i data-lucide="alert-triangle"></i></div>
-                        <div><p class="text-sm text-slate-500 font-medium">Low Stock</p><p class="text-2xl font-bold text-slate-800">${lowStock.length}</p></div>
+                        <div><p class="text-sm text-slate-500 font-medium">Kom Stock</p><p class="text-2xl font-bold text-slate-800">${lowStock.length}</p></div>
                     </div>
                     <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4">
                         <div class="p-3 bg-emerald-100 text-emerald-600 rounded-lg"><i data-lucide="book-open"></i></div>
-                        <div><p class="text-sm text-slate-500 font-medium">Daily Logs</p><p class="text-2xl font-bold text-slate-800">${dailyLogs.length}</p></div>
+                        <div><p class="text-sm text-slate-500 font-medium">Doinondin Log</p><p class="text-2xl font-bold text-slate-800">${dailyLogs.length}</p></div>
                     </div>
                     <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4">
                         <div class="p-3 bg-indigo-100 text-indigo-600 rounded-lg"><i data-lucide="folder-kanban"></i></div>
-                        <div><p class="text-sm text-slate-500 font-medium">Active Projects</p><p class="text-2xl font-bold text-slate-800">${projects.length}</p></div>
+                        <div><p class="text-sm text-slate-500 font-medium">Choloman Project</p><p class="text-2xl font-bold text-slate-800">${projects.length}</p></div>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <div class="bg-white rounded-xl shadow-sm border border-slate-100 p-5">
                         <div class="flex justify-between items-center mb-4">
-                            <h2 class="text-lg font-bold text-slate-800">Needs Attention (Low Stock)</h2>
-                            <button onclick="navigate('inventory')" class="text-sm text-blue-600 hover:underline">View All</button>
+                            <h2 class="text-lg font-bold text-slate-800">Gurutwo Din (Low Stock)</h2>
+                            <button onclick="navigate('inventory')" class="text-sm text-blue-600 hover:underline">Shob Dekhun</button>
                         </div>
                         <div class="space-y-3">
-                            ${lowStock.length === 0 ? '<p class="text-sm text-slate-500">Inventory looks good.</p>' : 
+                            ${lowStock.length === 0 ? '<p class="text-sm text-slate-500">Stock ekhon thik ache.</p>' : 
                                 lowStock.map(c => `
                                     <div class="flex justify-between items-center p-3 bg-red-50 rounded-lg">
                                         <div class="font-medium text-slate-800">${c.name}</div>
@@ -581,11 +563,11 @@
 
                     <div class="bg-white rounded-xl shadow-sm border border-slate-100 p-5">
                         <div class="flex justify-between items-center mb-4">
-                            <h2 class="text-lg font-bold text-slate-800">Recent Lab Activity</h2>
-                            <button onclick="navigate('daily')" class="text-sm text-blue-600 hover:underline">View Logs</button>
+                            <h2 class="text-lg font-bold text-slate-800">Samprotik Lab Activity</h2>
+                            <button onclick="navigate('daily')" class="text-sm text-blue-600 hover:underline">Log Dekhun</button>
                         </div>
                         <div class="space-y-4">
-                            ${recentLogs.length === 0 ? '<p class="text-sm text-slate-500">No activity yet.</p>' : 
+                            ${recentLogs.length === 0 ? '<p class="text-sm text-slate-500">Kono activity nei.</p>' : 
                                 recentLogs.map(log => `
                                     <div class="border-l-2 border-blue-500 pl-3">
                                         <p class="text-xs text-slate-500 mb-1">${formatDate(log.date)} • <span class="font-medium">${log.userName}</span></p>
@@ -602,8 +584,6 @@
         function generateInventoryHTML() {
             const { chemicals, profile } = window.dbStore;
             const canEdit = profile.role === ROLES.ADMIN || profile.role === ROLES.GUIDE;
-            
-            // Sort alphabetical
             const sorted = [...chemicals].sort((a,b) => a.name.localeCompare(b.name));
 
             let rows = sorted.map(c => {
@@ -630,14 +610,14 @@
 
             return `
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-                    <h1 class="text-2xl font-bold text-slate-800">Chemical Inventory</h1>
+                    <h1 class="text-2xl font-bold text-slate-800">Chemical er Talika</h1>
                     <div class="flex gap-2">
                         <button onclick="openUsageModal()" class="bg-purple-100 text-purple-700 px-4 py-2 rounded-lg font-medium hover:bg-purple-200 transition-colors flex items-center gap-2">
-                            <i data-lucide="flask-conical" class="w-4 h-4"></i> Log Usage
+                            <i data-lucide="flask-conical" class="w-4 h-4"></i> Log Karun
                         </button>
                         ${canEdit ? `
                         <button onclick="openChemicalModal()" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center gap-2">
-                            <i data-lucide="plus" class="w-4 h-4"></i> Add Item
+                            <i data-lucide="plus" class="w-4 h-4"></i> Notun Jukto Karun
                         </button>
                         ` : ''}
                     </div>
@@ -647,12 +627,12 @@
                         <thead>
                             <tr class="bg-slate-50 text-slate-500 text-sm uppercase tracking-wider border-b border-slate-200">
                                 <th class="py-3 px-4 font-medium">Chemical Name</th>
-                                <th class="py-3 px-4 font-medium">Quantity</th>
+                                <th class="py-3 px-4 font-medium">Poriman</th>
                                 <th class="py-3 px-4 font-medium">Last Updated</th>
                                 <th class="py-3 px-4 font-medium text-right">Actions</th>
                             </tr>
                         </thead>
-                        <tbody>${rows || '<tr><td colspan="4" class="py-8 text-center text-slate-500">No chemicals found.</td></tr>'}</tbody>
+                        <tbody>${rows || '<tr><td colspan="4" class="py-8 text-center text-slate-500">Kono chemical nei.</td></tr>'}</tbody>
                     </table>
                 </div>
             `;
@@ -680,9 +660,9 @@
 
             return `
                 <div class="flex justify-between items-center mb-6">
-                    <h1 class="text-2xl font-bold text-slate-800">Usage History</h1>
+                    <h1 class="text-2xl font-bold text-slate-800">Beboharer Itihas</h1>
                     <button onclick="openUsageModal()" class="bg-purple-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-purple-700 transition-colors flex items-center gap-2 shadow-sm">
-                        <i data-lucide="plus" class="w-4 h-4"></i> Log Usage
+                        <i data-lucide="plus" class="w-4 h-4"></i> Log Karun
                     </button>
                 </div>
                 <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-x-auto">
@@ -691,12 +671,12 @@
                             <tr class="bg-slate-50 text-slate-500 text-sm uppercase tracking-wider border-b border-slate-200">
                                 <th class="py-3 px-4 font-medium">Date & Time</th>
                                 <th class="py-3 px-4 font-medium">Chemical</th>
-                                <th class="py-3 px-4 font-medium">Qty Used</th>
-                                <th class="py-3 px-4 font-medium">Purpose</th>
-                                <th class="py-3 px-4 font-medium">User</th>
+                                <th class="py-3 px-4 font-medium">Bebohar Hoyeche</th>
+                                <th class="py-3 px-4 font-medium">Uddeshyo</th>
+                                <th class="py-3 px-4 font-medium">Beboharkari</th>
                             </tr>
                         </thead>
-                        <tbody>${rows || '<tr><td colspan="5" class="py-8 text-center text-slate-500">No usage logs found.</td></tr>'}</tbody>
+                        <tbody>${rows || '<tr><td colspan="5" class="py-8 text-center text-slate-500">Kono log nei.</td></tr>'}</tbody>
                     </table>
                 </div>
             `;
@@ -705,8 +685,6 @@
         // --- 4. DAILY RESEARCH LOGS ---
         function generateDailyLogsHTML() {
             const { dailyLogs, profile, currentUser } = window.dbStore;
-            
-            // Filter: Scholars see only their own, Guides/Admins see all
             let visibleLogs = dailyLogs;
             if (profile.role === ROLES.SCHOLAR) {
                 visibleLogs = dailyLogs.filter(log => log.userId === currentUser.uid);
@@ -733,22 +711,22 @@
                         </div>
                     </div>
                     <div class="space-y-3 mt-4 text-sm">
-                        <div><strong class="text-slate-700 block mb-1">Work Done:</strong><p class="text-slate-600 bg-slate-50 p-2 rounded border border-slate-100 whitespace-pre-wrap">${log.workDone}</p></div>
-                        <div><strong class="text-slate-700 block mb-1">Results:</strong><p class="text-slate-600 bg-slate-50 p-2 rounded border border-slate-100 whitespace-pre-wrap">${log.result}</p></div>
-                        ${log.issues ? `<div><strong class="text-slate-700 block mb-1 text-red-600">Issues Faced:</strong><p class="text-slate-600 bg-red-50 p-2 rounded border border-red-100 whitespace-pre-wrap">${log.issues}</p></div>` : ''}
+                        <div><strong class="text-slate-700 block mb-1">Ki Kaj Kora Hoyeche:</strong><p class="text-slate-600 bg-slate-50 p-2 rounded border border-slate-100 whitespace-pre-wrap">${log.workDone}</p></div>
+                        <div><strong class="text-slate-700 block mb-1">Folafol:</strong><p class="text-slate-600 bg-slate-50 p-2 rounded border border-slate-100 whitespace-pre-wrap">${log.result}</p></div>
+                        ${log.issues ? `<div><strong class="text-slate-700 block mb-1 text-red-600">Samossa:</strong><p class="text-slate-600 bg-red-50 p-2 rounded border border-red-100 whitespace-pre-wrap">${log.issues}</p></div>` : ''}
                     </div>
                 </div>
             `}).join('');
 
             return `
                 <div class="flex justify-between items-center mb-6">
-                    <h1 class="text-2xl font-bold text-slate-800">${profile.role === ROLES.SCHOLAR ? 'My Research Logs' : 'All Research Logs'}</h1>
+                    <h1 class="text-2xl font-bold text-slate-800">${profile.role === ROLES.SCHOLAR ? 'Amar Research Log' : 'Sokol Research Log'}</h1>
                     <button onclick="openDailyLogModal()" class="bg-emerald-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-emerald-700 transition-colors flex items-center gap-2 shadow-sm">
-                        <i data-lucide="pen-tool" class="w-4 h-4"></i> New Log
+                        <i data-lucide="pen-tool" class="w-4 h-4"></i> Notun Log
                     </button>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    ${cards || '<p class="text-slate-500 col-span-full">No research logs found.</p>'}
+                    ${cards || '<p class="text-slate-500 col-span-full">Kono research log pawa jayni.</p>'}
                 </div>
             `;
         }
@@ -759,12 +737,10 @@
             const canEdit = profile.role === ROLES.ADMIN || profile.role === ROLES.GUIDE;
 
             let cards = projects.map(p => {
-                // Map assigned uids to names
                 const assignedNames = (p.assignedScholars || []).map(uid => {
                     const prof = profiles.find(pr => pr.uid === uid);
                     return prof ? prof.name : 'Unknown';
                 });
-
                 let progressColor = p.progress < 30 ? 'bg-red-500' : (p.progress < 70 ? 'bg-yellow-500' : 'bg-emerald-500');
 
                 return `
@@ -779,17 +755,17 @@
                         ` : ''}
                     </div>
                     <div class="mb-4">
-                        <div class="flex justify-between text-xs mb-1 font-medium"><span class="text-slate-600">Progress</span><span class="text-slate-800">${p.progress}%</span></div>
+                        <div class="flex justify-between text-xs mb-1 font-medium"><span class="text-slate-600">Ogrohoti</span><span class="text-slate-800">${p.progress}%</span></div>
                         <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
                             <div class="${progressColor} h-2 rounded-full transition-all duration-500" style="width: ${p.progress}%"></div>
                         </div>
                     </div>
-                    <div class="flex-1 text-sm text-slate-600 mb-4 bg-slate-50 p-3 rounded-lg border border-slate-100 whitespace-pre-wrap">${p.notes || 'No notes available.'}</div>
+                    <div class="flex-1 text-sm text-slate-600 mb-4 bg-slate-50 p-3 rounded-lg border border-slate-100 whitespace-pre-wrap">${p.notes || 'Kono note nei.'}</div>
                     
                     <div>
                         <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Assigned Team</p>
                         <div class="flex flex-wrap gap-2">
-                            ${assignedNames.length ? assignedNames.map(name => `<span class="px-2 py-1 bg-indigo-50 text-indigo-700 text-xs rounded-md font-medium border border-indigo-100">${name}</span>`).join('') : '<span class="text-xs text-slate-400">None assigned</span>'}
+                            ${assignedNames.length ? assignedNames.map(name => `<span class="px-2 py-1 bg-indigo-50 text-indigo-700 text-xs rounded-md font-medium border border-indigo-100">${name}</span>`).join('') : '<span class="text-xs text-slate-400">Keu assigned nei</span>'}
                         </div>
                     </div>
                 </div>
@@ -797,15 +773,15 @@
 
             return `
                 <div class="flex justify-between items-center mb-6">
-                    <h1 class="text-2xl font-bold text-slate-800">Research Projects</h1>
+                    <h1 class="text-2xl font-bold text-slate-800">Research Project Gulo</h1>
                     ${canEdit ? `
                     <button onclick="openProjectModal()" class="bg-indigo-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-indigo-700 transition-colors flex items-center gap-2 shadow-sm">
-                        <i data-lucide="folder-plus" class="w-4 h-4"></i> New Project
+                        <i data-lucide="folder-plus" class="w-4 h-4"></i> Notun Project
                     </button>
                     ` : ''}
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    ${cards || '<p class="text-slate-500 col-span-full">No active projects found.</p>'}
+                    ${cards || '<p class="text-slate-500 col-span-full">Kono active project nei.</p>'}
                 </div>
             `;
         }
@@ -815,7 +791,6 @@
             const { profiles, dailyLogs, usageLogs } = window.dbStore;
             const scholars = profiles.filter(p => p.role === ROLES.SCHOLAR);
             
-            // Build Scholar stats
             let scholarRows = scholars.map(s => {
                 const sLogs = dailyLogs.filter(l => l.userId === s.uid);
                 const sUsage = usageLogs.filter(u => u.userId === s.uid);
@@ -830,14 +805,14 @@
                     <td class="py-3 px-4 font-medium text-slate-800">${s.name}</td>
                     <td class="py-3 px-4 text-sm text-slate-600">${sLogs.length} logs</td>
                     <td class="py-3 px-4 text-sm text-slate-600">${sUsage.length} uses</td>
-                    <td class="py-3 px-4 text-sm text-slate-600">${lastLog ? formatDateShort(lastLog) : 'Never'}</td>
+                    <td class="py-3 px-4 text-sm text-slate-600">${lastLog ? formatDateShort(lastLog) : 'Kokhonoi Na'}</td>
                     <td class="py-3 px-4">${statusBadge}</td>
                 </tr>
                 `;
             }).join('');
 
             return `
-                <h1 class="text-2xl font-bold text-slate-800 mb-6">Guide Overview</h1>
+                <h1 class="text-2xl font-bold text-slate-800 mb-6">Guide-er Overview</h1>
                 <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden mb-6">
                     <div class="p-4 border-b border-slate-100 bg-slate-50">
                         <h2 class="font-bold text-slate-800">Scholar Tracking</h2>
@@ -847,13 +822,13 @@
                             <thead>
                                 <tr class="text-slate-500 text-sm uppercase tracking-wider border-b border-slate-200">
                                     <th class="py-3 px-4 font-medium">Scholar</th>
-                                    <th class="py-3 px-4 font-medium">Total Logs</th>
-                                    <th class="py-3 px-4 font-medium">Chem Usage</th>
-                                    <th class="py-3 px-4 font-medium">Last Log</th>
+                                    <th class="py-3 px-4 font-medium">Mot Log</th>
+                                    <th class="py-3 px-4 font-medium">Chem Bebohar</th>
+                                    <th class="py-3 px-4 font-medium">Shesh Log</th>
                                     <th class="py-3 px-4 font-medium">Status</th>
                                 </tr>
                             </thead>
-                            <tbody>${scholarRows || '<tr><td colspan="5" class="py-4 text-center text-slate-500">No scholars found.</td></tr>'}</tbody>
+                            <tbody>${scholarRows || '<tr><td colspan="5" class="py-4 text-center text-slate-500">Kono scholar nei.</td></tr>'}</tbody>
                         </table>
                     </div>
                 </div>
@@ -883,9 +858,9 @@
 
             return `
                 <div class="flex justify-between items-center mb-6">
-                    <h1 class="text-2xl font-bold text-slate-800">System Administration</h1>
+                    <h1 class="text-2xl font-bold text-slate-800">System Porichalona</h1>
                     <button onclick="injectDummyData()" class="bg-amber-100 text-amber-700 px-3 py-1.5 rounded text-sm font-bold hover:bg-amber-200 transition-colors flex items-center gap-2">
-                        <i data-lucide="database" class="w-4 h-4"></i> Inject Dummy Data
+                        <i data-lucide="database" class="w-4 h-4"></i> Demo Data Jukto Karun
                     </button>
                 </div>
                 
@@ -911,41 +886,36 @@
         }
 
         // --- Action Handlers (CRUD) ---
-
-        // Generic Delete
         window.deleteDocHandler = (collectionName, docId, itemName) => {
-            openConfirm("Delete Item", `Are you sure you want to delete this ${itemName}? This action cannot be undone.`, async () => {
+            openConfirm("Item Delete Karun", `Apni ki nischit bhabe ei ${itemName} delete korte chan?`, async () => {
                 try {
-                    await deleteDoc(getDocRef(collectionName, docId));
-                    showToast(`${itemName} deleted successfully.`);
+                    await deleteDoc(collectionName, docId);
+                    showToast(`${itemName} sothikbhabe delete hoyeche.`);
                 } catch(e) {
                     console.error(e);
-                    showToast(`Failed to delete ${itemName}`, "error");
+                    showToast(`${itemName} delete korte samossa hoyeche`, "error");
                 }
             });
         };
 
-        // Admin Change Role
         window.changeRole = async (uid, newRole) => {
             try {
-                await updateDoc(getDocRef('profiles', uid), { role: newRole });
-                showToast(`Role updated to ${newRole}`);
+                await updateDoc('profiles', uid, { role: newRole });
+                showToast(`Role update kora hoyeche: ${newRole}`);
             } catch(e) {
                 console.error(e);
-                showToast("Failed to update role", "error");
+                showToast("Role update beartho hoyeche", "error");
             }
         };
 
         // --- Modals & Form Submissions ---
-
-        // Chemical Modal
         window.openChemicalModal = () => {
-            document.getElementById('chem-modal-title').innerText = "Add Chemical";
+            document.getElementById('chem-modal-title').innerText = "Chemical Jukto Karun";
             document.getElementById('chem-id').value = "";
             openModal('modal-chemical');
         };
         window.editChemical = (chem) => {
-            document.getElementById('chem-modal-title').innerText = "Edit Chemical";
+            document.getElementById('chem-modal-title').innerText = "Chemical Edit Karun";
             document.getElementById('chem-id').value = chem.id;
             document.getElementById('chem-name').value = chem.name;
             document.getElementById('chem-qty').value = chem.quantity;
@@ -965,28 +935,27 @@
             };
 
             try {
-                if (id) await updateDoc(getDocRef('chemicals', id), data);
-                else await addDoc(getColRef('chemicals'), data);
+                if (id) await updateDoc('chemicals', id, data);
+                else await addDoc('chemicals', data);
                 
                 closeModal('modal-chemical');
-                showToast(`Chemical ${id ? 'updated' : 'added'} successfully`);
+                showToast(`Chemical sothikbhabe ${id ? 'update' : 'jukto'} hoyeche`);
             } catch (err) {
                 console.error(err);
-                showToast("Error saving chemical", "error");
+                showToast("Chemical save korte error", "error");
             }
         });
 
-        // Usage Modal
         window.openUsageModal = () => {
             const select = document.getElementById('usage-chem');
-            select.innerHTML = '<option value="">Select a chemical...</option>' + 
-                window.dbStore.chemicals.map(c => `<option value="${c.id}" data-qty="${c.quantity}" data-unit="${c.unit}">${c.name} (${c.quantity} ${c.unit} avail)</option>`).join('');
+            select.innerHTML = '<option value="">Chemical bachhai karun...</option>' + 
+                window.dbStore.chemicals.map(c => `<option value="${c.id}" data-qty="${c.quantity}" data-unit="${c.unit}">${c.name} (${c.quantity} ${c.unit} Available)</option>`).join('');
             openModal('modal-usage');
         };
         document.getElementById('usage-chem').addEventListener('change', (e) => {
             const opt = e.target.options[e.target.selectedIndex];
             document.getElementById('usage-unit-display').innerText = opt.value ? `(${opt.dataset.unit})` : '';
-            document.getElementById('usage-available-display').innerText = opt.value ? `Available: ${opt.dataset.qty} ${opt.dataset.unit}` : '';
+            document.getElementById('usage-available-display').innerText = opt.value ? `Baki ache: ${opt.dataset.qty} ${opt.dataset.unit}` : '';
         });
         document.getElementById('form-usage').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -995,12 +964,11 @@
             const purpose = document.getElementById('usage-purpose').value;
 
             const chem = window.dbStore.chemicals.find(c => c.id === chemId);
-            if (!chem) return showToast("Select a valid chemical", "error");
-            if (qtyUsed > chem.quantity) return showToast(`Insufficient quantity. Max available: ${chem.quantity}`, "error");
+            if (!chem) return showToast("Sothik chemical bachhai karun", "error");
+            if (qtyUsed > chem.quantity) return showToast(`Porjepto poriman nei. Max available: ${chem.quantity}`, "error");
 
             try {
-                // Log Usage
-                await addDoc(getColRef('usageLogs'), {
+                await addDoc('usageLogs', {
                     chemicalId: chem.id,
                     chemicalName: chem.name,
                     quantityUsed: qtyUsed + ' ' + chem.unit,
@@ -1010,28 +978,26 @@
                     date: new Date().toISOString()
                 });
                 
-                // Update Inventory
-                await updateDoc(getDocRef('chemicals', chemId), {
+                await updateDoc('chemicals', chemId, {
                     quantity: chem.quantity - qtyUsed,
                     lastUpdated: new Date().toISOString()
                 });
 
                 closeModal('modal-usage');
-                showToast("Usage logged and inventory updated");
+                showToast("Bebohar log kora hoyeche abong inventory update kora hoyeche");
             } catch (err) {
                 console.error(err);
-                showToast("Error logging usage", "error");
+                showToast("Log save korte error", "error");
             }
         });
 
-        // Daily Log Modal
         window.openDailyLogModal = () => {
-            document.getElementById('log-modal-title').innerText = "Add Daily Log";
+            document.getElementById('log-modal-title').innerText = "Doinondin Log Jukto Karun";
             document.getElementById('log-id').value = "";
             openModal('modal-dailylog');
         };
         window.editDailyLog = (log) => {
-            document.getElementById('log-modal-title').innerText = "Edit Daily Log";
+            document.getElementById('log-modal-title').innerText = "Doinondin Log Edit Karun";
             document.getElementById('log-id').value = log.id;
             document.getElementById('log-work').value = log.workDone;
             document.getElementById('log-result').value = log.result;
@@ -1047,32 +1013,28 @@
                 issues: document.getElementById('log-issues').value,
                 userId: window.dbStore.currentUser.uid,
                 userName: window.dbStore.profile.name,
-                date: id ? undefined : new Date().toISOString() // Keep original date if edit
+                date: id ? undefined : new Date().toISOString()
             };
-
-            // Remove undefined fields
             if(!data.date) delete data.date;
 
             try {
-                if (id) await updateDoc(getDocRef('dailyLogs', id), data);
-                else await addDoc(getColRef('dailyLogs'), data);
+                if (id) await updateDoc('dailyLogs', id, data);
+                else await addDoc('dailyLogs', data);
                 
                 closeModal('modal-dailylog');
-                showToast(`Log ${id ? 'updated' : 'added'} successfully`);
+                showToast(`Log sothikbhabe ${id ? 'update' : 'jukto'} hoyeche`);
             } catch (err) {
                 console.error(err);
-                showToast("Error saving log", "error");
+                showToast("Log save korte error", "error");
             }
         });
 
-        // Project Modal
         window.openProjectModal = () => {
-            document.getElementById('project-modal-title').innerText = "Create Project";
+            document.getElementById('project-modal-title').innerText = "Project Toiri Karun";
             document.getElementById('project-id').value = "";
             document.getElementById('project-progress').value = 0;
             document.getElementById('prog-val').innerText = "0%";
             
-            // Populate Scholars checkboxes
             const scholarsDiv = document.getElementById('project-scholars');
             const scholars = window.dbStore.profiles.filter(p => p.role === ROLES.SCHOLAR || p.role === ROLES.GUIDE);
             scholarsDiv.innerHTML = scholars.map(s => `
@@ -1080,20 +1042,19 @@
                     <input type="checkbox" name="assignees" value="${s.uid}" class="w-4 h-4 text-blue-600 rounded">
                     ${s.name} <span class="text-xs text-slate-400">(${s.role})</span>
                 </label>
-            `).join('') || '<div class="text-xs text-slate-500 p-1">No users available to assign.</div>';
+            `).join('') || '<div class="text-xs text-slate-500 p-1">Assign korar moto keu nei.</div>';
             
             openModal('modal-project');
         };
         window.editProject = (project) => {
-            openProjectModal(); // Set up checkboxes first
-            document.getElementById('project-modal-title').innerText = "Edit Project";
+            openProjectModal();
+            document.getElementById('project-modal-title').innerText = "Project Edit Karun";
             document.getElementById('project-id').value = project.id;
             document.getElementById('project-name').value = project.name;
             document.getElementById('project-progress').value = project.progress;
             document.getElementById('prog-val').innerText = project.progress + "%";
             document.getElementById('project-notes').value = project.notes || '';
             
-            // Check assigned
             const checkboxes = document.querySelectorAll('input[name="assignees"]');
             checkboxes.forEach(cb => {
                 if((project.assignedScholars || []).includes(cb.value)) cb.checked = true;
@@ -1102,7 +1063,6 @@
         document.getElementById('form-project').addEventListener('submit', async (e) => {
             e.preventDefault();
             const id = document.getElementById('project-id').value;
-            
             const assigned = Array.from(document.querySelectorAll('input[name="assignees"]:checked')).map(cb => cb.value);
             
             const data = {
@@ -1114,27 +1074,26 @@
             };
 
             try {
-                if (id) await updateDoc(getDocRef('projects', id), data);
-                else await addDoc(getColRef('projects'), data);
+                if (id) await updateDoc('projects', id, data);
+                else await addDoc('projects', data);
                 
                 closeModal('modal-project');
-                showToast(`Project ${id ? 'updated' : 'created'} successfully`);
+                showToast(`Project sothikbhabe ${id ? 'update' : 'toiri'} hoyeche`);
             } catch (err) {
                 console.error(err);
-                showToast("Error saving project", "error");
+                showToast("Project save korte error", "error");
             }
         });
 
-        // --- Dummy Data Injector ---
         window.injectDummyData = async () => {
-            openConfirm("Inject Dummy Data", "This will add sample chemicals, projects, and logs. Proceed?", async () => {
-                showToast("Injecting data... please wait.", "success");
+            openConfirm("Demo Data Jukto Karun", "Ete kisu demo chemical, project ebang log jukto hobe. Egiye jete chan?", async () => {
+                showToast("Data jukto hocche... opekha karun.", "success");
                 
                 const chems = [
                     { name: 'Sodium Chloride', quantity: 500, unit: 'g', lowStockThreshold: 100, lastUpdated: new Date().toISOString() },
                     { name: 'Ethanol (95%)', quantity: 2.5, unit: 'L', lowStockThreshold: 0.5, lastUpdated: new Date().toISOString() },
-                    { name: 'Hydrochloric Acid', quantity: 0.2, unit: 'L', lowStockThreshold: 0.5, lastUpdated: new Date().toISOString() }, // Low stock
-                    { name: 'Agarose', quantity: 50, unit: 'g', lowStockThreshold: 100, lastUpdated: new Date().toISOString() }, // Low stock
+                    { name: 'Hydrochloric Acid', quantity: 0.2, unit: 'L', lowStockThreshold: 0.5, lastUpdated: new Date().toISOString() },
+                    { name: 'Agarose', quantity: 50, unit: 'g', lowStockThreshold: 100, lastUpdated: new Date().toISOString() },
                 ];
                 
                 const projs = [
@@ -1148,18 +1107,18 @@
                 ];
 
                 try {
-                    for(let c of chems) await addDoc(getColRef('chemicals'), c);
-                    for(let p of projs) await addDoc(getColRef('projects'), p);
-                    for(let l of logs) await addDoc(getColRef('dailyLogs'), l);
-                    showToast("Dummy data injected successfully!");
+                    for(let c of chems) await addDoc('chemicals', c);
+                    for(let p of projs) await addDoc('projects', p);
+                    for(let l of logs) await addDoc('dailyLogs', l);
+                    showToast("Demo data sothikbhabe jukto hoyeche!");
                 } catch(e) {
                     console.error(e);
-                    showToast("Error injecting data", "error");
+                    showToast("Data jukto korte error", "error");
                 }
             });
         };
 
-        // Bootstrap
+        // Bootstrap App
         initAuth();
 
     </script>
