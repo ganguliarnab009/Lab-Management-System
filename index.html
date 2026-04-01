@@ -370,14 +370,19 @@
         import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, doc, setDoc, getDoc, addDoc, updateDoc, deleteDoc, onSnapshot, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
-            apiKey: "dummy", authDomain: "dummy", projectId: "dummy", storageBucket: "dummy", messagingSenderId: "dummy", appId: "dummy"
+        const firebaseConfig = {
+            apiKey: "AIzaSyCdtNlqjKBeo7jqD_DlDcHKKx2zpEYmwfA",
+            authDomain: "lab-management-a6dc2.firebaseapp.com",
+            projectId: "lab-management-a6dc2",
+            storageBucket: "lab-management-a6dc2.firebasestorage.app",
+            messagingSenderId: "120348892308",
+            appId: "1:120348892308:web:098f38f54aa47505bfa881"
         };
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'lab-management-app';
+        const appId = 'lab-management-app';
 
         const ROLES = { PI: 'PI', SCHOLAR: 'Scholar' };
         
@@ -569,7 +574,16 @@
                 showToast(`Registration successful!`);
             } catch (error) {
                 console.error("Setup error", error);
-                showToast("Failed to register. Check database rules.", "error");
+                
+                // Show specific error messages for easier debugging
+                if (error.code === 'permission-denied') {
+                    showToast("Permission Denied: Firebase Rules allow korche na. Rules Publish korun.", "error");
+                } else if (error.message && error.message.includes('API key')) {
+                    showToast("Config Error: Apnar asol Firebase API Key boshan.", "error");
+                } else {
+                    showToast(`Error: ${error.message}`, "error");
+                }
+                
                 btn.disabled = false;
                 btn.innerText = "Register Account";
             }
