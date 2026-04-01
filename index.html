@@ -7,7 +7,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        /* Custom Scrollbar for a cleaner look */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
@@ -26,8 +25,7 @@
         }
 
         .modal-bg { background-color: rgba(0, 0, 0, 0.5); backdrop-filter: blur(2px); }
-        .hide-role-Admin .require-Admin { display: none !important; }
-        .hide-role-Guide .require-Guide { display: none !important; }
+        .hide-role-PI .require-PI { display: none !important; }
         .hide-role-Scholar .require-Scholar { display: none !important; }
     </style>
 </head>
@@ -48,28 +46,86 @@
         </div>
     </div>
 
-    <!-- Auth / Profile Setup Screen -->
-    <div id="auth-screen" class="fixed inset-0 z-40 bg-slate-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full text-center">
+    <!-- Screens Management -->
+    <div id="screen-loading" class="fixed inset-0 z-50 bg-slate-50 flex flex-col items-center justify-center">
+        <i data-lucide="loader-2" class="w-10 h-10 text-blue-600 animate-spin mb-4"></i>
+        <p class="text-slate-500 font-medium">Loading LabTrack...</p>
+    </div>
+
+    <!-- Auth / Registration Screen -->
+    <div id="screen-auth" class="fixed inset-0 z-40 bg-slate-50 flex items-center justify-center p-4 hidden overflow-y-auto">
+        <div class="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full my-auto">
             <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
                 <i data-lucide="flask-conical" class="w-8 h-8"></i>
             </div>
-            <h2 class="text-2xl font-bold text-slate-800 mb-2">Welcome to LabTrack</h2>
-            <p class="text-slate-500 mb-6">Please set up your profile to continue.</p>
+            <h2 class="text-2xl font-bold text-center text-slate-800 mb-2">Create Account</h2>
+            <p class="text-slate-500 text-center mb-6 text-sm">Register to access the Lab Management System</p>
             
-            <form id="profile-form" class="space-y-4 text-left">
+            <form id="profile-form" class="space-y-4">
                 <div>
                     <label class="block text-sm font-medium text-slate-700 mb-1">Full Name</label>
-                    <input type="text" id="setup-name" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all" placeholder="Dr. Jane Doe">
+                    <input type="text" id="reg-name" required class="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
                 </div>
-                <div class="p-3 bg-blue-50 text-blue-800 rounded-lg text-sm">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Role</label>
+                    <select id="reg-role" required class="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white" onchange="toggleGuideField()">
+                        <option value="Scholar">Research Scholar</option>
+                        <option value="PI">Principal Investigator (PI)</option>
+                    </select>
+                </div>
+                <div id="guide-field-container">
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Guide Name (PI)</label>
+                    <input type="text" id="reg-guide" class="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Name of your PI">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Lab Name</label>
+                        <input type="text" id="reg-lab" required class="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Institution</label>
+                        <input type="text" id="reg-inst" required class="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Password</label>
+                    <input type="password" id="reg-pass" required class="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="••••••••">
+                </div>
+                
+                <div class="p-3 bg-blue-50 text-blue-800 rounded-lg text-xs mt-2" id="role-info-box">
                     <i data-lucide="info" class="w-4 h-4 inline mr-1 -mt-0.5"></i>
-                    The first user to register will automatically become the Admin. Others will default to Scholar.
+                    Scholars require PI approval before accessing the system.
                 </div>
-                <button type="submit" class="w-full bg-blue-600 text-white py-2.5 rounded-lg font-medium hover:bg-blue-700 transition-colors shadow-sm">
-                    Complete Setup
+                <button type="submit" class="w-full bg-blue-600 text-white py-2.5 rounded-lg font-bold hover:bg-blue-700 transition-colors shadow-sm mt-4">
+                    Register Account
                 </button>
             </form>
+        </div>
+    </div>
+
+    <!-- Pending/Rejected Screens -->
+    <div id="screen-pending" class="fixed inset-0 z-40 bg-slate-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full text-center">
+            <div class="w-16 h-16 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i data-lucide="clock" class="w-8 h-8"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-slate-800 mb-2">Awaiting Approval</h2>
+            <p class="text-slate-600 mb-6">Your registration is pending approval from your Principal Investigator (PI). Please check back later.</p>
+            <div class="flex flex-col gap-3">
+                <button onclick="window.location.reload()" class="bg-slate-800 text-white px-6 py-2 rounded-lg font-medium hover:bg-slate-700">Refresh Page</button>
+                <button onclick="logoutApp()" class="text-slate-500 hover:text-slate-800 text-sm font-medium">Log out</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="screen-rejected" class="fixed inset-0 z-40 bg-slate-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full text-center">
+            <div class="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i data-lucide="x-octagon" class="w-8 h-8"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-slate-800 mb-2">Access Denied</h2>
+            <p class="text-slate-600 mb-6">Your request to join the lab has been rejected by the PI. Please contact your administrator.</p>
+            <button onclick="logoutApp()" class="bg-slate-800 text-white px-6 py-2 rounded-lg font-medium hover:bg-slate-700">Log out</button>
         </div>
     </div>
 
@@ -89,27 +145,31 @@
             <div class="px-6 pb-4">
                 <div class="bg-slate-800 rounded-lg p-3">
                     <p class="text-sm font-medium text-white truncate" id="user-name-display">Loading...</p>
-                    <p class="text-xs text-blue-400 font-semibold mt-0.5" id="user-role-display">Role</p>
+                    <p class="text-xs text-blue-400 font-bold uppercase tracking-wider mt-0.5" id="user-role-display">Role</p>
                 </div>
             </div>
 
             <nav class="flex-1 px-4 space-y-1 overflow-y-auto" id="nav-links">
-                <!-- Nav links injected via JS based on role -->
+                <!-- Nav links injected via JS -->
             </nav>
             
             <div class="p-4 border-t border-slate-800">
-                <div class="text-xs text-slate-500 text-center">LabTrack System (Demo Mode)</div>
+                <button onclick="logoutApp()" class="w-full flex items-center justify-center gap-2 px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-lg transition-colors text-sm font-medium mb-3">
+                    <i data-lucide="log-out" class="w-4 h-4"></i> Logout
+                </button>
+                <div class="text-xs text-slate-500 text-center" id="lab-inst-display">LabTrack System</div>
             </div>
         </aside>
 
         <!-- Main Content Area -->
         <main class="flex-1 flex flex-col h-full w-full bg-slate-50 relative overflow-hidden">
-            <!-- Mobile Header -->
-            <header class="bg-white border-b border-slate-200 px-4 py-3 flex items-center md:hidden">
-                <button class="text-slate-600 hover:text-slate-900 mr-3" onclick="toggleSidebar()">
+            <header class="bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between md:justify-end">
+                <button class="text-slate-600 hover:text-slate-900 md:hidden" onclick="toggleSidebar()">
                     <i data-lucide="menu" class="w-6 h-6"></i>
                 </button>
-                <span class="font-bold text-slate-800">LabTrack</span>
+                <div class="text-sm font-medium text-slate-500 flex items-center gap-2">
+                    <i data-lucide="calendar" class="w-4 h-4"></i> <span id="current-date-display"></span>
+                </div>
             </header>
 
             <!-- Dynamic Views -->
@@ -121,6 +181,52 @@
 
     <!-- Modals Container -->
     <div id="modals">
+        
+        <!-- Instrument Modal -->
+        <div id="modal-instrument" class="fixed inset-0 z-40 hidden modal-bg flex items-center justify-center p-4">
+            <div class="bg-white rounded-xl shadow-xl max-w-md w-full p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-bold text-slate-800" id="inst-modal-title">Add Instrument</h3>
+                    <button onclick="closeModal('modal-instrument')" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+                </div>
+                <form id="form-instrument" class="space-y-4">
+                    <input type="hidden" id="inst-id">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Instrument Name</label>
+                        <input type="text" id="inst-name" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Model Number</label>
+                        <input type="text" id="inst-model" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Under AMC</label>
+                            <select id="inst-amc" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white">
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Condition</label>
+                            <select id="inst-condition" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white">
+                                <option value="OK">OK</option>
+                                <option value="Not OK">Not OK</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Last/Next Service Date</label>
+                        <input type="date" id="inst-service" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+                    <div class="pt-2 flex justify-end gap-3">
+                        <button type="button" onclick="closeModal('modal-instrument')" class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-medium">Cancel</button>
+                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700">Save Instrument</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
         <!-- Add/Edit Chemical Modal -->
         <div id="modal-chemical" class="fixed inset-0 z-40 hidden modal-bg flex items-center justify-center p-4">
             <div class="bg-white rounded-xl shadow-xl max-w-md w-full p-6">
@@ -151,10 +257,6 @@
                             </select>
                         </div>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Low Stock Threshold</label>
-                        <input type="number" id="chem-threshold" step="0.01" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" value="10">
-                    </div>
                     <div class="pt-2 flex justify-end gap-3">
                         <button type="button" onclick="closeModal('modal-chemical')" class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-medium">Cancel</button>
                         <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700">Save Chemical</button>
@@ -182,10 +284,6 @@
                         <input type="number" id="usage-qty" step="0.01" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
                         <p class="text-xs text-slate-500 mt-1" id="usage-available-display"></p>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Purpose / Experiment</label>
-                        <input type="text" id="usage-purpose" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="e.g., DNA Extraction">
-                    </div>
                     <div class="pt-2 flex justify-end gap-3">
                         <button type="button" onclick="closeModal('modal-usage')" class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-medium">Cancel</button>
                         <button type="submit" class="px-4 py-2 bg-purple-600 text-white rounded-lg font-medium hover:bg-purple-700">Submit Log</button>
@@ -204,8 +302,14 @@
                 <form id="form-dailylog" class="space-y-4">
                     <input type="hidden" id="log-id">
                     <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Select Project</label>
+                        <select id="log-project" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white">
+                            <!-- Populated dynamically based on assignment -->
+                        </select>
+                    </div>
+                    <div>
                         <label class="block text-sm font-medium text-slate-700 mb-1">Work Done</label>
-                        <textarea id="log-work" required rows="3" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none resize-none" placeholder="Describe the experiments and tasks completed today..."></textarea>
+                        <textarea id="log-work" required rows="3" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none resize-none" placeholder="Describe tasks completed..."></textarea>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-700 mb-1">Results & Observations</label>
@@ -233,23 +337,23 @@
                 <form id="form-project" class="space-y-4">
                     <input type="hidden" id="project-id">
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Project Name</label>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Project Title</label>
                         <input type="text" id="project-name" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Description</label>
+                        <textarea id="project-desc" rows="2" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none resize-none"></textarea>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-700 mb-1">Progress (%)</label>
                         <input type="range" id="project-progress" min="0" max="100" value="0" class="w-full" oninput="document.getElementById('prog-val').innerText = this.value + '%'">
                         <div class="text-right text-xs text-slate-500" id="prog-val">0%</div>
                     </div>
-                    <div>
+                    <div class="require-PI">
                         <label class="block text-sm font-medium text-slate-700 mb-1">Assign Scholars</label>
-                        <div id="project-scholars" class="max-h-32 overflow-y-auto border border-slate-200 rounded-lg p-2 space-y-1">
+                        <div id="project-scholars" class="max-h-32 overflow-y-auto border border-slate-200 rounded-lg p-2 space-y-1 bg-slate-50">
                             <!-- Checkboxes injected here -->
                         </div>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Notes</label>
-                        <textarea id="project-notes" rows="2" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none resize-none"></textarea>
                     </div>
                     <div class="pt-2 flex justify-end gap-3">
                         <button type="button" onclick="closeModal('modal-project')" class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-medium">Cancel</button>
@@ -260,66 +364,38 @@
         </div>
     </div>
 
-    <!-- Demo Offline Logic Script (No Firebase) -->
-    <script>
-        // --- Demo uses LocalStorage. Firebase to be added later. ---
+    <!-- Firebase Logic Integration -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, doc, setDoc, getDoc, addDoc, updateDoc, deleteDoc, onSnapshot, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
+            apiKey: "dummy", authDomain: "dummy", projectId: "dummy", storageBucket: "dummy", messagingSenderId: "dummy", appId: "dummy"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'lab-management-app';
+
+        const ROLES = { PI: 'PI', SCHOLAR: 'Scholar' };
         
-        const generateId = () => Math.random().toString(36).substr(2, 9);
-        const ROLES = { ADMIN: 'Admin', GUIDE: 'Guide', SCHOLAR: 'Scholar' };
-
-        // Database Management
-        const loadDb = () => {
-            const defaultDb = { profiles: [], chemicals: [], usageLogs: [], dailyLogs: [], projects: [] };
-            const stored = localStorage.getItem('labTrackDb_v1');
-            return stored ? JSON.parse(stored) : defaultDb;
-        };
-
-        const saveDb = (data) => {
-            localStorage.setItem('labTrackDb_v1', JSON.stringify(data));
-            syncStore();
-        };
-
         window.dbStore = {
-            currentUser: JSON.parse(localStorage.getItem('labTrackUser_v1') || 'null'),
+            currentUser: null,
             profile: null,
             currentView: 'dashboard',
-            ...loadDb()
+            users: [],
+            chemicals: [],
+            instruments: [],
+            usageLogs: [],
+            dailyLogs: [],
+            projects: [],
+            unsubscribes: []
         };
 
-        const syncStore = () => {
-            const db = loadDb();
-            Object.assign(window.dbStore, db);
-            if (window.dbStore.currentUser) {
-                window.dbStore.profile = window.dbStore.profiles.find(p => p.uid === window.dbStore.currentUser.uid);
-            }
-            if(document.getElementById('view-container').innerHTML !== '') {
-                renderView();
-            }
-        };
-
-        // Offline CRUD functions
-        window.addDoc = async (colName, data) => {
-            const db = loadDb();
-            const newDoc = { id: generateId(), ...data };
-            db[colName].push(newDoc);
-            saveDb(db);
-            return newDoc;
-        };
-
-        window.updateDoc = async (colName, id, data) => {
-            const db = loadDb();
-            const index = db[colName].findIndex(item => item.id === id || item.uid === id);
-            if (index > -1) {
-                db[colName][index] = { ...db[colName][index], ...data };
-                saveDb(db);
-            }
-        };
-
-        window.deleteDoc = async (colName, id) => {
-            const db = loadDb();
-            db[colName] = db[colName].filter(item => item.id !== id && item.uid !== id);
-            saveDb(db);
-        };
+        const getColRef = (colName) => collection(db, 'artifacts', appId, 'public', 'data', colName);
+        const getDocRef = (colName, docId) => doc(db, 'artifacts', appId, 'public', 'data', colName, docId);
 
         // --- Utility Functions ---
         window.showToast = (message, type = 'success') => {
@@ -330,13 +406,13 @@
             toast.className = `flex items-center gap-2 px-4 py-3 rounded-lg text-white shadow-lg ${bg} toast-enter`;
             toast.innerHTML = `<i data-lucide="${icon}" class="w-5 h-5"></i> <span class="text-sm font-medium">${message}</span>`;
             container.appendChild(toast);
-            lucide.createIcons();
+            if(window.lucide) lucide.createIcons();
             
             setTimeout(() => {
                 toast.classList.remove('toast-enter');
                 toast.classList.add('toast-exit');
                 setTimeout(() => toast.remove(), 300);
-            }, 3000);
+            }, 3000); 
         };
 
         let confirmCallback = null;
@@ -361,9 +437,13 @@
             const form = document.querySelector(`#${id} form`);
             if(form) form.reset();
         };
-        window.toggleSidebar = () => {
-            const sb = document.getElementById('sidebar');
-            sb.classList.toggle('-translate-x-full');
+        window.toggleSidebar = () => document.getElementById('sidebar').classList.toggle('-translate-x-full');
+        window.showScreen = (screenId) => {
+            ['screen-loading', 'screen-auth', 'screen-pending', 'screen-rejected', 'app'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+            document.getElementById(screenId).classList.remove('hidden');
+            if(window.lucide) lucide.createIcons();
         };
 
         window.formatDate = (isoString) => {
@@ -371,84 +451,145 @@
             const d = new Date(isoString);
             return d.toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit'});
         };
-        
-        window.formatDateShort = (isoString) => {
-            if(!isoString) return 'N/A';
-            return new Date(isoString).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric'});
+        window.formatDateShort = (isoString) => isoString ? new Date(isoString).toLocaleDateString('en-GB') : 'N/A';
+
+        // --- Authentication & Profile Flow ---
+        async function initAuth() {
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    try {
+                        await signInWithCustomToken(auth, __initial_auth_token);
+                    } catch (tokenError) {
+                        await signInAnonymously(auth);
+                    }
+                } else {
+                    await signInAnonymously(auth);
+                }
+            } catch (error) {
+                console.error("Auth Error:", error);
+                showToast("Auth failed. Check connection.", "error");
+            }
+        }
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                window.dbStore.currentUser = user;
+                await checkProfile();
+            } else {
+                window.dbStore.currentUser = null;
+                window.dbStore.profile = null;
+                showScreen('screen-auth');
+            }
+        });
+
+        window.logoutApp = () => {
+            openConfirm("Logout", "Are you sure you want to log out of the system?", async () => {
+                try {
+                    // Clear all listeners before logging out
+                    window.dbStore.unsubscribes.forEach(unsub => unsub());
+                    window.dbStore.unsubscribes = [];
+                    await signOut(auth);
+                    window.location.reload();
+                } catch(e) {
+                    console.error(e);
+                    showToast("Failed to logout", "error");
+                }
+            });
         };
 
-        // --- Authentication Flow Simulation ---
-        function initAuth() {
-            if (window.dbStore.currentUser) {
-                checkProfile();
-            } else {
-                document.getElementById('auth-screen').classList.remove('hidden');
-                document.getElementById('app').classList.add('hidden');
+        async function checkProfile() {
+            if(!window.dbStore.currentUser) return;
+            const uid = window.dbStore.currentUser.uid;
+            try {
+                const profileSnap = await getDoc(getDocRef('users', uid));
+                if (profileSnap.exists()) {
+                    window.dbStore.profile = profileSnap.data();
+                    handleProfileState();
+                } else {
+                    showScreen('screen-auth');
+                }
+            } catch (e) {
+                console.error("Profile check error", e);
+                showToast("Failed to load profile. Check Firestore rules.", "error");
             }
         }
 
-        async function checkProfile() {
-            syncStore();
-            if (window.dbStore.profile) {
+        function handleProfileState() {
+            const status = window.dbStore.profile.status;
+            if (status === 'pending') {
+                showScreen('screen-pending');
+            } else if (status === 'rejected') {
+                showScreen('screen-rejected');
+            } else if (status === 'approved') {
                 startApp();
-            } else {
-                document.getElementById('auth-screen').classList.remove('hidden');
             }
         }
+
+        window.toggleGuideField = () => {
+            const role = document.getElementById('reg-role').value;
+            const guideField = document.getElementById('guide-field-container');
+            const infoBox = document.getElementById('role-info-box');
+            if (role === ROLES.SCHOLAR) {
+                guideField.classList.remove('hidden');
+                document.getElementById('reg-guide').required = true;
+                infoBox.innerHTML = '<i data-lucide="info" class="w-4 h-4 inline mr-1 -mt-0.5"></i> Scholars require PI approval before accessing the system.';
+            } else {
+                guideField.classList.add('hidden');
+                document.getElementById('reg-guide').required = false;
+                document.getElementById('reg-guide').value = '';
+                infoBox.innerHTML = '<i data-lucide="info" class="w-4 h-4 inline mr-1 -mt-0.5"></i> Principal Investigators are automatically approved as Admins.';
+            }
+            lucide.createIcons();
+        };
 
         document.getElementById('profile-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const name = document.getElementById('setup-name').value;
             const btn = e.target.querySelector('button');
             btn.disabled = true;
-            btn.innerText = "Setting up...";
+            btn.innerText = "Registering...";
 
             try {
-                const db = loadDb();
-                const role = db.profiles.length === 0 ? ROLES.ADMIN : ROLES.SCHOLAR;
-                const uid = "demo_" + generateId();
+                const role = document.getElementById('reg-role').value;
+                const status = role === ROLES.PI ? 'approved' : 'pending';
                 
                 const newProfile = {
-                    uid: uid,
-                    name: name,
+                    uid: window.dbStore.currentUser.uid,
+                    name: document.getElementById('reg-name').value,
                     role: role,
-                    email: `user_${uid.substring(0,5)}@lab.local`,
-                    createdAt: new Date().toISOString(),
-                    lastActive: new Date().toISOString()
+                    labName: document.getElementById('reg-lab').value,
+                    institution: document.getElementById('reg-inst').value,
+                    guideName: role === ROLES.SCHOLAR ? document.getElementById('reg-guide').value : '',
+                    status: status,
+                    createdAt: new Date().toISOString()
                 };
 
-                // Set current user and profile first so syncStore doesn't overwrite it with null
-                const fakeUser = { uid: uid, email: newProfile.email };
-                localStorage.setItem('labTrackUser_v1', JSON.stringify(fakeUser));
-                window.dbStore.currentUser = fakeUser;
+                await setDoc(getDocRef('users', newProfile.uid), newProfile);
                 window.dbStore.profile = newProfile;
-
-                db.profiles.push(newProfile);
-                saveDb(db);
-                
-                document.getElementById('auth-screen').classList.add('hidden');
-                showToast(`Welcome ${name}! Assigned Role: ${role}`);
-                startApp();
+                handleProfileState();
+                showToast(`Registration successful!`);
             } catch (error) {
                 console.error("Setup error", error);
-                showToast("Failed to create profile", "error");
+                showToast("Failed to register. Check database rules.", "error");
                 btn.disabled = false;
-                btn.innerText = "Complete Setup";
+                btn.innerText = "Register Account";
             }
         });
 
         // --- Core App Initialization ---
         function startApp() {
-            document.getElementById('app').classList.remove('hidden');
+            showScreen('app');
+            document.getElementById('current-date-display').innerText = new Date().toLocaleDateString('en-GB', {weekday:'long', year:'numeric', month:'long', day:'numeric'});
             document.getElementById('user-name-display').innerText = window.dbStore.profile.name;
             document.getElementById('user-role-display').innerText = window.dbStore.profile.role;
+            document.getElementById('lab-inst-display').innerText = `${window.dbStore.profile.labName} | ${window.dbStore.profile.institution}`;
             
-            document.body.classList.remove('hide-role-Admin', 'hide-role-Guide', 'hide-role-Scholar');
+            document.body.classList.remove('hide-role-PI', 'hide-role-Scholar');
             Object.values(ROLES).forEach(r => {
                 if(window.dbStore.profile.role !== r) document.body.classList.add(`hide-role-${r}`);
             });
 
             setupNavigation();
+            startListeners();
         }
 
         function setupNavigation() {
@@ -456,28 +597,30 @@
             const role = window.dbStore.profile.role;
             
             const links = [
-                { id: 'dashboard', icon: 'layout-dashboard', label: 'Dashboard', roles: [ROLES.ADMIN, ROLES.GUIDE, ROLES.SCHOLAR] },
-                { id: 'inventory', icon: 'flask-round', label: 'Chemical Inventory', roles: [ROLES.ADMIN, ROLES.GUIDE, ROLES.SCHOLAR] },
-                { id: 'usage', icon: 'clipboard-list', label: 'Usage Logs', roles: [ROLES.ADMIN, ROLES.GUIDE, ROLES.SCHOLAR] },
-                { id: 'daily', icon: 'book-open', label: 'Daily Research Log', roles: [ROLES.ADMIN, ROLES.GUIDE, ROLES.SCHOLAR] },
-                { id: 'projects', icon: 'folder-kanban', label: 'Projects', roles: [ROLES.ADMIN, ROLES.GUIDE, ROLES.SCHOLAR] },
-                { id: 'guidedash', icon: 'users', label: 'Guide Dashboard', roles: [ROLES.ADMIN, ROLES.GUIDE] },
-                { id: 'admin', icon: 'settings', label: 'Admin Panel', roles: [ROLES.ADMIN] }
+                { id: 'dashboard', icon: 'layout-dashboard', label: 'Dashboard', roles: [ROLES.PI, ROLES.SCHOLAR] },
+                { id: 'projects', icon: 'folder-kanban', label: 'Projects', roles: [ROLES.PI, ROLES.SCHOLAR] },
+                { id: 'daily', icon: 'book-open', label: 'Daily Logs', roles: [ROLES.PI, ROLES.SCHOLAR] },
+                { id: 'inventory', icon: 'flask-conical', label: 'Chemicals', roles: [ROLES.PI, ROLES.SCHOLAR] },
+                { id: 'instruments', icon: 'microscope', label: 'Instruments', roles: [ROLES.PI, ROLES.SCHOLAR] },
+                { id: 'usage', icon: 'clipboard-list', label: 'Usage Logs', roles: [ROLES.PI, ROLES.SCHOLAR] },
+                { id: 'approvals', icon: 'user-check', label: 'Approvals', roles: [ROLES.PI] }
             ];
 
             let html = '';
             links.forEach(l => {
                 if (l.roles.includes(role)) {
                     html += `
-                        <button onclick="navigate('${l.id}')" id="nav-btn-${l.id}" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors text-slate-400 hover:text-white hover:bg-slate-800">
-                            <i data-lucide="${l.icon}" class="w-5 h-5"></i>
-                            ${l.label}
+                        <button onclick="navigate('${l.id}')" id="nav-btn-${l.id}" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium transition-colors text-slate-400 hover:text-white hover:bg-slate-800">
+                            <div class="flex items-center gap-3">
+                                <i data-lucide="${l.icon}" class="w-5 h-5"></i> ${l.label}
+                            </div>
+                            <span id="badge-${l.id}" class="hidden bg-blue-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold"></span>
                         </button>
                     `;
                 }
             });
             nav.innerHTML = html;
-            lucide.createIcons();
+            if(window.lucide) lucide.createIcons();
             navigate('dashboard');
         }
 
@@ -499,6 +642,42 @@
             renderView();
         };
 
+        // --- Data Listeners ---
+        function startListeners() {
+            if(!window.dbStore.currentUser) return;
+            const collections = ['users', 'chemicals', 'instruments', 'usageLogs', 'dailyLogs', 'projects'];
+            
+            collections.forEach(colName => {
+                const unsubscribe = onSnapshot(getColRef(colName), (snapshot) => {
+                    window.dbStore[colName] = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+                    
+                    // Update badges
+                    if(colName === 'users' && window.dbStore.profile.role === ROLES.PI) {
+                        const pendingCount = window.dbStore.users.filter(u => u.status === 'pending').length;
+                        const badge = document.getElementById('badge-approvals');
+                        if(badge) {
+                            badge.innerText = pendingCount;
+                            pendingCount > 0 ? badge.classList.remove('hidden') : badge.classList.add('hidden');
+                        }
+                    }
+
+                    // Protect against mid-session demotion
+                    if(colName === 'users') {
+                        const myProf = window.dbStore.users.find(p => p.uid === window.dbStore.currentUser.uid);
+                        if(myProf && myProf.status !== window.dbStore.profile.status) {
+                            window.dbStore.profile.status = myProf.status;
+                            handleProfileState();
+                        }
+                    }
+
+                    renderView();
+                }, (error) => {
+                    console.error(`Error fetching ${colName}`, error);
+                });
+                window.dbStore.unsubscribes.push(unsubscribe);
+            });
+        }
+
         // --- View Rendering Engine ---
         function renderView() {
             const container = document.getElementById('view-container');
@@ -507,91 +686,315 @@
             let html = '';
             switch(viewId) {
                 case 'dashboard': html = generateDashboardHTML(); break;
-                case 'inventory': html = generateInventoryHTML(); break;
-                case 'usage': html = generateUsageHTML(); break;
-                case 'daily': html = generateDailyLogsHTML(); break;
+                case 'approvals': html = generateApprovalsHTML(); break;
                 case 'projects': html = generateProjectsHTML(); break;
-                case 'guidedash': html = generateGuideDashHTML(); break;
-                case 'admin': html = generateAdminHTML(); break;
+                case 'daily': html = generateDailyLogsHTML(); break;
+                case 'inventory': html = generateInventoryHTML(); break;
+                case 'instruments': html = generateInstrumentsHTML(); break;
+                case 'usage': html = generateUsageHTML(); break;
             }
             container.innerHTML = html;
-            lucide.createIcons();
+            if(window.lucide) lucide.createIcons();
         }
 
         // --- 1. DASHBOARD ---
         function generateDashboardHTML() {
-            const { chemicals, usageLogs, dailyLogs, projects } = window.dbStore;
-            const lowStock = chemicals.filter(c => c.quantity <= c.lowStockThreshold);
-            const recentLogs = [...dailyLogs].sort((a,b) => new Date(b.date) - new Date(a.date)).slice(0, 3);
+            const { profile, projects, dailyLogs, chemicals, instruments, users } = window.dbStore;
+            const isPI = profile.role === ROLES.PI;
+            
+            // Logic filters based on role
+            const myProjects = isPI ? projects : projects.filter(p => (p.members || []).includes(profile.uid));
+            const myLogs = isPI ? dailyLogs : dailyLogs.filter(l => l.userId === profile.uid);
+            
+            const lowStock = chemicals.filter(c => c.quantity <= 10); // Simple threshold
+            const pendingScholars = users.filter(u => u.status === 'pending');
+            
+            // Instruments needing service
+            const dueInst = instruments.filter(i => {
+                if(i.condition === 'Not OK') return true;
+                if(!i.serviceDate) return false;
+                const svDate = new Date(i.serviceDate);
+                const today = new Date();
+                const diffTime = svDate - today;
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                return diffDays <= 30; // Due in next 30 days or past
+            });
+
+            const recentLogs = [...myLogs].sort((a,b) => new Date(b.date) - new Date(a.date)).slice(0, 3);
             
             return `
-                <h1 class="text-2xl font-bold text-slate-800 mb-6">Overview</h1>
+                <h1 class="text-2xl font-bold text-slate-800 mb-6">Dashboard Overview</h1>
                 
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
                     <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4">
-                        <div class="p-3 bg-blue-100 text-blue-600 rounded-lg"><i data-lucide="flask-round"></i></div>
-                        <div><p class="text-sm text-slate-500 font-medium">Total Chemicals</p><p class="text-2xl font-bold text-slate-800">${chemicals.length}</p></div>
-                    </div>
-                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4">
-                        <div class="p-3 bg-red-100 text-red-600 rounded-lg"><i data-lucide="alert-triangle"></i></div>
-                        <div><p class="text-sm text-slate-500 font-medium">Low Stock</p><p class="text-2xl font-bold text-slate-800">${lowStock.length}</p></div>
+                        <div class="p-3 bg-indigo-100 text-indigo-600 rounded-lg"><i data-lucide="folder"></i></div>
+                        <div><p class="text-sm text-slate-500 font-medium">${isPI?'Total Projects':'My Projects'}</p><p class="text-2xl font-bold text-slate-800">${myProjects.length}</p></div>
                     </div>
                     <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4">
                         <div class="p-3 bg-emerald-100 text-emerald-600 rounded-lg"><i data-lucide="book-open"></i></div>
-                        <div><p class="text-sm text-slate-500 font-medium">Daily Logs</p><p class="text-2xl font-bold text-slate-800">${dailyLogs.length}</p></div>
+                        <div><p class="text-sm text-slate-500 font-medium">${isPI?'Total Logs':'My Logs'}</p><p class="text-2xl font-bold text-slate-800">${myLogs.length}</p></div>
                     </div>
-                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4">
-                        <div class="p-3 bg-indigo-100 text-indigo-600 rounded-lg"><i data-lucide="folder-kanban"></i></div>
-                        <div><p class="text-sm text-slate-500 font-medium">Active Projects</p><p class="text-2xl font-bold text-slate-800">${projects.length}</p></div>
+                    ${isPI ? `
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4 cursor-pointer hover:bg-slate-50 transition-colors" onclick="navigate('approvals')">
+                        <div class="p-3 bg-amber-100 text-amber-600 rounded-lg"><i data-lucide="user-plus"></i></div>
+                        <div><p class="text-sm text-slate-500 font-medium">Pending Approvals</p><p class="text-2xl font-bold text-slate-800">${pendingScholars.length}</p></div>
+                    </div>
+                    ` : ''}
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4 cursor-pointer hover:bg-slate-50 transition-colors" onclick="navigate('instruments')">
+                        <div class="p-3 bg-red-100 text-red-600 rounded-lg"><i data-lucide="alert-triangle"></i></div>
+                        <div><p class="text-sm text-slate-500 font-medium">Service Due / Not OK</p><p class="text-2xl font-bold text-slate-800">${dueInst.length}</p></div>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <div class="bg-white rounded-xl shadow-sm border border-slate-100 p-5">
                         <div class="flex justify-between items-center mb-4">
-                            <h2 class="text-lg font-bold text-slate-800">Needs Attention (Low Stock)</h2>
-                            <button onclick="navigate('inventory')" class="text-sm text-blue-600 hover:underline">View All</button>
+                            <h2 class="text-lg font-bold text-slate-800">Recent Logs</h2>
+                            <button onclick="navigate('daily')" class="text-sm text-blue-600 hover:underline">View All</button>
                         </div>
-                        <div class="space-y-3">
-                            ${lowStock.length === 0 ? '<p class="text-sm text-slate-500">Inventory looks good.</p>' : 
-                                lowStock.map(c => `
-                                    <div class="flex justify-between items-center p-3 bg-red-50 rounded-lg">
-                                        <div class="font-medium text-slate-800">${c.name}</div>
-                                        <div class="text-sm text-red-600 font-bold">${c.quantity} ${c.unit} <span class="text-xs font-normal">(Threshold: ${c.lowStockThreshold})</span></div>
+                        <div class="space-y-4">
+                            ${recentLogs.length === 0 ? '<p class="text-sm text-slate-500">No recent activity.</p>' : 
+                                recentLogs.map(log => `
+                                    <div class="border-l-2 border-blue-500 pl-3">
+                                        <p class="text-xs text-slate-500 mb-1">${formatDate(log.date)} • <span class="font-medium text-slate-700">${log.userName}</span></p>
+                                        <p class="text-xs font-bold text-indigo-600 mb-1">${log.projectName}</p>
+                                        <p class="text-sm text-slate-800 line-clamp-2">${log.workDone}</p>
                                     </div>
                                 `).join('')}
                         </div>
                     </div>
 
-                    <div class="bg-white rounded-xl shadow-sm border border-slate-100 p-5">
-                        <div class="flex justify-between items-center mb-4">
-                            <h2 class="text-lg font-bold text-slate-800">Recent Lab Activity</h2>
-                            <button onclick="navigate('daily')" class="text-sm text-blue-600 hover:underline">View Logs</button>
-                        </div>
-                        <div class="space-y-4">
-                            ${recentLogs.length === 0 ? '<p class="text-sm text-slate-500">No activity yet.</p>' : 
-                                recentLogs.map(log => `
-                                    <div class="border-l-2 border-blue-500 pl-3">
-                                        <p class="text-xs text-slate-500 mb-1">${formatDate(log.date)} • <span class="font-medium">${log.userName}</span></p>
-                                        <p class="text-sm text-slate-800 line-clamp-2">${log.workDone}</p>
+                    <div class="space-y-6">
+                        ${dueInst.length > 0 ? `
+                        <div class="bg-red-50 rounded-xl shadow-sm border border-red-100 p-5">
+                            <div class="flex justify-between items-center mb-3">
+                                <h2 class="text-lg font-bold text-red-800 flex items-center gap-2"><i data-lucide="wrench" class="w-5 h-5"></i> Instruments Attention</h2>
+                            </div>
+                            <div class="space-y-2">
+                                ${dueInst.slice(0,3).map(i => `
+                                    <div class="bg-white p-2 rounded border border-red-200 text-sm flex justify-between">
+                                        <span class="font-bold text-slate-800">${i.name}</span>
+                                        <span class="text-red-600 font-medium">${i.condition === 'Not OK' ? 'Faulty' : 'Service Due'}</span>
                                     </div>
                                 `).join('')}
+                            </div>
+                        </div>
+                        ` : ''}
+
+                        <div class="bg-white rounded-xl shadow-sm border border-slate-100 p-5">
+                            <div class="flex justify-between items-center mb-4">
+                                <h2 class="text-lg font-bold text-slate-800">Low Stock Chemicals</h2>
+                                <button onclick="navigate('inventory')" class="text-sm text-blue-600 hover:underline">Inventory</button>
+                            </div>
+                            <div class="space-y-2">
+                                ${lowStock.length === 0 ? '<p class="text-sm text-slate-500">Inventory looks good.</p>' : 
+                                    lowStock.slice(0,5).map(c => `
+                                        <div class="flex justify-between items-center p-2 bg-slate-50 rounded border border-slate-100">
+                                            <div class="font-medium text-sm text-slate-800">${c.name}</div>
+                                            <div class="text-sm text-red-600 font-bold">${c.quantity} ${c.unit}</div>
+                                        </div>
+                                    `).join('')}
+                            </div>
                         </div>
                     </div>
                 </div>
             `;
         }
 
-        // --- 2. INVENTORY ---
+        // --- 2. APPROVALS (PI Only) ---
+        function generateApprovalsHTML() {
+            const { users } = window.dbStore;
+            const pendingUsers = users.filter(u => u.status === 'pending');
+            
+            let rows = pendingUsers.map(u => `
+                <tr class="border-b border-slate-100 bg-white hover:bg-slate-50">
+                    <td class="py-4 px-4 font-medium text-slate-800">${u.name}</td>
+                    <td class="py-4 px-4 text-sm text-slate-600">${u.institution}</td>
+                    <td class="py-4 px-4 text-sm font-medium text-blue-600">${u.guideName}</td>
+                    <td class="py-4 px-4 text-sm text-slate-500">${formatDateShort(u.createdAt)}</td>
+                    <td class="py-4 px-4 text-right">
+                        <div class="flex justify-end gap-2">
+                            <button onclick="handleApproval('${u.uid}', 'approved')" class="bg-emerald-100 text-emerald-700 hover:bg-emerald-200 px-3 py-1.5 rounded-lg text-sm font-bold flex items-center gap-1 transition-colors">
+                                <i data-lucide="check" class="w-4 h-4"></i> Approve
+                            </button>
+                            <button onclick="handleApproval('${u.uid}', 'rejected')" class="bg-red-100 text-red-700 hover:bg-red-200 px-3 py-1.5 rounded-lg text-sm font-bold flex items-center gap-1 transition-colors">
+                                <i data-lucide="x" class="w-4 h-4"></i> Reject
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+
+            return `
+                <div class="flex justify-between items-center mb-6">
+                    <h1 class="text-2xl font-bold text-slate-800">Pending Scholar Approvals</h1>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+                    <table class="w-full text-left border-collapse min-w-[700px]">
+                        <thead>
+                            <tr class="bg-slate-50 text-slate-500 text-xs uppercase tracking-wider border-b border-slate-200">
+                                <th class="py-3 px-4 font-bold">Scholar Name</th>
+                                <th class="py-3 px-4 font-bold">Institution</th>
+                                <th class="py-3 px-4 font-bold">Requested Guide</th>
+                                <th class="py-3 px-4 font-bold">Registered Date</th>
+                                <th class="py-3 px-4 font-bold text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>${rows || '<tr><td colspan="5" class="py-8 text-center text-slate-500 font-medium">No pending requests found.</td></tr>'}</tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        window.handleApproval = async (uid, status) => {
+            const actionText = status === 'approved' ? 'approve' : 'reject';
+            openConfirm(`${actionText.charAt(0).toUpperCase() + actionText.slice(1)} Scholar`, `Are you sure you want to ${actionText} this scholar?`, async () => {
+                try {
+                    await updateDoc(getDocRef('users', uid), { status: status });
+                    showToast(`Scholar ${status} successfully.`);
+                } catch(e) {
+                    console.error(e);
+                    showToast(`Error updating status`, "error");
+                }
+            });
+        };
+
+        // --- 3. PROJECTS ---
+        function generateProjectsHTML() {
+            const { projects, users, profile } = window.dbStore;
+            const isPI = profile.role === ROLES.PI;
+            
+            // Scholars only see projects they are assigned to
+            const visibleProjects = isPI ? projects : projects.filter(p => (p.members || []).includes(profile.uid));
+
+            let cards = visibleProjects.map(p => {
+                const assignedNames = (p.members || []).map(uid => {
+                    const prof = users.find(pr => pr.uid === uid);
+                    return prof ? prof.name : 'Unknown';
+                });
+                let progressColor = p.progress < 30 ? 'bg-red-500' : (p.progress < 70 ? 'bg-yellow-500' : 'bg-emerald-500');
+
+                return `
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 flex flex-col h-full hover:shadow-md transition-shadow">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="font-bold text-lg text-slate-800">${p.title}</h3>
+                        ${isPI ? `
+                        <div class="flex gap-1">
+                            <button onclick='editProject(${JSON.stringify(p).replace(/'/g, "&#39;")})' class="text-slate-400 hover:text-blue-500 p-1 bg-slate-50 rounded"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
+                            <button onclick="deleteDocHandler('projects', '${p.id}', 'project')" class="text-slate-400 hover:text-red-500 p-1 bg-slate-50 rounded"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                        </div>
+                        ` : ''}
+                    </div>
+                    <div class="mb-4 mt-2">
+                        <div class="flex justify-between text-xs mb-1 font-bold text-slate-500 uppercase"><span>Progress</span><span>${p.progress}%</span></div>
+                        <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                            <div class="${progressColor} h-2 rounded-full transition-all duration-500" style="width: ${p.progress}%"></div>
+                        </div>
+                    </div>
+                    <div class="flex-1 text-sm text-slate-600 mb-4 bg-slate-50 p-3 rounded-lg border border-slate-100 whitespace-pre-wrap">${p.description || 'No description provided.'}</div>
+                    
+                    <div>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Assigned Scholars</p>
+                        <div class="flex flex-wrap gap-1.5">
+                            ${assignedNames.length ? assignedNames.map(name => `<span class="px-2 py-1 bg-indigo-50 text-indigo-700 text-xs rounded-md font-medium border border-indigo-100">${name}</span>`).join('') : '<span class="text-xs text-slate-400 italic">None assigned</span>'}
+                        </div>
+                    </div>
+                </div>
+            `}).join('');
+
+            return `
+                <div class="flex justify-between items-center mb-6">
+                    <h1 class="text-2xl font-bold text-slate-800">${isPI ? 'All Lab Projects' : 'My Assigned Projects'}</h1>
+                    ${isPI ? `
+                    <button onclick="openProjectModal()" class="bg-indigo-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-indigo-700 transition-colors flex items-center gap-2 shadow-sm">
+                        <i data-lucide="folder-plus" class="w-4 h-4"></i> New Project
+                    </button>
+                    ` : ''}
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    ${cards || '<p class="text-slate-500 col-span-full">No projects available.</p>'}
+                </div>
+            `;
+        }
+
+        // --- 4. DAILY LOGS ---
+        function generateDailyLogsHTML() {
+            const { dailyLogs, profile, projects } = window.dbStore;
+            const isPI = profile.role === ROLES.PI;
+            
+            let visibleLogs = isPI ? dailyLogs : dailyLogs.filter(log => log.userId === profile.uid);
+            const sorted = [...visibleLogs].sort((a,b) => new Date(b.date) - new Date(a.date));
+
+            let cards = sorted.map(log => {
+                const isAuthor = log.userId === profile.uid;
+                const canDelete = isAuthor || isPI;
+                
+                return `
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 relative hover:border-blue-200 transition-colors">
+                    <div class="flex justify-between items-start mb-3 border-b border-slate-50 pb-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center font-bold text-lg">${log.userName.charAt(0)}</div>
+                            <div>
+                                <h3 class="font-bold text-slate-800 leading-tight">${log.userName}</h3>
+                                <div class="flex items-center gap-2 text-xs text-slate-500 mt-0.5">
+                                    <i data-lucide="clock" class="w-3 h-3"></i> ${formatDate(log.date)}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex gap-1">
+                            ${isAuthor ? `<button onclick='editDailyLog(${JSON.stringify(log).replace(/'/g, "&#39;")})' class="text-slate-400 hover:text-blue-600 bg-slate-50 p-1.5 rounded"><i data-lucide="edit" class="w-4 h-4"></i></button>` : ''}
+                            ${canDelete ? `<button onclick="deleteDocHandler('dailyLogs', '${log.id}', 'research log')" class="text-slate-400 hover:text-red-600 bg-slate-50 p-1.5 rounded"><i data-lucide="trash-2" class="w-4 h-4"></i></button>` : ''}
+                        </div>
+                    </div>
+                    
+                    <div class="inline-flex items-center gap-1.5 bg-indigo-50 text-indigo-700 px-2.5 py-1 rounded text-xs font-bold mb-4 border border-indigo-100">
+                        <i data-lucide="folder" class="w-3 h-3"></i> ${log.projectName}
+                    </div>
+
+                    <div class="space-y-4 text-sm">
+                        <div>
+                            <strong class="text-slate-800 text-xs uppercase tracking-wider mb-1 block">Work Done</strong>
+                            <p class="text-slate-600 bg-slate-50/50 p-3 rounded-lg border border-slate-100 whitespace-pre-wrap leading-relaxed">${log.workDone}</p>
+                        </div>
+                        <div>
+                            <strong class="text-slate-800 text-xs uppercase tracking-wider mb-1 block">Results</strong>
+                            <p class="text-slate-600 bg-slate-50/50 p-3 rounded-lg border border-slate-100 whitespace-pre-wrap leading-relaxed">${log.result}</p>
+                        </div>
+                        ${log.issues ? `
+                        <div>
+                            <strong class="text-red-700 text-xs uppercase tracking-wider mb-1 block">Issues Faced</strong>
+                            <p class="text-red-700 bg-red-50 p-3 rounded-lg border border-red-100 whitespace-pre-wrap leading-relaxed">${log.issues}</p>
+                        </div>` : ''}
+                    </div>
+                </div>
+            `}).join('');
+
+            // Only allow logging if user has projects assigned
+            const assignedProjects = projects.filter(p => (p.members || []).includes(profile.uid));
+            const canLog = assignedProjects.length > 0;
+
+            return `
+                <div class="flex justify-between items-center mb-6">
+                    <h1 class="text-2xl font-bold text-slate-800">${isPI ? 'Lab Research Notebook' : 'My Research Notebook'}</h1>
+                    <button onclick="${canLog ? 'openDailyLogModal()' : 'showToast(\'You must be assigned to a project to add a log.\', \'error\')'}" class="bg-emerald-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-emerald-700 transition-colors flex items-center gap-2 shadow-sm ${!canLog ? 'opacity-50 cursor-not-allowed' : ''}">
+                        <i data-lucide="pen-tool" class="w-4 h-4"></i> Add Log
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    ${cards || '<div class="col-span-full bg-white p-8 text-center rounded-xl border border-slate-100"><p class="text-slate-500">No daily logs found.</p></div>'}
+                </div>
+            `;
+        }
+
+        // --- 5. CHEMICAL INVENTORY ---
         function generateInventoryHTML() {
-            const { chemicals, profile } = window.dbStore;
-            const canEdit = profile.role === ROLES.ADMIN || profile.role === ROLES.GUIDE;
+            const { chemicals } = window.dbStore;
             const sorted = [...chemicals].sort((a,b) => a.name.localeCompare(b.name));
 
             let rows = sorted.map(c => {
-                const isLow = c.quantity <= c.lowStockThreshold;
+                const isLow = c.quantity <= 10;
                 return `
-                <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
+                <tr class="border-b border-slate-100 hover:bg-slate-50 bg-white transition-colors">
                     <td class="py-3 px-4">
                         <div class="font-medium text-slate-800 flex items-center gap-2">
                             ${c.name}
@@ -599,290 +1002,134 @@
                         </div>
                     </td>
                     <td class="py-3 px-4 font-mono text-sm ${isLow ? 'text-red-600 font-bold' : 'text-slate-600'}">${c.quantity} ${c.unit}</td>
-                    <td class="py-3 px-4 text-sm text-slate-500">${formatDateShort(c.lastUpdated)}</td>
                     <td class="py-3 px-4 text-right">
-                        ${canEdit ? `
-                            <button onclick='editChemical(${JSON.stringify(c).replace(/'/g, "&#39;")})' class="text-blue-500 hover:bg-blue-50 p-1.5 rounded transition-colors" title="Edit"><i data-lucide="edit-2" class="w-4 h-4"></i></button>
-                            <button onclick="deleteDocHandler('chemicals', '${c.id}', 'chemical')" class="text-red-500 hover:bg-red-50 p-1.5 rounded transition-colors ml-1" title="Delete"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-                        ` : '<span class="text-xs text-slate-400">View Only</span>'}
+                        <button onclick='editChemical(${JSON.stringify(c).replace(/'/g, "&#39;")})' class="text-blue-500 hover:bg-blue-100 p-1.5 rounded transition-colors"><i data-lucide="edit-2" class="w-4 h-4"></i></button>
+                        <button onclick="deleteDocHandler('chemicals', '${c.id}', 'chemical')" class="text-red-500 hover:bg-red-100 p-1.5 rounded transition-colors ml-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                     </td>
                 </tr>
                 `;
             }).join('');
 
             return `
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                <div class="flex justify-between items-center mb-6">
                     <h1 class="text-2xl font-bold text-slate-800">Chemical Inventory</h1>
                     <div class="flex gap-2">
-                        <button onclick="openUsageModal()" class="bg-purple-100 text-purple-700 px-4 py-2 rounded-lg font-medium hover:bg-purple-200 transition-colors flex items-center gap-2">
-                            <i data-lucide="flask-conical" class="w-4 h-4"></i> Log Usage
+                        <button onclick="openChemicalModal()" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center gap-2 shadow-sm">
+                            <i data-lucide="plus" class="w-4 h-4"></i> Add Chemical
                         </button>
-                        ${canEdit ? `
-                        <button onclick="openChemicalModal()" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center gap-2">
-                            <i data-lucide="plus" class="w-4 h-4"></i> Add Item
-                        </button>
-                        ` : ''}
                     </div>
                 </div>
-                <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-x-auto">
-                    <table class="w-full text-left border-collapse min-w-[600px]">
+                <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+                    <table class="w-full text-left border-collapse min-w-[500px]">
                         <thead>
-                            <tr class="bg-slate-50 text-slate-500 text-sm uppercase tracking-wider border-b border-slate-200">
-                                <th class="py-3 px-4 font-medium">Chemical Name</th>
-                                <th class="py-3 px-4 font-medium">Quantity</th>
-                                <th class="py-3 px-4 font-medium">Last Updated</th>
-                                <th class="py-3 px-4 font-medium text-right">Actions</th>
+                            <tr class="bg-slate-50 text-slate-500 text-xs uppercase tracking-wider border-b border-slate-200">
+                                <th class="py-3 px-4 font-bold">Chemical Name</th>
+                                <th class="py-3 px-4 font-bold">Available Qty</th>
+                                <th class="py-3 px-4 font-bold text-right">Manage</th>
                             </tr>
                         </thead>
-                        <tbody>${rows || '<tr><td colspan="4" class="py-8 text-center text-slate-500">No chemicals found.</td></tr>'}</tbody>
+                        <tbody>${rows || '<tr><td colspan="3" class="py-8 text-center text-slate-500 font-medium">No chemicals found.</td></tr>'}</tbody>
                     </table>
                 </div>
             `;
         }
 
-        // --- 3. USAGE LOGS ---
+        // --- 6. INSTRUMENT INVENTORY ---
+        function generateInstrumentsHTML() {
+            const { instruments } = window.dbStore;
+            const sorted = [...instruments].sort((a,b) => a.name.localeCompare(b.name));
+
+            let rows = sorted.map(i => {
+                const isNotOk = i.condition === 'Not OK';
+                const svDate = new Date(i.serviceDate);
+                const isDue = svDate <= new Date(new Date().setDate(new Date().getDate() + 30));
+                
+                let statusBadge = '';
+                if (isNotOk) statusBadge = '<span class="bg-red-100 text-red-700 text-xs px-2 py-1 rounded font-bold">Faulty</span>';
+                else if (isDue) statusBadge = '<span class="bg-amber-100 text-amber-700 text-xs px-2 py-1 rounded font-bold">Service Due</span>';
+                else statusBadge = '<span class="bg-emerald-100 text-emerald-700 text-xs px-2 py-1 rounded font-bold">OK</span>';
+
+                return `
+                <tr class="border-b border-slate-100 hover:bg-slate-50 bg-white transition-colors">
+                    <td class="py-3 px-4">
+                        <div class="font-bold text-slate-800">${i.name}</div>
+                        <div class="text-xs text-slate-500">Model: ${i.modelNumber}</div>
+                    </td>
+                    <td class="py-3 px-4 text-sm font-medium ${i.amc === 'Yes' ? 'text-emerald-600' : 'text-slate-400'}">${i.amc}</td>
+                    <td class="py-3 px-4 text-sm text-slate-600">${formatDateShort(i.serviceDate)}</td>
+                    <td class="py-3 px-4">${statusBadge}</td>
+                    <td class="py-3 px-4 text-right">
+                        <button onclick='editInstrument(${JSON.stringify(i).replace(/'/g, "&#39;")})' class="text-blue-500 hover:bg-blue-100 p-1.5 rounded transition-colors"><i data-lucide="edit-2" class="w-4 h-4"></i></button>
+                        <button onclick="deleteDocHandler('instruments', '${c.id}', 'instrument')" class="text-red-500 hover:bg-red-100 p-1.5 rounded transition-colors ml-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                    </td>
+                </tr>
+                `;
+            }).join('');
+
+            return `
+                <div class="flex justify-between items-center mb-6">
+                    <h1 class="text-2xl font-bold text-slate-800">Instrument Inventory</h1>
+                    <button onclick="openInstrumentModal()" class="bg-slate-800 text-white px-4 py-2 rounded-lg font-medium hover:bg-slate-700 transition-colors flex items-center gap-2 shadow-sm">
+                        <i data-lucide="plus" class="w-4 h-4"></i> Add Instrument
+                    </button>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+                    <table class="w-full text-left border-collapse min-w-[700px]">
+                        <thead>
+                            <tr class="bg-slate-50 text-slate-500 text-xs uppercase tracking-wider border-b border-slate-200">
+                                <th class="py-3 px-4 font-bold">Instrument Details</th>
+                                <th class="py-3 px-4 font-bold">AMC</th>
+                                <th class="py-3 px-4 font-bold">Service Date</th>
+                                <th class="py-3 px-4 font-bold">Condition</th>
+                                <th class="py-3 px-4 font-bold text-right">Manage</th>
+                            </tr>
+                        </thead>
+                        <tbody>${rows || '<tr><td colspan="5" class="py-8 text-center text-slate-500 font-medium">No instruments found.</td></tr>'}</tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        // --- 7. USAGE LOGS ---
         function generateUsageHTML() {
             const { usageLogs } = window.dbStore;
             const sorted = [...usageLogs].sort((a,b) => new Date(b.date) - new Date(a.date));
 
             let rows = sorted.map(log => `
-                <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-                    <td class="py-3 px-4 text-sm text-slate-600">${formatDate(log.date)}</td>
-                    <td class="py-3 px-4 font-medium text-slate-800">${log.chemicalName}</td>
-                    <td class="py-3 px-4 font-mono text-sm text-purple-600 font-medium">${log.quantityUsed}</td>
-                    <td class="py-3 px-4 text-sm text-slate-800">${log.purpose}</td>
-                    <td class="py-3 px-4 text-sm text-slate-600">
+                <tr class="border-b border-slate-100 hover:bg-slate-50 bg-white">
+                    <td class="py-3 px-4 text-xs text-slate-500 font-medium whitespace-nowrap">${formatDate(log.date)}</td>
+                    <td class="py-3 px-4">
                         <div class="flex items-center gap-2">
-                            <div class="w-6 h-6 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-xs font-bold">${log.userName.charAt(0)}</div>
-                            ${log.userName}
+                            <div class="w-6 h-6 bg-slate-200 text-slate-700 rounded-full flex items-center justify-center text-[10px] font-bold">${log.userName.charAt(0)}</div>
+                            <span class="text-sm font-bold text-slate-800">${log.userName}</span>
                         </div>
                     </td>
+                    <td class="py-3 px-4 font-bold text-slate-800">${log.chemicalName}</td>
+                    <td class="py-3 px-4 font-mono text-sm text-purple-600 font-bold bg-purple-50 rounded">${log.quantityUsed}</td>
+                    <td class="py-3 px-4 text-sm text-slate-600">${log.purpose}</td>
                 </tr>
             `).join('');
 
             return `
                 <div class="flex justify-between items-center mb-6">
-                    <h1 class="text-2xl font-bold text-slate-800">Usage History</h1>
+                    <h1 class="text-2xl font-bold text-slate-800">Chemical Usage Logs</h1>
                     <button onclick="openUsageModal()" class="bg-purple-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-purple-700 transition-colors flex items-center gap-2 shadow-sm">
-                        <i data-lucide="plus" class="w-4 h-4"></i> Log Usage
+                        <i data-lucide="flask-round" class="w-4 h-4"></i> Deduct Chemical
                     </button>
                 </div>
-                <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-x-auto">
-                    <table class="w-full text-left border-collapse min-w-[700px]">
+                <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden overflow-x-auto">
+                    <table class="w-full text-left border-collapse min-w-[800px]">
                         <thead>
-                            <tr class="bg-slate-50 text-slate-500 text-sm uppercase tracking-wider border-b border-slate-200">
-                                <th class="py-3 px-4 font-medium">Date & Time</th>
-                                <th class="py-3 px-4 font-medium">Chemical</th>
-                                <th class="py-3 px-4 font-medium">Qty Used</th>
-                                <th class="py-3 px-4 font-medium">Purpose</th>
-                                <th class="py-3 px-4 font-medium">User</th>
+                            <tr class="bg-slate-50 text-slate-500 text-xs uppercase tracking-wider border-b border-slate-200">
+                                <th class="py-3 px-4 font-bold">Timestamp</th>
+                                <th class="py-3 px-4 font-bold">Scholar</th>
+                                <th class="py-3 px-4 font-bold">Chemical</th>
+                                <th class="py-3 px-4 font-bold">Qty</th>
+                                <th class="py-3 px-4 font-bold">Purpose / Experiment</th>
                             </tr>
                         </thead>
-                        <tbody>${rows || '<tr><td colspan="5" class="py-8 text-center text-slate-500">No usage logs found.</td></tr>'}</tbody>
+                        <tbody>${rows || '<tr><td colspan="5" class="py-8 text-center text-slate-500 font-medium">No usage recorded.</td></tr>'}</tbody>
                     </table>
-                </div>
-            `;
-        }
-
-        // --- 4. DAILY RESEARCH LOGS ---
-        function generateDailyLogsHTML() {
-            const { dailyLogs, profile, currentUser } = window.dbStore;
-            let visibleLogs = dailyLogs;
-            if (profile.role === ROLES.SCHOLAR) {
-                visibleLogs = dailyLogs.filter(log => log.userId === currentUser.uid);
-            }
-            const sorted = [...visibleLogs].sort((a,b) => new Date(b.date) - new Date(a.date));
-
-            let cards = sorted.map(log => {
-                const isAuthor = log.userId === currentUser.uid;
-                const canDelete = isAuthor || profile.role === ROLES.ADMIN;
-                
-                return `
-                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 relative">
-                    <div class="flex justify-between items-start mb-3">
-                        <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center font-bold">${log.userName.charAt(0)}</div>
-                            <div>
-                                <h3 class="font-bold text-slate-800">${log.userName}</h3>
-                                <p class="text-xs text-slate-500">${formatDate(log.date)}</p>
-                            </div>
-                        </div>
-                        <div class="flex gap-1">
-                            ${isAuthor ? `<button onclick='editDailyLog(${JSON.stringify(log).replace(/'/g, "&#39;")})' class="text-slate-400 hover:text-blue-500 p-1"><i data-lucide="edit" class="w-4 h-4"></i></button>` : ''}
-                            ${canDelete ? `<button onclick="deleteDocHandler('dailyLogs', '${log.id}', 'research log')" class="text-slate-400 hover:text-red-500 p-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>` : ''}
-                        </div>
-                    </div>
-                    <div class="space-y-3 mt-4 text-sm">
-                        <div><strong class="text-slate-700 block mb-1">Work Done:</strong><p class="text-slate-600 bg-slate-50 p-2 rounded border border-slate-100 whitespace-pre-wrap">${log.workDone}</p></div>
-                        <div><strong class="text-slate-700 block mb-1">Results:</strong><p class="text-slate-600 bg-slate-50 p-2 rounded border border-slate-100 whitespace-pre-wrap">${log.result}</p></div>
-                        ${log.issues ? `<div><strong class="text-slate-700 block mb-1 text-red-600">Issues Faced:</strong><p class="text-slate-600 bg-red-50 p-2 rounded border border-red-100 whitespace-pre-wrap">${log.issues}</p></div>` : ''}
-                    </div>
-                </div>
-            `}).join('');
-
-            return `
-                <div class="flex justify-between items-center mb-6">
-                    <h1 class="text-2xl font-bold text-slate-800">${profile.role === ROLES.SCHOLAR ? 'My Research Logs' : 'All Research Logs'}</h1>
-                    <button onclick="openDailyLogModal()" class="bg-emerald-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-emerald-700 transition-colors flex items-center gap-2 shadow-sm">
-                        <i data-lucide="pen-tool" class="w-4 h-4"></i> New Log
-                    </button>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    ${cards || '<p class="text-slate-500 col-span-full">No research logs found.</p>'}
-                </div>
-            `;
-        }
-
-        // --- 5. PROJECTS ---
-        function generateProjectsHTML() {
-            const { projects, profiles, profile } = window.dbStore;
-            const canEdit = profile.role === ROLES.ADMIN || profile.role === ROLES.GUIDE;
-
-            let cards = projects.map(p => {
-                const assignedNames = (p.assignedScholars || []).map(uid => {
-                    const prof = profiles.find(pr => pr.uid === uid);
-                    return prof ? prof.name : 'Unknown';
-                });
-                let progressColor = p.progress < 30 ? 'bg-red-500' : (p.progress < 70 ? 'bg-yellow-500' : 'bg-emerald-500');
-
-                return `
-                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 flex flex-col h-full">
-                    <div class="flex justify-between items-start mb-2">
-                        <h3 class="font-bold text-lg text-slate-800">${p.name}</h3>
-                        ${canEdit ? `
-                        <div class="flex gap-1">
-                            <button onclick='editProject(${JSON.stringify(p).replace(/'/g, "&#39;")})' class="text-slate-400 hover:text-blue-500 p-1"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
-                            <button onclick="deleteDocHandler('projects', '${p.id}', 'project')" class="text-slate-400 hover:text-red-500 p-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-                        </div>
-                        ` : ''}
-                    </div>
-                    <div class="mb-4">
-                        <div class="flex justify-between text-xs mb-1 font-medium"><span class="text-slate-600">Progress</span><span class="text-slate-800">${p.progress}%</span></div>
-                        <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
-                            <div class="${progressColor} h-2 rounded-full transition-all duration-500" style="width: ${p.progress}%"></div>
-                        </div>
-                    </div>
-                    <div class="flex-1 text-sm text-slate-600 mb-4 bg-slate-50 p-3 rounded-lg border border-slate-100 whitespace-pre-wrap">${p.notes || 'No notes available.'}</div>
-                    
-                    <div>
-                        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Assigned Team</p>
-                        <div class="flex flex-wrap gap-2">
-                            ${assignedNames.length ? assignedNames.map(name => `<span class="px-2 py-1 bg-indigo-50 text-indigo-700 text-xs rounded-md font-medium border border-indigo-100">${name}</span>`).join('') : '<span class="text-xs text-slate-400">None assigned</span>'}
-                        </div>
-                    </div>
-                </div>
-            `}).join('');
-
-            return `
-                <div class="flex justify-between items-center mb-6">
-                    <h1 class="text-2xl font-bold text-slate-800">Research Projects</h1>
-                    ${canEdit ? `
-                    <button onclick="openProjectModal()" class="bg-indigo-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-indigo-700 transition-colors flex items-center gap-2 shadow-sm">
-                        <i data-lucide="folder-plus" class="w-4 h-4"></i> New Project
-                    </button>
-                    ` : ''}
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    ${cards || '<p class="text-slate-500 col-span-full">No active projects found.</p>'}
-                </div>
-            `;
-        }
-
-        // --- 6. GUIDE DASHBOARD ---
-        function generateGuideDashHTML() {
-            const { profiles, dailyLogs, usageLogs } = window.dbStore;
-            const scholars = profiles.filter(p => p.role === ROLES.SCHOLAR);
-            
-            let scholarRows = scholars.map(s => {
-                const sLogs = dailyLogs.filter(l => l.userId === s.uid);
-                const sUsage = usageLogs.filter(u => u.userId === s.uid);
-                const lastLog = sLogs.length ? Math.max(...sLogs.map(l => new Date(l.date))) : null;
-                const daysInactive = lastLog ? Math.floor((new Date() - new Date(lastLog)) / (1000 * 60 * 60 * 24)) : 'N/A';
-                
-                let statusBadge = daysInactive === 'N/A' ? '<span class="bg-slate-100 text-slate-600 px-2 py-1 rounded text-xs">No Data</span>' : 
-                                  (daysInactive > 3 ? '<span class="bg-red-100 text-red-700 px-2 py-1 rounded text-xs font-bold">Inactive</span>' : '<span class="bg-emerald-100 text-emerald-700 px-2 py-1 rounded text-xs font-bold">Active</span>');
-
-                return `
-                <tr class="border-b border-slate-100">
-                    <td class="py-3 px-4 font-medium text-slate-800">${s.name}</td>
-                    <td class="py-3 px-4 text-sm text-slate-600">${sLogs.length} logs</td>
-                    <td class="py-3 px-4 text-sm text-slate-600">${sUsage.length} uses</td>
-                    <td class="py-3 px-4 text-sm text-slate-600">${lastLog ? formatDateShort(lastLog) : 'Never'}</td>
-                    <td class="py-3 px-4">${statusBadge}</td>
-                </tr>
-                `;
-            }).join('');
-
-            return `
-                <h1 class="text-2xl font-bold text-slate-800 mb-6">Guide Overview</h1>
-                <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden mb-6">
-                    <div class="p-4 border-b border-slate-100 bg-slate-50">
-                        <h2 class="font-bold text-slate-800">Scholar Tracking</h2>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse">
-                            <thead>
-                                <tr class="text-slate-500 text-sm uppercase tracking-wider border-b border-slate-200">
-                                    <th class="py-3 px-4 font-medium">Scholar</th>
-                                    <th class="py-3 px-4 font-medium">Total Logs</th>
-                                    <th class="py-3 px-4 font-medium">Chem Usage</th>
-                                    <th class="py-3 px-4 font-medium">Last Log</th>
-                                    <th class="py-3 px-4 font-medium">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>${scholarRows || '<tr><td colspan="5" class="py-4 text-center text-slate-500">No scholars found.</td></tr>'}</tbody>
-                        </table>
-                    </div>
-                </div>
-            `;
-        }
-
-        // --- 7. ADMIN PANEL ---
-        function generateAdminHTML() {
-            const { profiles } = window.dbStore;
-            
-            let rows = profiles.map(p => `
-                <tr class="border-b border-slate-100">
-                    <td class="py-3 px-4 font-medium text-slate-800">${p.name} <br><span class="text-xs text-slate-500 font-normal">${p.email}</span></td>
-                    <td class="py-3 px-4">
-                        <select onchange="changeRole('${p.uid}', this.value)" class="bg-slate-50 border border-slate-200 text-sm rounded-lg px-2 py-1 outline-none focus:border-blue-500" ${p.uid === window.dbStore.currentUser.uid ? 'disabled' : ''}>
-                            <option value="${ROLES.ADMIN}" ${p.role === ROLES.ADMIN ? 'selected' : ''}>Admin</option>
-                            <option value="${ROLES.GUIDE}" ${p.role === ROLES.GUIDE ? 'selected' : ''}>Guide</option>
-                            <option value="${ROLES.SCHOLAR}" ${p.role === ROLES.SCHOLAR ? 'selected' : ''}>Scholar</option>
-                        </select>
-                    </td>
-                    <td class="py-3 px-4 text-sm text-slate-500">${formatDateShort(p.createdAt)}</td>
-                    <td class="py-3 px-4 text-right">
-                        ${p.uid !== window.dbStore.currentUser.uid ? `<button onclick="deleteDocHandler('profiles', '${p.uid}', 'user profile')" class="text-red-500 hover:bg-red-50 p-1.5 rounded"><i data-lucide="trash" class="w-4 h-4"></i></button>` : '<span class="text-xs text-slate-400">Current User</span>'}
-                    </td>
-                </tr>
-            `).join('');
-
-            return `
-                <div class="flex justify-between items-center mb-6">
-                    <h1 class="text-2xl font-bold text-slate-800">System Administration</h1>
-                    <button onclick="injectDummyData()" class="bg-amber-100 text-amber-700 px-3 py-1.5 rounded text-sm font-bold hover:bg-amber-200 transition-colors flex items-center gap-2">
-                        <i data-lucide="database" class="w-4 h-4"></i> Inject Dummy Data
-                    </button>
-                </div>
-                
-                <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
-                    <div class="p-4 border-b border-slate-100 bg-slate-50">
-                        <h2 class="font-bold text-slate-800">User Management</h2>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse">
-                            <thead>
-                                <tr class="text-slate-500 text-sm uppercase tracking-wider border-b border-slate-200">
-                                    <th class="py-3 px-4 font-medium">User Details</th>
-                                    <th class="py-3 px-4 font-medium">Role</th>
-                                    <th class="py-3 px-4 font-medium">Joined</th>
-                                    <th class="py-3 px-4 font-medium text-right">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>${rows}</tbody>
-                        </table>
-                    </div>
                 </div>
             `;
         }
@@ -891,7 +1138,7 @@
         window.deleteDocHandler = (collectionName, docId, itemName) => {
             openConfirm("Delete Item", `Are you sure you want to delete this ${itemName}?`, async () => {
                 try {
-                    await deleteDoc(collectionName, docId);
+                    await deleteDoc(getDocRef(collectionName, docId));
                     showToast(`${itemName} deleted successfully.`);
                 } catch(e) {
                     console.error(e);
@@ -900,17 +1147,47 @@
             });
         };
 
-        window.changeRole = async (uid, newRole) => {
-            try {
-                await updateDoc('profiles', uid, { role: newRole });
-                showToast(`Role updated to: ${newRole}`);
-            } catch(e) {
-                console.error(e);
-                showToast("Failed to update role", "error");
-            }
+        // --- Modals & Forms ---
+        
+        // Instrument Modal
+        window.openInstrumentModal = () => {
+            document.getElementById('inst-modal-title').innerText = "Add Instrument";
+            document.getElementById('inst-id').value = "";
+            openModal('modal-instrument');
         };
+        window.editInstrument = (inst) => {
+            document.getElementById('inst-modal-title').innerText = "Edit Instrument";
+            document.getElementById('inst-id').value = inst.id;
+            document.getElementById('inst-name').value = inst.name;
+            document.getElementById('inst-model').value = inst.modelNumber;
+            document.getElementById('inst-amc').value = inst.amc;
+            document.getElementById('inst-condition').value = inst.condition;
+            document.getElementById('inst-service').value = inst.serviceDate.split('T')[0];
+            openModal('modal-instrument');
+        };
+        document.getElementById('form-instrument').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('inst-id').value;
+            const data = {
+                name: document.getElementById('inst-name').value,
+                modelNumber: document.getElementById('inst-model').value,
+                amc: document.getElementById('inst-amc').value,
+                condition: document.getElementById('inst-condition').value,
+                serviceDate: document.getElementById('inst-service').value,
+            };
 
-        // --- Modals & Form Submissions ---
+            try {
+                if (id) await updateDoc(getDocRef('instruments', id), data);
+                else await addDoc(getColRef('instruments'), data);
+                closeModal('modal-instrument');
+                showToast(`Instrument ${id ? 'updated' : 'added'} successfully`);
+            } catch (err) {
+                console.error(err);
+                showToast("Error saving instrument", "error");
+            }
+        });
+
+        // Chemical Modal
         window.openChemicalModal = () => {
             document.getElementById('chem-modal-title').innerText = "Add Chemical";
             document.getElementById('chem-id').value = "";
@@ -922,7 +1199,6 @@
             document.getElementById('chem-name').value = chem.name;
             document.getElementById('chem-qty').value = chem.quantity;
             document.getElementById('chem-unit').value = chem.unit;
-            document.getElementById('chem-threshold').value = chem.lowStockThreshold;
             openModal('modal-chemical');
         };
         document.getElementById('form-chemical').addEventListener('submit', async (e) => {
@@ -932,22 +1208,20 @@
                 name: document.getElementById('chem-name').value,
                 quantity: parseFloat(document.getElementById('chem-qty').value),
                 unit: document.getElementById('chem-unit').value,
-                lowStockThreshold: parseFloat(document.getElementById('chem-threshold').value),
                 lastUpdated: new Date().toISOString()
             };
 
             try {
-                if (id) await updateDoc('chemicals', id, data);
-                else await addDoc('chemicals', data);
-                
+                if (id) await updateDoc(getDocRef('chemicals', id), data);
+                else await addDoc(getColRef('chemicals'), data);
                 closeModal('modal-chemical');
                 showToast(`Chemical ${id ? 'updated' : 'added'} successfully`);
             } catch (err) {
-                console.error(err);
                 showToast("Error saving chemical", "error");
             }
         });
 
+        // Usage Modal
         window.openUsageModal = () => {
             const select = document.getElementById('usage-chem');
             select.innerHTML = '<option value="">Select a chemical...</option>' + 
@@ -970,7 +1244,7 @@
             if (qtyUsed > chem.quantity) return showToast(`Insufficient quantity. Max available: ${chem.quantity}`, "error");
 
             try {
-                await addDoc('usageLogs', {
+                await addDoc(getColRef('usageLogs'), {
                     chemicalId: chem.id,
                     chemicalName: chem.name,
                     quantityUsed: qtyUsed + ' ' + chem.unit,
@@ -980,7 +1254,7 @@
                     date: new Date().toISOString()
                 });
                 
-                await updateDoc('chemicals', chemId, {
+                await updateDoc(getDocRef('chemicals', chemId), {
                     quantity: chem.quantity - qtyUsed,
                     lastUpdated: new Date().toISOString()
                 });
@@ -988,28 +1262,40 @@
                 closeModal('modal-usage');
                 showToast("Usage logged and inventory updated");
             } catch (err) {
-                console.error(err);
                 showToast("Error logging usage", "error");
             }
         });
 
+        // Daily Log Modal
         window.openDailyLogModal = () => {
             document.getElementById('log-modal-title').innerText = "Add Daily Log";
             document.getElementById('log-id').value = "";
+            
+            // Populate assigned projects dropdown
+            const projSelect = document.getElementById('log-project');
+            const myProjects = window.dbStore.projects.filter(p => (p.members || []).includes(window.dbStore.profile.uid));
+            projSelect.innerHTML = myProjects.map(p => `<option value="${p.id}">${p.title}</option>`).join('');
+            
             openModal('modal-dailylog');
         };
         window.editDailyLog = (log) => {
+            window.openDailyLogModal(); // Set up dropdown
             document.getElementById('log-modal-title').innerText = "Edit Daily Log";
             document.getElementById('log-id').value = log.id;
+            document.getElementById('log-project').value = log.projectId;
             document.getElementById('log-work').value = log.workDone;
             document.getElementById('log-result').value = log.result;
             document.getElementById('log-issues').value = log.issues || '';
-            openModal('modal-dailylog');
         };
         document.getElementById('form-dailylog').addEventListener('submit', async (e) => {
             e.preventDefault();
             const id = document.getElementById('log-id').value;
+            const projId = document.getElementById('log-project').value;
+            const proj = window.dbStore.projects.find(p => p.id === projId);
+
             const data = {
+                projectId: projId,
+                projectName: proj.title,
                 workDone: document.getElementById('log-work').value,
                 result: document.getElementById('log-result').value,
                 issues: document.getElementById('log-issues').value,
@@ -1020,17 +1306,17 @@
             if(!data.date) delete data.date;
 
             try {
-                if (id) await updateDoc('dailyLogs', id, data);
-                else await addDoc('dailyLogs', data);
+                if (id) await updateDoc(getDocRef('dailyLogs', id), data);
+                else await addDoc(getColRef('dailyLogs'), data);
                 
                 closeModal('modal-dailylog');
                 showToast(`Log ${id ? 'updated' : 'added'} successfully`);
             } catch (err) {
-                console.error(err);
                 showToast("Error saving log", "error");
             }
         });
 
+        // Project Modal
         window.openProjectModal = () => {
             document.getElementById('project-modal-title').innerText = "Create Project";
             document.getElementById('project-id').value = "";
@@ -1038,13 +1324,13 @@
             document.getElementById('prog-val').innerText = "0%";
             
             const scholarsDiv = document.getElementById('project-scholars');
-            const scholars = window.dbStore.profiles.filter(p => p.role === ROLES.SCHOLAR || p.role === ROLES.GUIDE);
+            const scholars = window.dbStore.users.filter(p => p.role === ROLES.SCHOLAR && p.status === 'approved');
             scholarsDiv.innerHTML = scholars.map(s => `
-                <label class="flex items-center gap-2 text-sm p-1 hover:bg-slate-50 cursor-pointer rounded">
+                <label class="flex items-center gap-2 text-sm p-1.5 hover:bg-white cursor-pointer rounded border border-transparent hover:border-slate-200">
                     <input type="checkbox" name="assignees" value="${s.uid}" class="w-4 h-4 text-blue-600 rounded">
-                    ${s.name} <span class="text-xs text-slate-400">(${s.role})</span>
+                    <span class="font-medium">${s.name}</span>
                 </label>
-            `).join('') || '<div class="text-xs text-slate-500 p-1">No users available to assign.</div>';
+            `).join('') || '<div class="text-xs text-slate-500 p-2">No approved scholars available.</div>';
             
             openModal('modal-project');
         };
@@ -1052,14 +1338,14 @@
             openProjectModal();
             document.getElementById('project-modal-title').innerText = "Edit Project";
             document.getElementById('project-id').value = project.id;
-            document.getElementById('project-name').value = project.name;
+            document.getElementById('project-name').value = project.title;
             document.getElementById('project-progress').value = project.progress;
             document.getElementById('prog-val').innerText = project.progress + "%";
-            document.getElementById('project-notes').value = project.notes || '';
+            document.getElementById('project-desc').value = project.description || '';
             
             const checkboxes = document.querySelectorAll('input[name="assignees"]');
             checkboxes.forEach(cb => {
-                if((project.assignedScholars || []).includes(cb.value)) cb.checked = true;
+                if((project.members || []).includes(cb.value)) cb.checked = true;
             });
         };
         document.getElementById('form-project').addEventListener('submit', async (e) => {
@@ -1068,57 +1354,23 @@
             const assigned = Array.from(document.querySelectorAll('input[name="assignees"]:checked')).map(cb => cb.value);
             
             const data = {
-                name: document.getElementById('project-name').value,
+                title: document.getElementById('project-name').value,
                 progress: parseInt(document.getElementById('project-progress').value),
-                notes: document.getElementById('project-notes').value,
-                assignedScholars: assigned,
-                lastUpdated: new Date().toISOString()
+                description: document.getElementById('project-desc').value,
+                members: assigned,
+                createdBy: window.dbStore.currentUser.uid
             };
 
             try {
-                if (id) await updateDoc('projects', id, data);
-                else await addDoc('projects', data);
+                if (id) await updateDoc(getDocRef('projects', id), data);
+                else await addDoc(getColRef('projects'), data);
                 
                 closeModal('modal-project');
                 showToast(`Project ${id ? 'updated' : 'created'} successfully`);
             } catch (err) {
-                console.error(err);
                 showToast("Error saving project", "error");
             }
         });
-
-        window.injectDummyData = async () => {
-            openConfirm("Inject Dummy Data", "This will add sample chemicals, projects, and logs. Proceed?", async () => {
-                showToast("Injecting data... please wait.", "success");
-                
-                const chems = [
-                    { name: 'Sodium Chloride', quantity: 500, unit: 'g', lowStockThreshold: 100, lastUpdated: new Date().toISOString() },
-                    { name: 'Ethanol (95%)', quantity: 2.5, unit: 'L', lowStockThreshold: 0.5, lastUpdated: new Date().toISOString() },
-                    { name: 'Hydrochloric Acid', quantity: 0.2, unit: 'L', lowStockThreshold: 0.5, lastUpdated: new Date().toISOString() },
-                    { name: 'Agarose', quantity: 50, unit: 'g', lowStockThreshold: 100, lastUpdated: new Date().toISOString() },
-                ];
-                
-                const projs = [
-                    { name: 'Polymer Synthesis Alpha', progress: 45, notes: 'Awaiting precursor delivery.', assignedScholars: [window.dbStore.currentUser.uid], lastUpdated: new Date().toISOString() },
-                    { name: 'Cell Culture Analysis', progress: 80, notes: 'Phase 2 complete. Writing manuscript.', assignedScholars: [], lastUpdated: new Date().toISOString() }
-                ];
-
-                const logs = [
-                    { date: new Date(Date.now() - 86400000).toISOString(), workDone: 'Prepared 500ml of 1M NaCl solution.', result: 'Solution clear, stored at room temp.', userId: window.dbStore.currentUser.uid, userName: window.dbStore.profile.name },
-                    { date: new Date().toISOString(), workDone: 'Ran gel electrophoresis on samples A1-A5.', result: 'Expected bands visible. Sample A3 showed degradation.', issues: 'Voltage fluctuated initially.', userId: window.dbStore.currentUser.uid, userName: window.dbStore.profile.name }
-                ];
-
-                try {
-                    for(let c of chems) await addDoc('chemicals', c);
-                    for(let p of projs) await addDoc('projects', p);
-                    for(let l of logs) await addDoc('dailyLogs', l);
-                    showToast("Dummy data injected successfully!");
-                } catch(e) {
-                    console.error(e);
-                    showToast("Error injecting data", "error");
-                }
-            });
-        };
 
         // Bootstrap App
         initAuth();
