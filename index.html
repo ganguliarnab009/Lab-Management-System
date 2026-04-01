@@ -52,11 +52,77 @@
         <p class="text-slate-500 font-medium">Loading LabTrack...</p>
     </div>
 
+    <!-- Landing Screen -->
+    <div id="screen-landing" class="fixed inset-0 z-40 bg-slate-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full text-center my-auto">
+            <div class="w-20 h-20 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
+                <i data-lucide="microscope" class="w-10 h-10"></i>
+            </div>
+            <h1 class="text-3xl font-extrabold text-slate-800 mb-2 tracking-tight">LabTrack</h1>
+            <p class="text-slate-500 mb-8">Academic Research Lab Management</p>
+            
+            <div class="flex flex-col gap-4">
+                <button onclick="showScreen('screen-login')" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition-colors shadow-md flex items-center justify-center gap-2 text-lg">
+                    <i data-lucide="log-in" class="w-5 h-5"></i> Already Registered
+                </button>
+                <div class="relative flex items-center py-2">
+                    <div class="flex-grow border-t border-slate-200"></div>
+                    <span class="flex-shrink-0 mx-4 text-slate-400 text-sm font-medium">OR</span>
+                    <div class="flex-grow border-t border-slate-200"></div>
+                </div>
+                <button onclick="showScreen('screen-auth')" class="w-full bg-white text-blue-600 border-2 border-blue-600 py-3 rounded-xl font-bold hover:bg-blue-50 transition-colors flex items-center justify-center gap-2 text-lg">
+                    <i data-lucide="user-plus" class="w-5 h-5"></i> New User (Register)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Screen -->
+    <div id="screen-login" class="fixed inset-0 z-40 bg-slate-50 flex items-center justify-center p-4 hidden overflow-y-auto">
+        <div class="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full my-auto relative">
+            <button onclick="showScreen('screen-landing')" class="absolute top-4 left-4 text-slate-400 hover:text-slate-700 flex items-center gap-1 text-sm font-medium">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i> Back
+            </button>
+            <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 mt-4">
+                <i data-lucide="log-in" class="w-8 h-8"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-center text-slate-800 mb-6">Welcome Back</h2>
+            
+            <form id="login-form" class="space-y-5">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Full Name</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i data-lucide="user" class="h-5 w-5 text-slate-400"></i>
+                        </div>
+                        <input type="text" id="login-name" required class="w-full pl-10 px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all" placeholder="Enter your registered name">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Password</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i data-lucide="lock" class="h-5 w-5 text-slate-400"></i>
+                        </div>
+                        <input type="password" id="login-pass" required class="w-full pl-10 px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all" placeholder="••••••••">
+                    </div>
+                </div>
+                
+                <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition-colors shadow-md mt-2 text-lg">
+                    Login
+                </button>
+            </form>
+        </div>
+    </div>
+
     <!-- Auth / Registration Screen -->
     <div id="screen-auth" class="fixed inset-0 z-40 bg-slate-50 flex items-center justify-center p-4 hidden overflow-y-auto">
-        <div class="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full my-auto">
-            <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                <i data-lucide="flask-conical" class="w-8 h-8"></i>
+        <div class="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full my-auto relative">
+            <button onclick="showScreen('screen-landing')" class="absolute top-4 left-4 text-slate-400 hover:text-slate-700 flex items-center gap-1 text-sm font-medium">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i> Back
+            </button>
+            <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 mt-4">
+                <i data-lucide="user-plus" class="w-8 h-8"></i>
             </div>
             <h2 class="text-2xl font-bold text-center text-slate-800 mb-2">Create Account</h2>
             <p class="text-slate-500 text-center mb-6 text-sm">Register to access the Lab Management System</p>
@@ -64,7 +130,7 @@
             <form id="profile-form" class="space-y-4">
                 <div>
                     <label class="block text-sm font-medium text-slate-700 mb-1">Full Name</label>
-                    <input type="text" id="reg-name" required class="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                    <input type="text" id="reg-name" required class="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="e.g., Dr. Jane Doe">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-slate-700 mb-1">Role</label>
@@ -89,14 +155,14 @@
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-slate-700 mb-1">Password</label>
-                    <input type="password" id="reg-pass" required class="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="••••••••">
+                    <input type="password" id="reg-pass" required class="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Min 6 characters">
                 </div>
                 
                 <div class="p-3 bg-blue-50 text-blue-800 rounded-lg text-xs mt-2" id="role-info-box">
                     <i data-lucide="info" class="w-4 h-4 inline mr-1 -mt-0.5"></i>
                     Scholars require PI approval before accessing the system.
                 </div>
-                <button type="submit" class="w-full bg-blue-600 text-white py-2.5 rounded-lg font-bold hover:bg-blue-700 transition-colors shadow-sm mt-4">
+                <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition-colors shadow-md mt-4 text-lg">
                     Register Account
                 </button>
             </form>
@@ -367,7 +433,7 @@
     <!-- Firebase Logic Integration -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, doc, setDoc, getDoc, addDoc, updateDoc, deleteDoc, onSnapshot, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -401,6 +467,11 @@
 
         const getColRef = (colName) => collection(db, 'artifacts', appId, 'public', 'data', colName);
         const getDocRef = (colName, docId) => doc(db, 'artifacts', appId, 'public', 'data', colName, docId);
+
+        // Name to Email Converter (For Firebase Auth under the hood)
+        const generatePseudoEmail = (name) => {
+            return name.trim().toLowerCase().replace(/[^a-z0-9]/g, '') + '@labtrack.local';
+        };
 
         // --- Utility Functions ---
         window.showToast = (message, type = 'success') => {
@@ -443,8 +514,9 @@
             if(form) form.reset();
         };
         window.toggleSidebar = () => document.getElementById('sidebar').classList.toggle('-translate-x-full');
+        
         window.showScreen = (screenId) => {
-            ['screen-loading', 'screen-auth', 'screen-pending', 'screen-rejected', 'app'].forEach(id => {
+            ['screen-loading', 'screen-landing', 'screen-login', 'screen-auth', 'screen-pending', 'screen-rejected', 'app'].forEach(id => {
                 document.getElementById(id).classList.add('hidden');
             });
             document.getElementById(screenId).classList.remove('hidden');
@@ -459,23 +531,6 @@
         window.formatDateShort = (isoString) => isoString ? new Date(isoString).toLocaleDateString('en-GB') : 'N/A';
 
         // --- Authentication & Profile Flow ---
-        async function initAuth() {
-            try {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    try {
-                        await signInWithCustomToken(auth, __initial_auth_token);
-                    } catch (tokenError) {
-                        await signInAnonymously(auth);
-                    }
-                } else {
-                    await signInAnonymously(auth);
-                }
-            } catch (error) {
-                console.error("Auth Error:", error);
-                showToast("Auth failed. Check connection.", "error");
-            }
-        }
-
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 window.dbStore.currentUser = user;
@@ -483,18 +538,17 @@
             } else {
                 window.dbStore.currentUser = null;
                 window.dbStore.profile = null;
-                showScreen('screen-auth');
+                showScreen('screen-landing');
             }
         });
 
         window.logoutApp = () => {
             openConfirm("Logout", "Are you sure you want to log out of the system?", async () => {
                 try {
-                    // Clear all listeners before logging out
                     window.dbStore.unsubscribes.forEach(unsub => unsub());
                     window.dbStore.unsubscribes = [];
                     await signOut(auth);
-                    window.location.reload();
+                    showToast("Logged out successfully");
                 } catch(e) {
                     console.error(e);
                     showToast("Failed to logout", "error");
@@ -511,15 +565,22 @@
                     window.dbStore.profile = profileSnap.data();
                     handleProfileState();
                 } else {
-                    showScreen('screen-auth');
+                    if (window.isRegistering) {
+                        // Registration flow is handling the creation
+                    } else {
+                        // Fallback corrupted state
+                        await signOut(auth);
+                        showScreen('screen-landing');
+                    }
                 }
             } catch (e) {
                 console.error("Profile check error", e);
-                showToast("Failed to load profile. Check Firestore rules.", "error");
+                showToast("Failed to load profile. Check connection.", "error");
             }
         }
 
         function handleProfileState() {
+            if(!window.dbStore.profile) return;
             const status = window.dbStore.profile.status;
             if (status === 'pending') {
                 showScreen('screen-pending');
@@ -547,19 +608,52 @@
             lucide.createIcons();
         };
 
-        document.getElementById('profile-form').addEventListener('submit', async (e) => {
+        // Name & Password Login Logic
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = e.target.querySelector('button');
+            const originalText = btn.innerText;
             btn.disabled = true;
-            btn.innerText = "Registering...";
+            btn.innerText = "Logging in...";
+
+            const name = document.getElementById('login-name').value.trim();
+            const pass = document.getElementById('login-pass').value;
+            const email = generatePseudoEmail(name);
 
             try {
-                const role = document.getElementById('reg-role').value;
-                const status = role === ROLES.PI ? 'approved' : 'pending';
+                await signInWithEmailAndPassword(auth, email, pass);
+                // onAuthStateChanged will handle redirection
+                btn.innerText = "Success";
+            } catch (error) {
+                console.error("Login error", error);
+                showToast("Invalid name or password", "error");
+                btn.disabled = false;
+                btn.innerText = originalText;
+            }
+        });
+
+        // Name & Password Registration Logic
+        document.getElementById('profile-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            btn.disabled = true;
+            btn.innerText = "Registering...";
+            
+            window.isRegistering = true; // Prevent checkProfile redirection during setDoc
+
+            const name = document.getElementById('reg-name').value.trim();
+            const pass = document.getElementById('reg-pass').value;
+            const role = document.getElementById('reg-role').value;
+            const email = generatePseudoEmail(name);
+
+            try {
+                // This checks for duplicates natively via Firebase Email uniqueness
+                const userCred = await createUserWithEmailAndPassword(auth, email, pass);
                 
+                const status = role === ROLES.PI ? 'approved' : 'pending';
                 const newProfile = {
-                    uid: window.dbStore.currentUser.uid,
-                    name: document.getElementById('reg-name').value,
+                    uid: userCred.user.uid,
+                    name: name,
                     role: role,
                     labName: document.getElementById('reg-lab').value,
                     institution: document.getElementById('reg-inst').value,
@@ -570,16 +664,20 @@
 
                 await setDoc(getDocRef('users', newProfile.uid), newProfile);
                 window.dbStore.profile = newProfile;
-                handleProfileState();
+                window.isRegistering = false;
                 showToast(`Registration successful!`);
+                handleProfileState();
+
             } catch (error) {
+                window.isRegistering = false;
                 console.error("Setup error", error);
                 
-                // Show specific error messages for easier debugging
-                if (error.code === 'permission-denied') {
-                    showToast("Permission Denied: Firebase Rules allow korche na. Rules Publish korun.", "error");
-                } else if (error.message && error.message.includes('API key')) {
-                    showToast("Config Error: Apnar asol Firebase API Key boshan.", "error");
+                if (error.code === 'auth/email-already-in-use') {
+                    showToast("This name is already registered. Please login.", "error");
+                } else if (error.code === 'auth/weak-password') {
+                    showToast("Password must be at least 6 characters.", "error");
+                } else if (error.code === 'permission-denied') {
+                    showToast("Permission Denied: Firebase Rules allow korche na.", "error");
                 } else {
                     showToast(`Error: ${error.message}`, "error");
                 }
@@ -676,7 +774,7 @@
                     }
 
                     // Protect against mid-session demotion
-                    if(colName === 'users') {
+                    if(colName === 'users' && window.dbStore.profile) {
                         const myProf = window.dbStore.users.find(p => p.uid === window.dbStore.currentUser.uid);
                         if(myProf && myProf.status !== window.dbStore.profile.status) {
                             window.dbStore.profile.status = myProf.status;
@@ -1385,9 +1483,6 @@
                 showToast("Error saving project", "error");
             }
         });
-
-        // Bootstrap App
-        initAuth();
 
     </script>
 </body>
