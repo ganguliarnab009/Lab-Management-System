@@ -39,11 +39,11 @@
     <!-- Confirmation Modal -->
     <div id="confirm-modal" class="fixed inset-0 z-50 hidden modal-bg flex items-center justify-center p-4">
         <div class="bg-white rounded-xl shadow-xl max-w-sm w-full p-6 transform transition-all">
-            <h3 class="text-lg font-bold text-slate-800 mb-2" id="confirm-title">Nischit Karun</h3>
-            <p class="text-slate-600 mb-6" id="confirm-message">Apni ki nischit bhabe egiye jete chan?</p>
+            <h3 class="text-lg font-bold text-slate-800 mb-2" id="confirm-title">Confirm Action</h3>
+            <p class="text-slate-600 mb-6" id="confirm-message">Are you sure you want to proceed?</p>
             <div class="flex justify-end gap-3">
-                <button onclick="closeConfirm()" class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-medium transition-colors">Batil</button>
-                <button id="confirm-btn" class="px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors">Nischit Karun</button>
+                <button onclick="closeConfirm()" class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-medium transition-colors">Cancel</button>
+                <button id="confirm-btn" class="px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors">Confirm</button>
             </div>
         </div>
     </div>
@@ -54,20 +54,20 @@
             <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
                 <i data-lucide="flask-conical" class="w-8 h-8"></i>
             </div>
-            <h2 class="text-2xl font-bold text-slate-800 mb-2">LabTrack-e Swagotom</h2>
-            <p class="text-slate-500 mb-6">Egiye jete apnar profile setup karun.</p>
+            <h2 class="text-2xl font-bold text-slate-800 mb-2">Welcome to LabTrack</h2>
+            <p class="text-slate-500 mb-6">Please set up your profile to continue.</p>
             
             <form id="profile-form" class="space-y-4 text-left">
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Puro Nam</label>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Full Name</label>
                     <input type="text" id="setup-name" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all" placeholder="Dr. Jane Doe">
                 </div>
                 <div class="p-3 bg-blue-50 text-blue-800 rounded-lg text-sm">
                     <i data-lucide="info" class="w-4 h-4 inline mr-1 -mt-0.5"></i>
-                    Prothom je register korbe se automatic Admin hobe. Baki shobai Scholar hisebe jukto hobe.
+                    The first user to register will automatically become the Admin. Others will default to Scholar.
                 </div>
                 <button type="submit" class="w-full bg-blue-600 text-white py-2.5 rounded-lg font-medium hover:bg-blue-700 transition-colors shadow-sm">
-                    Setup Sesh Karun
+                    Complete Setup
                 </button>
             </form>
         </div>
@@ -88,7 +88,7 @@
 
             <div class="px-6 pb-4">
                 <div class="bg-slate-800 rounded-lg p-3">
-                    <p class="text-sm font-medium text-white truncate" id="user-name-display">Load hocche...</p>
+                    <p class="text-sm font-medium text-white truncate" id="user-name-display">Loading...</p>
                     <p class="text-xs text-blue-400 font-semibold mt-0.5" id="user-role-display">Role</p>
                 </div>
             </div>
@@ -125,22 +125,22 @@
         <div id="modal-chemical" class="fixed inset-0 z-40 hidden modal-bg flex items-center justify-center p-4">
             <div class="bg-white rounded-xl shadow-xl max-w-md w-full p-6">
                 <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-lg font-bold text-slate-800" id="chem-modal-title">Chemical Jukto Karun</h3>
+                    <h3 class="text-lg font-bold text-slate-800" id="chem-modal-title">Add Chemical</h3>
                     <button onclick="closeModal('modal-chemical')" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
                 </div>
                 <form id="form-chemical" class="space-y-4">
                     <input type="hidden" id="chem-id">
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Chemical-er Nam</label>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Chemical Name</label>
                         <input type="text" id="chem-name" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
                     </div>
                     <div class="flex gap-4">
                         <div class="flex-1">
-                            <label class="block text-sm font-medium text-slate-700 mb-1">Poriman</label>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Quantity</label>
                             <input type="number" id="chem-qty" step="0.01" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
                         </div>
                         <div class="w-24">
-                            <label class="block text-sm font-medium text-slate-700 mb-1">Ekok (Unit)</label>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Unit</label>
                             <select id="chem-unit" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white">
                                 <option value="g">g</option>
                                 <option value="mg">mg</option>
@@ -152,12 +152,12 @@
                         </div>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Low Stock Threshold (Koto hole warning asbe)</label>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Low Stock Threshold</label>
                         <input type="number" id="chem-threshold" step="0.01" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" value="10">
                     </div>
                     <div class="pt-2 flex justify-end gap-3">
-                        <button type="button" onclick="closeModal('modal-chemical')" class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-medium">Batil</button>
-                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700">Save Karun</button>
+                        <button type="button" onclick="closeModal('modal-chemical')" class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-medium">Cancel</button>
+                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700">Save Chemical</button>
                     </div>
                 </form>
             </div>
@@ -167,28 +167,28 @@
         <div id="modal-usage" class="fixed inset-0 z-40 hidden modal-bg flex items-center justify-center p-4">
             <div class="bg-white rounded-xl shadow-xl max-w-md w-full p-6">
                 <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-lg font-bold text-slate-800">Chemical Bebohar Log Karun</h3>
+                    <h3 class="text-lg font-bold text-slate-800">Log Chemical Usage</h3>
                     <button onclick="closeModal('modal-usage')" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
                 </div>
                 <form id="form-usage" class="space-y-4">
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Chemical Bachhai Karun</label>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Select Chemical</label>
                         <select id="usage-chem" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white">
                             <!-- Populated dynamically -->
                         </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Koto Poriman Bebohar Hoyeche <span id="usage-unit-display" class="text-slate-400 font-normal"></span></label>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Quantity Used <span id="usage-unit-display" class="text-slate-400 font-normal"></span></label>
                         <input type="number" id="usage-qty" step="0.01" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
                         <p class="text-xs text-slate-500 mt-1" id="usage-available-display"></p>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Uddeshyo / Experiment-er Nam</label>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Purpose / Experiment</label>
                         <input type="text" id="usage-purpose" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="e.g., DNA Extraction">
                     </div>
                     <div class="pt-2 flex justify-end gap-3">
-                        <button type="button" onclick="closeModal('modal-usage')" class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-medium">Batil</button>
-                        <button type="submit" class="px-4 py-2 bg-purple-600 text-white rounded-lg font-medium hover:bg-purple-700">Log Submit Karun</button>
+                        <button type="button" onclick="closeModal('modal-usage')" class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-medium">Cancel</button>
+                        <button type="submit" class="px-4 py-2 bg-purple-600 text-white rounded-lg font-medium hover:bg-purple-700">Submit Log</button>
                     </div>
                 </form>
             </div>
@@ -198,26 +198,26 @@
         <div id="modal-dailylog" class="fixed inset-0 z-40 hidden modal-bg flex items-center justify-center p-4">
             <div class="bg-white rounded-xl shadow-xl max-w-lg w-full p-6">
                 <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-lg font-bold text-slate-800" id="log-modal-title">Doinondin Research Log</h3>
+                    <h3 class="text-lg font-bold text-slate-800" id="log-modal-title">Daily Research Log</h3>
                     <button onclick="closeModal('modal-dailylog')" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
                 </div>
                 <form id="form-dailylog" class="space-y-4">
                     <input type="hidden" id="log-id">
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Ki Kaj Kora Hoyeche (Work Done)</label>
-                        <textarea id="log-work" required rows="3" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none resize-none" placeholder="Ajker experiment ba kajer biboron din..."></textarea>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Work Done</label>
+                        <textarea id="log-work" required rows="3" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none resize-none" placeholder="Describe the experiments and tasks completed today..."></textarea>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Folafol (Results & Observations)</label>
-                        <textarea id="log-result" required rows="2" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none resize-none" placeholder="Kajer folafol, data points..."></textarea>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Results & Observations</label>
+                        <textarea id="log-result" required rows="2" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none resize-none" placeholder="Key findings, data points..."></textarea>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Kono Samossa (Optional)</label>
-                        <textarea id="log-issues" rows="2" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none resize-none" placeholder="Jontropatite samossa, failed reaction..."></textarea>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Issues Faced (Optional)</label>
+                        <textarea id="log-issues" rows="2" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none resize-none" placeholder="Equipment malfunction, failed reactions..."></textarea>
                     </div>
                     <div class="pt-2 flex justify-end gap-3">
-                        <button type="button" onclick="closeModal('modal-dailylog')" class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-medium">Batil</button>
-                        <button type="submit" class="px-4 py-2 bg-emerald-600 text-white rounded-lg font-medium hover:bg-emerald-700">Log Save Karun</button>
+                        <button type="button" onclick="closeModal('modal-dailylog')" class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-medium">Cancel</button>
+                        <button type="submit" class="px-4 py-2 bg-emerald-600 text-white rounded-lg font-medium hover:bg-emerald-700">Save Log</button>
                     </div>
                 </form>
             </div>
@@ -227,22 +227,22 @@
         <div id="modal-project" class="fixed inset-0 z-40 hidden modal-bg flex items-center justify-center p-4">
             <div class="bg-white rounded-xl shadow-xl max-w-md w-full p-6">
                 <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-lg font-bold text-slate-800" id="project-modal-title">Project Toiri Karun</h3>
+                    <h3 class="text-lg font-bold text-slate-800" id="project-modal-title">Create Project</h3>
                     <button onclick="closeModal('modal-project')" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
                 </div>
                 <form id="form-project" class="space-y-4">
                     <input type="hidden" id="project-id">
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Project-er Nam</label>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Project Name</label>
                         <input type="text" id="project-name" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Ogrogotir Har (%)</label>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Progress (%)</label>
                         <input type="range" id="project-progress" min="0" max="100" value="0" class="w-full" oninput="document.getElementById('prog-val').innerText = this.value + '%'">
                         <div class="text-right text-xs text-slate-500" id="prog-val">0%</div>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Scholar Assign Karun</label>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Assign Scholars</label>
                         <div id="project-scholars" class="max-h-32 overflow-y-auto border border-slate-200 rounded-lg p-2 space-y-1">
                             <!-- Checkboxes injected here -->
                         </div>
@@ -252,8 +252,8 @@
                         <textarea id="project-notes" rows="2" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none resize-none"></textarea>
                     </div>
                     <div class="pt-2 flex justify-end gap-3">
-                        <button type="button" onclick="closeModal('modal-project')" class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-medium">Batil</button>
-                        <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700">Project Save Karun</button>
+                        <button type="button" onclick="closeModal('modal-project')" class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-medium">Cancel</button>
+                        <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700">Save Project</button>
                     </div>
                 </form>
             </div>
@@ -262,12 +262,12 @@
 
     <!-- Demo Offline Logic Script (No Firebase) -->
     <script>
-        // --- Demo jonno amra LocalStorage byabohar korchi. Pore Firebase add kora hobe. ---
+        // --- Demo uses LocalStorage. Firebase to be added later. ---
         
         const generateId = () => Math.random().toString(36).substr(2, 9);
         const ROLES = { ADMIN: 'Admin', GUIDE: 'Guide', SCHOLAR: 'Scholar' };
 
-        // Database porichalona
+        // Database Management
         const loadDb = () => {
             const defaultDb = { profiles: [], chemicals: [], usageLogs: [], dailyLogs: [], projects: [] };
             const stored = localStorage.getItem('labTrackDb_v1');
@@ -401,7 +401,7 @@
             const name = document.getElementById('setup-name').value;
             const btn = e.target.querySelector('button');
             btn.disabled = true;
-            btn.innerText = "Setup hocche...";
+            btn.innerText = "Setting up...";
 
             try {
                 const db = loadDb();
@@ -417,21 +417,23 @@
                     lastActive: new Date().toISOString()
                 };
 
-                db.profiles.push(newProfile);
-                saveDb(db);
-                
+                // Set current user and profile first so syncStore doesn't overwrite it with null
                 const fakeUser = { uid: uid, email: newProfile.email };
                 localStorage.setItem('labTrackUser_v1', JSON.stringify(fakeUser));
                 window.dbStore.currentUser = fakeUser;
+                window.dbStore.profile = newProfile;
 
+                db.profiles.push(newProfile);
+                saveDb(db);
+                
                 document.getElementById('auth-screen').classList.add('hidden');
-                showToast(`Swagotom ${name}! Apnar Role: ${role}`);
+                showToast(`Welcome ${name}! Assigned Role: ${role}`);
                 startApp();
             } catch (error) {
                 console.error("Setup error", error);
-                showToast("Profile toiri korte samossa hoyeche", "error");
+                showToast("Failed to create profile", "error");
                 btn.disabled = false;
-                btn.innerText = "Setup Sesh Karun";
+                btn.innerText = "Complete Setup";
             }
         });
 
@@ -454,12 +456,12 @@
             const role = window.dbStore.profile.role;
             
             const links = [
-                { id: 'dashboard', icon: 'layout-dashboard', label: 'Ek Nojore (Dashboard)', roles: [ROLES.ADMIN, ROLES.GUIDE, ROLES.SCHOLAR] },
-                { id: 'inventory', icon: 'flask-round', label: 'Chemical er Talika', roles: [ROLES.ADMIN, ROLES.GUIDE, ROLES.SCHOLAR] },
-                { id: 'usage', icon: 'clipboard-list', label: 'Bebohar Log Karun', roles: [ROLES.ADMIN, ROLES.GUIDE, ROLES.SCHOLAR] },
-                { id: 'daily', icon: 'book-open', label: 'Doinondin Research Log', roles: [ROLES.ADMIN, ROLES.GUIDE, ROLES.SCHOLAR] },
-                { id: 'projects', icon: 'folder-kanban', label: 'Project Gulo', roles: [ROLES.ADMIN, ROLES.GUIDE, ROLES.SCHOLAR] },
-                { id: 'guidedash', icon: 'users', label: 'Guide er Overview', roles: [ROLES.ADMIN, ROLES.GUIDE] },
+                { id: 'dashboard', icon: 'layout-dashboard', label: 'Dashboard', roles: [ROLES.ADMIN, ROLES.GUIDE, ROLES.SCHOLAR] },
+                { id: 'inventory', icon: 'flask-round', label: 'Chemical Inventory', roles: [ROLES.ADMIN, ROLES.GUIDE, ROLES.SCHOLAR] },
+                { id: 'usage', icon: 'clipboard-list', label: 'Usage Logs', roles: [ROLES.ADMIN, ROLES.GUIDE, ROLES.SCHOLAR] },
+                { id: 'daily', icon: 'book-open', label: 'Daily Research Log', roles: [ROLES.ADMIN, ROLES.GUIDE, ROLES.SCHOLAR] },
+                { id: 'projects', icon: 'folder-kanban', label: 'Projects', roles: [ROLES.ADMIN, ROLES.GUIDE, ROLES.SCHOLAR] },
+                { id: 'guidedash', icon: 'users', label: 'Guide Dashboard', roles: [ROLES.ADMIN, ROLES.GUIDE] },
                 { id: 'admin', icon: 'settings', label: 'Admin Panel', roles: [ROLES.ADMIN] }
             ];
 
@@ -523,35 +525,35 @@
             const recentLogs = [...dailyLogs].sort((a,b) => new Date(b.date) - new Date(a.date)).slice(0, 3);
             
             return `
-                <h1 class="text-2xl font-bold text-slate-800 mb-6">Ek Nojore</h1>
+                <h1 class="text-2xl font-bold text-slate-800 mb-6">Overview</h1>
                 
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
                     <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4">
                         <div class="p-3 bg-blue-100 text-blue-600 rounded-lg"><i data-lucide="flask-round"></i></div>
-                        <div><p class="text-sm text-slate-500 font-medium">Mot Chemical</p><p class="text-2xl font-bold text-slate-800">${chemicals.length}</p></div>
+                        <div><p class="text-sm text-slate-500 font-medium">Total Chemicals</p><p class="text-2xl font-bold text-slate-800">${chemicals.length}</p></div>
                     </div>
                     <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4">
                         <div class="p-3 bg-red-100 text-red-600 rounded-lg"><i data-lucide="alert-triangle"></i></div>
-                        <div><p class="text-sm text-slate-500 font-medium">Kom Stock</p><p class="text-2xl font-bold text-slate-800">${lowStock.length}</p></div>
+                        <div><p class="text-sm text-slate-500 font-medium">Low Stock</p><p class="text-2xl font-bold text-slate-800">${lowStock.length}</p></div>
                     </div>
                     <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4">
                         <div class="p-3 bg-emerald-100 text-emerald-600 rounded-lg"><i data-lucide="book-open"></i></div>
-                        <div><p class="text-sm text-slate-500 font-medium">Doinondin Log</p><p class="text-2xl font-bold text-slate-800">${dailyLogs.length}</p></div>
+                        <div><p class="text-sm text-slate-500 font-medium">Daily Logs</p><p class="text-2xl font-bold text-slate-800">${dailyLogs.length}</p></div>
                     </div>
                     <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4">
                         <div class="p-3 bg-indigo-100 text-indigo-600 rounded-lg"><i data-lucide="folder-kanban"></i></div>
-                        <div><p class="text-sm text-slate-500 font-medium">Choloman Project</p><p class="text-2xl font-bold text-slate-800">${projects.length}</p></div>
+                        <div><p class="text-sm text-slate-500 font-medium">Active Projects</p><p class="text-2xl font-bold text-slate-800">${projects.length}</p></div>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <div class="bg-white rounded-xl shadow-sm border border-slate-100 p-5">
                         <div class="flex justify-between items-center mb-4">
-                            <h2 class="text-lg font-bold text-slate-800">Gurutwo Din (Low Stock)</h2>
-                            <button onclick="navigate('inventory')" class="text-sm text-blue-600 hover:underline">Shob Dekhun</button>
+                            <h2 class="text-lg font-bold text-slate-800">Needs Attention (Low Stock)</h2>
+                            <button onclick="navigate('inventory')" class="text-sm text-blue-600 hover:underline">View All</button>
                         </div>
                         <div class="space-y-3">
-                            ${lowStock.length === 0 ? '<p class="text-sm text-slate-500">Stock ekhon thik ache.</p>' : 
+                            ${lowStock.length === 0 ? '<p class="text-sm text-slate-500">Inventory looks good.</p>' : 
                                 lowStock.map(c => `
                                     <div class="flex justify-between items-center p-3 bg-red-50 rounded-lg">
                                         <div class="font-medium text-slate-800">${c.name}</div>
@@ -563,11 +565,11 @@
 
                     <div class="bg-white rounded-xl shadow-sm border border-slate-100 p-5">
                         <div class="flex justify-between items-center mb-4">
-                            <h2 class="text-lg font-bold text-slate-800">Samprotik Lab Activity</h2>
-                            <button onclick="navigate('daily')" class="text-sm text-blue-600 hover:underline">Log Dekhun</button>
+                            <h2 class="text-lg font-bold text-slate-800">Recent Lab Activity</h2>
+                            <button onclick="navigate('daily')" class="text-sm text-blue-600 hover:underline">View Logs</button>
                         </div>
                         <div class="space-y-4">
-                            ${recentLogs.length === 0 ? '<p class="text-sm text-slate-500">Kono activity nei.</p>' : 
+                            ${recentLogs.length === 0 ? '<p class="text-sm text-slate-500">No activity yet.</p>' : 
                                 recentLogs.map(log => `
                                     <div class="border-l-2 border-blue-500 pl-3">
                                         <p class="text-xs text-slate-500 mb-1">${formatDate(log.date)} • <span class="font-medium">${log.userName}</span></p>
@@ -610,14 +612,14 @@
 
             return `
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-                    <h1 class="text-2xl font-bold text-slate-800">Chemical er Talika</h1>
+                    <h1 class="text-2xl font-bold text-slate-800">Chemical Inventory</h1>
                     <div class="flex gap-2">
                         <button onclick="openUsageModal()" class="bg-purple-100 text-purple-700 px-4 py-2 rounded-lg font-medium hover:bg-purple-200 transition-colors flex items-center gap-2">
-                            <i data-lucide="flask-conical" class="w-4 h-4"></i> Log Karun
+                            <i data-lucide="flask-conical" class="w-4 h-4"></i> Log Usage
                         </button>
                         ${canEdit ? `
                         <button onclick="openChemicalModal()" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center gap-2">
-                            <i data-lucide="plus" class="w-4 h-4"></i> Notun Jukto Karun
+                            <i data-lucide="plus" class="w-4 h-4"></i> Add Item
                         </button>
                         ` : ''}
                     </div>
@@ -627,12 +629,12 @@
                         <thead>
                             <tr class="bg-slate-50 text-slate-500 text-sm uppercase tracking-wider border-b border-slate-200">
                                 <th class="py-3 px-4 font-medium">Chemical Name</th>
-                                <th class="py-3 px-4 font-medium">Poriman</th>
+                                <th class="py-3 px-4 font-medium">Quantity</th>
                                 <th class="py-3 px-4 font-medium">Last Updated</th>
                                 <th class="py-3 px-4 font-medium text-right">Actions</th>
                             </tr>
                         </thead>
-                        <tbody>${rows || '<tr><td colspan="4" class="py-8 text-center text-slate-500">Kono chemical nei.</td></tr>'}</tbody>
+                        <tbody>${rows || '<tr><td colspan="4" class="py-8 text-center text-slate-500">No chemicals found.</td></tr>'}</tbody>
                     </table>
                 </div>
             `;
@@ -660,9 +662,9 @@
 
             return `
                 <div class="flex justify-between items-center mb-6">
-                    <h1 class="text-2xl font-bold text-slate-800">Beboharer Itihas</h1>
+                    <h1 class="text-2xl font-bold text-slate-800">Usage History</h1>
                     <button onclick="openUsageModal()" class="bg-purple-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-purple-700 transition-colors flex items-center gap-2 shadow-sm">
-                        <i data-lucide="plus" class="w-4 h-4"></i> Log Karun
+                        <i data-lucide="plus" class="w-4 h-4"></i> Log Usage
                     </button>
                 </div>
                 <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-x-auto">
@@ -671,12 +673,12 @@
                             <tr class="bg-slate-50 text-slate-500 text-sm uppercase tracking-wider border-b border-slate-200">
                                 <th class="py-3 px-4 font-medium">Date & Time</th>
                                 <th class="py-3 px-4 font-medium">Chemical</th>
-                                <th class="py-3 px-4 font-medium">Bebohar Hoyeche</th>
-                                <th class="py-3 px-4 font-medium">Uddeshyo</th>
-                                <th class="py-3 px-4 font-medium">Beboharkari</th>
+                                <th class="py-3 px-4 font-medium">Qty Used</th>
+                                <th class="py-3 px-4 font-medium">Purpose</th>
+                                <th class="py-3 px-4 font-medium">User</th>
                             </tr>
                         </thead>
-                        <tbody>${rows || '<tr><td colspan="5" class="py-8 text-center text-slate-500">Kono log nei.</td></tr>'}</tbody>
+                        <tbody>${rows || '<tr><td colspan="5" class="py-8 text-center text-slate-500">No usage logs found.</td></tr>'}</tbody>
                     </table>
                 </div>
             `;
@@ -711,22 +713,22 @@
                         </div>
                     </div>
                     <div class="space-y-3 mt-4 text-sm">
-                        <div><strong class="text-slate-700 block mb-1">Ki Kaj Kora Hoyeche:</strong><p class="text-slate-600 bg-slate-50 p-2 rounded border border-slate-100 whitespace-pre-wrap">${log.workDone}</p></div>
-                        <div><strong class="text-slate-700 block mb-1">Folafol:</strong><p class="text-slate-600 bg-slate-50 p-2 rounded border border-slate-100 whitespace-pre-wrap">${log.result}</p></div>
-                        ${log.issues ? `<div><strong class="text-slate-700 block mb-1 text-red-600">Samossa:</strong><p class="text-slate-600 bg-red-50 p-2 rounded border border-red-100 whitespace-pre-wrap">${log.issues}</p></div>` : ''}
+                        <div><strong class="text-slate-700 block mb-1">Work Done:</strong><p class="text-slate-600 bg-slate-50 p-2 rounded border border-slate-100 whitespace-pre-wrap">${log.workDone}</p></div>
+                        <div><strong class="text-slate-700 block mb-1">Results:</strong><p class="text-slate-600 bg-slate-50 p-2 rounded border border-slate-100 whitespace-pre-wrap">${log.result}</p></div>
+                        ${log.issues ? `<div><strong class="text-slate-700 block mb-1 text-red-600">Issues Faced:</strong><p class="text-slate-600 bg-red-50 p-2 rounded border border-red-100 whitespace-pre-wrap">${log.issues}</p></div>` : ''}
                     </div>
                 </div>
             `}).join('');
 
             return `
                 <div class="flex justify-between items-center mb-6">
-                    <h1 class="text-2xl font-bold text-slate-800">${profile.role === ROLES.SCHOLAR ? 'Amar Research Log' : 'Sokol Research Log'}</h1>
+                    <h1 class="text-2xl font-bold text-slate-800">${profile.role === ROLES.SCHOLAR ? 'My Research Logs' : 'All Research Logs'}</h1>
                     <button onclick="openDailyLogModal()" class="bg-emerald-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-emerald-700 transition-colors flex items-center gap-2 shadow-sm">
-                        <i data-lucide="pen-tool" class="w-4 h-4"></i> Notun Log
+                        <i data-lucide="pen-tool" class="w-4 h-4"></i> New Log
                     </button>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    ${cards || '<p class="text-slate-500 col-span-full">Kono research log pawa jayni.</p>'}
+                    ${cards || '<p class="text-slate-500 col-span-full">No research logs found.</p>'}
                 </div>
             `;
         }
@@ -755,17 +757,17 @@
                         ` : ''}
                     </div>
                     <div class="mb-4">
-                        <div class="flex justify-between text-xs mb-1 font-medium"><span class="text-slate-600">Ogrohoti</span><span class="text-slate-800">${p.progress}%</span></div>
+                        <div class="flex justify-between text-xs mb-1 font-medium"><span class="text-slate-600">Progress</span><span class="text-slate-800">${p.progress}%</span></div>
                         <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
                             <div class="${progressColor} h-2 rounded-full transition-all duration-500" style="width: ${p.progress}%"></div>
                         </div>
                     </div>
-                    <div class="flex-1 text-sm text-slate-600 mb-4 bg-slate-50 p-3 rounded-lg border border-slate-100 whitespace-pre-wrap">${p.notes || 'Kono note nei.'}</div>
+                    <div class="flex-1 text-sm text-slate-600 mb-4 bg-slate-50 p-3 rounded-lg border border-slate-100 whitespace-pre-wrap">${p.notes || 'No notes available.'}</div>
                     
                     <div>
                         <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Assigned Team</p>
                         <div class="flex flex-wrap gap-2">
-                            ${assignedNames.length ? assignedNames.map(name => `<span class="px-2 py-1 bg-indigo-50 text-indigo-700 text-xs rounded-md font-medium border border-indigo-100">${name}</span>`).join('') : '<span class="text-xs text-slate-400">Keu assigned nei</span>'}
+                            ${assignedNames.length ? assignedNames.map(name => `<span class="px-2 py-1 bg-indigo-50 text-indigo-700 text-xs rounded-md font-medium border border-indigo-100">${name}</span>`).join('') : '<span class="text-xs text-slate-400">None assigned</span>'}
                         </div>
                     </div>
                 </div>
@@ -773,15 +775,15 @@
 
             return `
                 <div class="flex justify-between items-center mb-6">
-                    <h1 class="text-2xl font-bold text-slate-800">Research Project Gulo</h1>
+                    <h1 class="text-2xl font-bold text-slate-800">Research Projects</h1>
                     ${canEdit ? `
                     <button onclick="openProjectModal()" class="bg-indigo-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-indigo-700 transition-colors flex items-center gap-2 shadow-sm">
-                        <i data-lucide="folder-plus" class="w-4 h-4"></i> Notun Project
+                        <i data-lucide="folder-plus" class="w-4 h-4"></i> New Project
                     </button>
                     ` : ''}
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    ${cards || '<p class="text-slate-500 col-span-full">Kono active project nei.</p>'}
+                    ${cards || '<p class="text-slate-500 col-span-full">No active projects found.</p>'}
                 </div>
             `;
         }
@@ -805,14 +807,14 @@
                     <td class="py-3 px-4 font-medium text-slate-800">${s.name}</td>
                     <td class="py-3 px-4 text-sm text-slate-600">${sLogs.length} logs</td>
                     <td class="py-3 px-4 text-sm text-slate-600">${sUsage.length} uses</td>
-                    <td class="py-3 px-4 text-sm text-slate-600">${lastLog ? formatDateShort(lastLog) : 'Kokhonoi Na'}</td>
+                    <td class="py-3 px-4 text-sm text-slate-600">${lastLog ? formatDateShort(lastLog) : 'Never'}</td>
                     <td class="py-3 px-4">${statusBadge}</td>
                 </tr>
                 `;
             }).join('');
 
             return `
-                <h1 class="text-2xl font-bold text-slate-800 mb-6">Guide-er Overview</h1>
+                <h1 class="text-2xl font-bold text-slate-800 mb-6">Guide Overview</h1>
                 <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden mb-6">
                     <div class="p-4 border-b border-slate-100 bg-slate-50">
                         <h2 class="font-bold text-slate-800">Scholar Tracking</h2>
@@ -822,13 +824,13 @@
                             <thead>
                                 <tr class="text-slate-500 text-sm uppercase tracking-wider border-b border-slate-200">
                                     <th class="py-3 px-4 font-medium">Scholar</th>
-                                    <th class="py-3 px-4 font-medium">Mot Log</th>
-                                    <th class="py-3 px-4 font-medium">Chem Bebohar</th>
-                                    <th class="py-3 px-4 font-medium">Shesh Log</th>
+                                    <th class="py-3 px-4 font-medium">Total Logs</th>
+                                    <th class="py-3 px-4 font-medium">Chem Usage</th>
+                                    <th class="py-3 px-4 font-medium">Last Log</th>
                                     <th class="py-3 px-4 font-medium">Status</th>
                                 </tr>
                             </thead>
-                            <tbody>${scholarRows || '<tr><td colspan="5" class="py-4 text-center text-slate-500">Kono scholar nei.</td></tr>'}</tbody>
+                            <tbody>${scholarRows || '<tr><td colspan="5" class="py-4 text-center text-slate-500">No scholars found.</td></tr>'}</tbody>
                         </table>
                     </div>
                 </div>
@@ -858,9 +860,9 @@
 
             return `
                 <div class="flex justify-between items-center mb-6">
-                    <h1 class="text-2xl font-bold text-slate-800">System Porichalona</h1>
+                    <h1 class="text-2xl font-bold text-slate-800">System Administration</h1>
                     <button onclick="injectDummyData()" class="bg-amber-100 text-amber-700 px-3 py-1.5 rounded text-sm font-bold hover:bg-amber-200 transition-colors flex items-center gap-2">
-                        <i data-lucide="database" class="w-4 h-4"></i> Demo Data Jukto Karun
+                        <i data-lucide="database" class="w-4 h-4"></i> Inject Dummy Data
                     </button>
                 </div>
                 
@@ -887,13 +889,13 @@
 
         // --- Action Handlers (CRUD) ---
         window.deleteDocHandler = (collectionName, docId, itemName) => {
-            openConfirm("Item Delete Karun", `Apni ki nischit bhabe ei ${itemName} delete korte chan?`, async () => {
+            openConfirm("Delete Item", `Are you sure you want to delete this ${itemName}?`, async () => {
                 try {
                     await deleteDoc(collectionName, docId);
-                    showToast(`${itemName} sothikbhabe delete hoyeche.`);
+                    showToast(`${itemName} deleted successfully.`);
                 } catch(e) {
                     console.error(e);
-                    showToast(`${itemName} delete korte samossa hoyeche`, "error");
+                    showToast(`Failed to delete ${itemName}`, "error");
                 }
             });
         };
@@ -901,21 +903,21 @@
         window.changeRole = async (uid, newRole) => {
             try {
                 await updateDoc('profiles', uid, { role: newRole });
-                showToast(`Role update kora hoyeche: ${newRole}`);
+                showToast(`Role updated to: ${newRole}`);
             } catch(e) {
                 console.error(e);
-                showToast("Role update beartho hoyeche", "error");
+                showToast("Failed to update role", "error");
             }
         };
 
         // --- Modals & Form Submissions ---
         window.openChemicalModal = () => {
-            document.getElementById('chem-modal-title').innerText = "Chemical Jukto Karun";
+            document.getElementById('chem-modal-title').innerText = "Add Chemical";
             document.getElementById('chem-id').value = "";
             openModal('modal-chemical');
         };
         window.editChemical = (chem) => {
-            document.getElementById('chem-modal-title').innerText = "Chemical Edit Karun";
+            document.getElementById('chem-modal-title').innerText = "Edit Chemical";
             document.getElementById('chem-id').value = chem.id;
             document.getElementById('chem-name').value = chem.name;
             document.getElementById('chem-qty').value = chem.quantity;
@@ -939,23 +941,23 @@
                 else await addDoc('chemicals', data);
                 
                 closeModal('modal-chemical');
-                showToast(`Chemical sothikbhabe ${id ? 'update' : 'jukto'} hoyeche`);
+                showToast(`Chemical ${id ? 'updated' : 'added'} successfully`);
             } catch (err) {
                 console.error(err);
-                showToast("Chemical save korte error", "error");
+                showToast("Error saving chemical", "error");
             }
         });
 
         window.openUsageModal = () => {
             const select = document.getElementById('usage-chem');
-            select.innerHTML = '<option value="">Chemical bachhai karun...</option>' + 
+            select.innerHTML = '<option value="">Select a chemical...</option>' + 
                 window.dbStore.chemicals.map(c => `<option value="${c.id}" data-qty="${c.quantity}" data-unit="${c.unit}">${c.name} (${c.quantity} ${c.unit} Available)</option>`).join('');
             openModal('modal-usage');
         };
         document.getElementById('usage-chem').addEventListener('change', (e) => {
             const opt = e.target.options[e.target.selectedIndex];
             document.getElementById('usage-unit-display').innerText = opt.value ? `(${opt.dataset.unit})` : '';
-            document.getElementById('usage-available-display').innerText = opt.value ? `Baki ache: ${opt.dataset.qty} ${opt.dataset.unit}` : '';
+            document.getElementById('usage-available-display').innerText = opt.value ? `Available: ${opt.dataset.qty} ${opt.dataset.unit}` : '';
         });
         document.getElementById('form-usage').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -964,8 +966,8 @@
             const purpose = document.getElementById('usage-purpose').value;
 
             const chem = window.dbStore.chemicals.find(c => c.id === chemId);
-            if (!chem) return showToast("Sothik chemical bachhai karun", "error");
-            if (qtyUsed > chem.quantity) return showToast(`Porjepto poriman nei. Max available: ${chem.quantity}`, "error");
+            if (!chem) return showToast("Select a valid chemical", "error");
+            if (qtyUsed > chem.quantity) return showToast(`Insufficient quantity. Max available: ${chem.quantity}`, "error");
 
             try {
                 await addDoc('usageLogs', {
@@ -984,20 +986,20 @@
                 });
 
                 closeModal('modal-usage');
-                showToast("Bebohar log kora hoyeche abong inventory update kora hoyeche");
+                showToast("Usage logged and inventory updated");
             } catch (err) {
                 console.error(err);
-                showToast("Log save korte error", "error");
+                showToast("Error logging usage", "error");
             }
         });
 
         window.openDailyLogModal = () => {
-            document.getElementById('log-modal-title').innerText = "Doinondin Log Jukto Karun";
+            document.getElementById('log-modal-title').innerText = "Add Daily Log";
             document.getElementById('log-id').value = "";
             openModal('modal-dailylog');
         };
         window.editDailyLog = (log) => {
-            document.getElementById('log-modal-title').innerText = "Doinondin Log Edit Karun";
+            document.getElementById('log-modal-title').innerText = "Edit Daily Log";
             document.getElementById('log-id').value = log.id;
             document.getElementById('log-work').value = log.workDone;
             document.getElementById('log-result').value = log.result;
@@ -1022,15 +1024,15 @@
                 else await addDoc('dailyLogs', data);
                 
                 closeModal('modal-dailylog');
-                showToast(`Log sothikbhabe ${id ? 'update' : 'jukto'} hoyeche`);
+                showToast(`Log ${id ? 'updated' : 'added'} successfully`);
             } catch (err) {
                 console.error(err);
-                showToast("Log save korte error", "error");
+                showToast("Error saving log", "error");
             }
         });
 
         window.openProjectModal = () => {
-            document.getElementById('project-modal-title').innerText = "Project Toiri Karun";
+            document.getElementById('project-modal-title').innerText = "Create Project";
             document.getElementById('project-id').value = "";
             document.getElementById('project-progress').value = 0;
             document.getElementById('prog-val').innerText = "0%";
@@ -1042,13 +1044,13 @@
                     <input type="checkbox" name="assignees" value="${s.uid}" class="w-4 h-4 text-blue-600 rounded">
                     ${s.name} <span class="text-xs text-slate-400">(${s.role})</span>
                 </label>
-            `).join('') || '<div class="text-xs text-slate-500 p-1">Assign korar moto keu nei.</div>';
+            `).join('') || '<div class="text-xs text-slate-500 p-1">No users available to assign.</div>';
             
             openModal('modal-project');
         };
         window.editProject = (project) => {
             openProjectModal();
-            document.getElementById('project-modal-title').innerText = "Project Edit Karun";
+            document.getElementById('project-modal-title').innerText = "Edit Project";
             document.getElementById('project-id').value = project.id;
             document.getElementById('project-name').value = project.name;
             document.getElementById('project-progress').value = project.progress;
@@ -1078,16 +1080,16 @@
                 else await addDoc('projects', data);
                 
                 closeModal('modal-project');
-                showToast(`Project sothikbhabe ${id ? 'update' : 'toiri'} hoyeche`);
+                showToast(`Project ${id ? 'updated' : 'created'} successfully`);
             } catch (err) {
                 console.error(err);
-                showToast("Project save korte error", "error");
+                showToast("Error saving project", "error");
             }
         });
 
         window.injectDummyData = async () => {
-            openConfirm("Demo Data Jukto Karun", "Ete kisu demo chemical, project ebang log jukto hobe. Egiye jete chan?", async () => {
-                showToast("Data jukto hocche... opekha karun.", "success");
+            openConfirm("Inject Dummy Data", "This will add sample chemicals, projects, and logs. Proceed?", async () => {
+                showToast("Injecting data... please wait.", "success");
                 
                 const chems = [
                     { name: 'Sodium Chloride', quantity: 500, unit: 'g', lowStockThreshold: 100, lastUpdated: new Date().toISOString() },
@@ -1110,10 +1112,10 @@
                     for(let c of chems) await addDoc('chemicals', c);
                     for(let p of projs) await addDoc('projects', p);
                     for(let l of logs) await addDoc('dailyLogs', l);
-                    showToast("Demo data sothikbhabe jukto hoyeche!");
+                    showToast("Dummy data injected successfully!");
                 } catch(e) {
                     console.error(e);
-                    showToast("Data jukto korte error", "error");
+                    showToast("Error injecting data", "error");
                 }
             });
         };
