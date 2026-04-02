@@ -312,6 +312,16 @@
                     </div>
                     <div class="flex gap-4">
                         <div class="flex-1">
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Company</label>
+                            <input type="text" id="chem-company" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="e.g. Sigma Aldrich">
+                        </div>
+                        <div class="flex-1">
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Country</label>
+                            <input type="text" id="chem-country" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="e.g. Germany">
+                        </div>
+                    </div>
+                    <div class="flex gap-4">
+                        <div class="flex-1">
                             <label class="block text-sm font-medium text-slate-700 mb-1">Quantity</label>
                             <input type="number" id="chem-qty" step="0.01" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
                         </div>
@@ -325,6 +335,16 @@
                                 <option value="L">L</option>
                                 <option value="pcs">pcs</option>
                             </select>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Expiry Date</label>
+                            <input type="date" id="chem-expiry" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Low Stock Threshold</label>
+                            <input type="number" id="chem-threshold" step="0.01" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" value="10">
                         </div>
                     </div>
                     <div class="pt-2 flex justify-end gap-3">
@@ -354,9 +374,43 @@
                         <input type="number" id="usage-qty" step="0.01" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
                         <p class="text-xs text-slate-500 mt-1" id="usage-available-display"></p>
                     </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Purpose / Experiment</label>
+                        <input type="text" id="usage-purpose" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="e.g., DNA Extraction">
+                    </div>
                     <div class="pt-2 flex justify-end gap-3">
                         <button type="button" onclick="closeModal('modal-usage')" class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-medium">Cancel</button>
                         <button type="submit" class="px-4 py-2 bg-purple-600 text-white rounded-lg font-medium hover:bg-purple-700">Submit Log</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Instrument Usage Modal -->
+        <div id="modal-inst-usage" class="fixed inset-0 z-40 hidden modal-bg flex items-center justify-center p-4">
+            <div class="bg-white rounded-xl shadow-xl max-w-md w-full p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-bold text-slate-800">Log Instrument Usage</h3>
+                    <button onclick="closeModal('modal-inst-usage')" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+                </div>
+                <form id="form-inst-usage" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Select Instrument</label>
+                        <select id="inst-usage-id" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white">
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Hours Used</label>
+                        <input type="number" id="inst-usage-hours" step="0.1" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="e.g. 2.5">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Purpose / Experiment</label>
+                        <input type="text" id="inst-usage-purpose" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="e.g., Sample Analysis">
+                    </div>
+                    <div class="pt-2 flex justify-end gap-3">
+                        <button type="button" onclick="closeModal('modal-inst-usage')" class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-medium">Cancel</button>
+                        <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700">Submit Log</button>
                     </div>
                 </form>
             </div>
@@ -541,6 +595,7 @@
             chemicals: [],
             instruments: [],
             usageLogs: [],
+            instUsageLogs: [], // Inst. usage array added
             dailyLogs: [],
             projects: [],
             jobs: [],
@@ -802,8 +857,9 @@
                 { id: 'daily', icon: 'book-open', label: 'Daily Logs', roles: [ROLES.PI, ROLES.SCHOLAR] },
                 { id: 'performance', icon: 'bar-chart-2', label: 'Performance', roles: [ROLES.PI, ROLES.SCHOLAR] },
                 { id: 'inventory', icon: 'flask-conical', label: 'Chemicals', roles: [ROLES.PI, ROLES.SCHOLAR] },
+                { id: 'usage', icon: 'clipboard-list', label: 'Chem. Usage Logs', roles: [ROLES.PI, ROLES.SCHOLAR] },
                 { id: 'instruments', icon: 'microscope', label: 'Instruments', roles: [ROLES.PI, ROLES.SCHOLAR] },
-                { id: 'usage', icon: 'clipboard-list', label: 'Usage Logs', roles: [ROLES.PI, ROLES.SCHOLAR] },
+                { id: 'instUsage', icon: 'clock', label: 'Inst. Usage Logs', roles: [ROLES.PI, ROLES.SCHOLAR] },
                 { id: 'approvals', icon: 'user-check', label: 'Approvals', roles: [ROLES.PI] }
             ];
 
@@ -846,7 +902,7 @@
         // --- Data Listeners ---
         function startListeners() {
             if(!window.dbStore.currentUser) return;
-            const collections = ['users', 'chemicals', 'instruments', 'usageLogs', 'dailyLogs', 'projects', 'jobs'];
+            const collections = ['users', 'chemicals', 'instruments', 'usageLogs', 'instUsageLogs', 'dailyLogs', 'projects', 'jobs']; // instUsageLogs added
             
             collections.forEach(colName => {
                 const unsubscribe = onSnapshot(getColRef(colName), (snapshot) => {
@@ -895,6 +951,7 @@
                 case 'inventory': html = generateInventoryHTML(); break;
                 case 'instruments': html = generateInstrumentsHTML(); break;
                 case 'usage': html = generateUsageHTML(); break;
+                case 'instUsage': html = generateInstUsageHTML(); break; // New View added
             }
             container.innerHTML = html;
             if(window.lucide) lucide.createIcons();
@@ -1412,16 +1469,21 @@
             const sorted = [...chemicals].sort((a,b) => a.name.localeCompare(b.name));
 
             let rows = sorted.map(c => {
-                const isLow = c.quantity <= 10;
+                const isLow = Number(c.quantity) <= (Number(c.lowStockThreshold) || 10);
+                const expDate = c.expiryDate ? new Date(c.expiryDate) : null;
+                const isExpired = expDate && expDate < new Date();
+
                 return `
                 <tr class="border-b border-slate-100 hover:bg-slate-50 bg-white transition-colors">
                     <td class="py-3 px-4">
-                        <div class="font-medium text-slate-800 flex items-center gap-2">
+                        <div class="font-bold text-slate-800 flex items-center gap-2">
                             ${c.name}
                             ${isLow ? '<span class="bg-red-100 text-red-600 text-[10px] px-1.5 py-0.5 rounded font-bold">LOW</span>' : ''}
                         </div>
+                        <div class="text-xs text-slate-500 mt-1">${c.company || '-'} • ${c.country || '-'}</div>
                     </td>
                     <td class="py-3 px-4 font-mono text-sm ${isLow ? 'text-red-600 font-bold' : 'text-slate-600'}">${c.quantity} ${c.unit}</td>
+                    <td class="py-3 px-4 text-sm ${isExpired ? 'text-red-600 font-bold' : 'text-slate-500'}">${c.expiryDate ? formatDateShort(c.expiryDate) : 'N/A'}</td>
                     <td class="py-3 px-4 text-right">
                         <button onclick='editChemical(${JSON.stringify(c).replace(/'/g, "&#39;")})' class="text-blue-500 hover:bg-blue-100 p-1.5 rounded transition-colors"><i data-lucide="edit-2" class="w-4 h-4"></i></button>
                         <button onclick="deleteDocHandler('chemicals', '${c.id}', 'chemical')" class="text-red-500 hover:bg-red-100 p-1.5 rounded transition-colors ml-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
@@ -1440,15 +1502,16 @@
                     </div>
                 </div>
                 <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
-                    <table class="w-full text-left border-collapse min-w-[500px]">
+                    <table class="w-full text-left border-collapse min-w-[600px]">
                         <thead>
                             <tr class="bg-slate-50 text-slate-500 text-xs uppercase tracking-wider border-b border-slate-200">
-                                <th class="py-3 px-4 font-bold">Chemical Name</th>
+                                <th class="py-3 px-4 font-bold">Chemical Details</th>
                                 <th class="py-3 px-4 font-bold">Available Qty</th>
+                                <th class="py-3 px-4 font-bold">Expiry Date</th>
                                 <th class="py-3 px-4 font-bold text-right">Manage</th>
                             </tr>
                         </thead>
-                        <tbody>${rows || '<tr><td colspan="3" class="py-8 text-center text-slate-500 font-medium">No chemicals found.</td></tr>'}</tbody>
+                        <tbody>${rows || '<tr><td colspan="4" class="py-8 text-center text-slate-500 font-medium">No chemicals found.</td></tr>'}</tbody>
                     </table>
                 </div>
             `;
@@ -1549,6 +1612,50 @@
                             </tr>
                         </thead>
                         <tbody>${rows || '<tr><td colspan="5" class="py-8 text-center text-slate-500 font-medium">No usage recorded.</td></tr>'}</tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        // --- NEW: INSTRUMENT USAGE LOGS ---
+        function generateInstUsageHTML() {
+            const { instUsageLogs } = window.dbStore;
+            const sorted = [...instUsageLogs].sort((a,b) => new Date(b.date) - new Date(a.date));
+
+            let rows = sorted.map(log => `
+                <tr class="border-b border-slate-100 hover:bg-slate-50 bg-white">
+                    <td class="py-3 px-4 text-xs text-slate-500 font-medium whitespace-nowrap">${formatDate(log.date)}</td>
+                    <td class="py-3 px-4">
+                        <div class="flex items-center gap-2">
+                            <div class="w-6 h-6 bg-slate-200 text-slate-700 rounded-full flex items-center justify-center text-[10px] font-bold">${log.userName.charAt(0)}</div>
+                            <span class="text-sm font-bold text-slate-800">${log.userName}</span>
+                        </div>
+                    </td>
+                    <td class="py-3 px-4 font-bold text-slate-800">${log.instrumentName}</td>
+                    <td class="py-3 px-4 font-mono text-sm text-indigo-600 font-bold bg-indigo-50 rounded">${log.hoursUsed} hrs</td>
+                    <td class="py-3 px-4 text-sm text-slate-600">${log.purpose}</td>
+                </tr>
+            `).join('');
+
+            return `
+                <div class="flex justify-between items-center mb-6">
+                    <h1 class="text-2xl font-bold text-slate-800">Instrument Usage Logs</h1>
+                    <button onclick="openInstUsageModal()" class="bg-indigo-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-indigo-700 transition-colors flex items-center gap-2 shadow-sm">
+                        <i data-lucide="clock" class="w-4 h-4"></i> Log Instrument
+                    </button>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden overflow-x-auto">
+                    <table class="w-full text-left border-collapse min-w-[800px]">
+                        <thead>
+                            <tr class="bg-slate-50 text-slate-500 text-xs uppercase tracking-wider border-b border-slate-200">
+                                <th class="py-3 px-4 font-bold">Timestamp</th>
+                                <th class="py-3 px-4 font-bold">Scholar</th>
+                                <th class="py-3 px-4 font-bold">Instrument</th>
+                                <th class="py-3 px-4 font-bold">Hours Used</th>
+                                <th class="py-3 px-4 font-bold">Purpose / Experiment</th>
+                            </tr>
+                        </thead>
+                        <tbody>${rows || '<tr><td colspan="5" class="py-8 text-center text-slate-500 font-medium">No instrument usage recorded.</td></tr>'}</tbody>
                     </table>
                 </div>
             `;
@@ -1720,6 +1827,10 @@
             document.getElementById('chem-name').value = chem.name;
             document.getElementById('chem-qty').value = chem.quantity;
             document.getElementById('chem-unit').value = chem.unit;
+            document.getElementById('chem-company').value = chem.company || '';
+            document.getElementById('chem-country').value = chem.country || '';
+            document.getElementById('chem-expiry').value = chem.expiryDate || '';
+            document.getElementById('chem-threshold').value = chem.lowStockThreshold || 10;
             openModal('modal-chemical');
         };
         document.getElementById('form-chemical').addEventListener('submit', async (e) => {
@@ -1727,8 +1838,12 @@
             const id = document.getElementById('chem-id').value;
             const data = {
                 name: document.getElementById('chem-name').value,
-                quantity: parseFloat(document.getElementById('chem-qty').value),
+                quantity: Number(document.getElementById('chem-qty').value),
                 unit: document.getElementById('chem-unit').value,
+                company: document.getElementById('chem-company').value,
+                country: document.getElementById('chem-country').value,
+                expiryDate: document.getElementById('chem-expiry').value || null,
+                lowStockThreshold: Number(document.getElementById('chem-threshold').value),
                 lastUpdated: new Date().toISOString()
             };
 
@@ -1757,14 +1872,17 @@
         document.getElementById('form-usage').addEventListener('submit', async (e) => {
             e.preventDefault();
             const chemId = document.getElementById('usage-chem').value;
-            const qtyUsed = parseFloat(document.getElementById('usage-qty').value);
+            const qtyUsed = Number(document.getElementById('usage-qty').value);
             const purpose = document.getElementById('usage-purpose').value;
 
             const chem = window.dbStore.chemicals.find(c => c.id === chemId);
             if (!chem) return showToast("Select a valid chemical", "error");
-            if (qtyUsed > chem.quantity) return showToast(`Insufficient quantity. Max available: ${chem.quantity}`, "error");
+            
+            const currentQty = Number(chem.quantity);
+            if (qtyUsed > currentQty) return showToast(`Insufficient quantity. Max available: ${currentQty}`, "error");
 
             try {
+                // Chemical usage submission er bug thik kora hoyeche
                 await addDoc(getColRef('usageLogs'), {
                     chemicalId: chem.id,
                     chemicalName: chem.name,
@@ -1776,14 +1894,51 @@
                 });
                 
                 await updateDoc(getDocRef('chemicals', chemId), {
-                    quantity: chem.quantity - qtyUsed,
+                    quantity: currentQty - qtyUsed,
                     lastUpdated: new Date().toISOString()
                 });
 
                 closeModal('modal-usage');
                 showToast("Usage logged and inventory updated");
             } catch (err) {
+                console.error("Usage Log Error:", err);
                 showToast("Error logging usage", "error");
+            }
+        });
+
+        // Instrument Usage Modal Handlers
+        window.openInstUsageModal = () => {
+            const select = document.getElementById('inst-usage-id');
+            select.innerHTML = '<option value="">Select an instrument...</option>' + 
+                window.dbStore.instruments.map(i => `<option value="${i.id}">${i.name} (Model: ${i.modelNumber})</option>`).join('');
+            openModal('modal-inst-usage');
+        };
+
+        document.getElementById('form-inst-usage').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const instId = document.getElementById('inst-usage-id').value;
+            const hoursUsed = Number(document.getElementById('inst-usage-hours').value);
+            const purpose = document.getElementById('inst-usage-purpose').value;
+
+            const inst = window.dbStore.instruments.find(i => i.id === instId);
+            if (!inst) return showToast("Select a valid instrument", "error");
+
+            try {
+                await addDoc(getColRef('instUsageLogs'), {
+                    instrumentId: inst.id,
+                    instrumentName: inst.name,
+                    hoursUsed: hoursUsed,
+                    purpose: purpose,
+                    userId: window.dbStore.currentUser.uid,
+                    userName: window.dbStore.profile.name,
+                    date: new Date().toISOString()
+                });
+
+                closeModal('modal-inst-usage');
+                showToast("Instrument usage logged successfully");
+            } catch (err) {
+                console.error("Inst Usage Error:", err);
+                showToast("Error logging instrument usage", "error");
             }
         });
 
