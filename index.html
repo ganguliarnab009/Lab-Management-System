@@ -371,11 +371,19 @@
                 </div>
                 <form id="form-dailylog" class="space-y-4">
                     <input type="hidden" id="log-id">
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Select Project</label>
-                        <select id="log-project" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white">
-                            <!-- Populated dynamically based on assignment -->
-                        </select>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Select Project</label>
+                            <select id="log-project" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white" onchange="updateJobDropdown()">
+                                <!-- Populated dynamically based on assignment -->
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Select Job/Task</label>
+                            <select id="log-job" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white">
+                                <option value="">Select a project first</option>
+                            </select>
+                        </div>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-700 mb-1">Work Done</label>
@@ -391,7 +399,76 @@
                     </div>
                     <div class="pt-2 flex justify-end gap-3">
                         <button type="button" onclick="closeModal('modal-dailylog')" class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-medium">Cancel</button>
-                        <button type="submit" class="px-4 py-2 bg-emerald-600 text-white rounded-lg font-medium hover:bg-emerald-700">Save Log</button>
+                        <button type="submit" class="px-4 py-2 bg-emerald-600 text-white rounded-lg font-medium hover:bg-emerald-700">Submit Log</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Job / Task Modal -->
+        <div id="modal-job" class="fixed inset-0 z-40 hidden modal-bg flex items-center justify-center p-4">
+            <div class="bg-white rounded-xl shadow-xl max-w-md w-full p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-bold text-slate-800" id="job-modal-title">Create Job / Task</h3>
+                    <button onclick="closeModal('modal-job')" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+                </div>
+                <form id="form-job" class="space-y-4">
+                    <input type="hidden" id="job-id">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Task Title</label>
+                        <input type="text" id="job-title" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Project</label>
+                        <select id="job-project" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white">
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Task Description</label>
+                        <textarea id="job-desc" required rows="2" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none resize-none" placeholder="Details of the job..."></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Assign Scholars</label>
+                        <div id="job-scholars" class="max-h-32 overflow-y-auto border border-slate-200 rounded-lg p-2 space-y-1 bg-slate-50">
+                            <!-- Checkboxes injected here -->
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Deadline (Optional)</label>
+                        <input type="date" id="job-deadline" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+                    <div class="pt-2 flex justify-end gap-3">
+                        <button type="button" onclick="closeModal('modal-job')" class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-medium">Cancel</button>
+                        <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700">Assign Job</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- PI Review Modal -->
+        <div id="modal-review-log" class="fixed inset-0 z-40 hidden modal-bg flex items-center justify-center p-4">
+            <div class="bg-white rounded-xl shadow-xl max-w-sm w-full p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-bold text-slate-800">Review Daily Log</h3>
+                    <button onclick="closeModal('modal-review-log')" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+                </div>
+                <form id="form-review-log" class="space-y-4">
+                    <input type="hidden" id="review-log-id">
+                    <input type="hidden" id="review-job-id">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Action</label>
+                        <select id="review-status" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white">
+                            <option value="approved">Approve & Mark Job Done</option>
+                            <option value="rejected">Reject & Request Re-submission</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Feedback / Comment</label>
+                        <textarea id="review-comment" required rows="3" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none resize-none" placeholder="Provide feedback to the scholar..."></textarea>
+                    </div>
+                    <div class="pt-2 flex justify-end gap-3">
+                        <button type="button" onclick="closeModal('modal-review-log')" class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-medium">Cancel</button>
+                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700">Submit Review</button>
                     </div>
                 </form>
             </div>
@@ -466,6 +543,7 @@
             usageLogs: [],
             dailyLogs: [],
             projects: [],
+            jobs: [],
             unsubscribes: []
         };
 
@@ -720,7 +798,9 @@
             const links = [
                 { id: 'dashboard', icon: 'layout-dashboard', label: 'Dashboard', roles: [ROLES.PI, ROLES.SCHOLAR] },
                 { id: 'projects', icon: 'folder-kanban', label: 'Projects', roles: [ROLES.PI, ROLES.SCHOLAR] },
+                { id: 'jobs', icon: 'check-square', label: 'Jobs / Tasks', roles: [ROLES.PI, ROLES.SCHOLAR] },
                 { id: 'daily', icon: 'book-open', label: 'Daily Logs', roles: [ROLES.PI, ROLES.SCHOLAR] },
+                { id: 'performance', icon: 'bar-chart-2', label: 'Performance', roles: [ROLES.PI, ROLES.SCHOLAR] },
                 { id: 'inventory', icon: 'flask-conical', label: 'Chemicals', roles: [ROLES.PI, ROLES.SCHOLAR] },
                 { id: 'instruments', icon: 'microscope', label: 'Instruments', roles: [ROLES.PI, ROLES.SCHOLAR] },
                 { id: 'usage', icon: 'clipboard-list', label: 'Usage Logs', roles: [ROLES.PI, ROLES.SCHOLAR] },
@@ -766,7 +846,7 @@
         // --- Data Listeners ---
         function startListeners() {
             if(!window.dbStore.currentUser) return;
-            const collections = ['users', 'chemicals', 'instruments', 'usageLogs', 'dailyLogs', 'projects'];
+            const collections = ['users', 'chemicals', 'instruments', 'usageLogs', 'dailyLogs', 'projects', 'jobs'];
             
             collections.forEach(colName => {
                 const unsubscribe = onSnapshot(getColRef(colName), (snapshot) => {
@@ -809,7 +889,9 @@
                 case 'dashboard': html = generateDashboardHTML(); break;
                 case 'approvals': html = generateApprovalsHTML(); break;
                 case 'projects': html = generateProjectsHTML(); break;
+                case 'jobs': html = generateJobsHTML(); break;
                 case 'daily': html = generateDailyLogsHTML(); break;
+                case 'performance': html = generatePerformanceHTML(); break;
                 case 'inventory': html = generateInventoryHTML(); break;
                 case 'instruments': html = generateInstrumentsHTML(); break;
                 case 'usage': html = generateUsageHTML(); break;
@@ -820,17 +902,19 @@
 
         // --- 1. DASHBOARD ---
         function generateDashboardHTML() {
-            const { profile, projects, dailyLogs, chemicals, instruments, users } = window.dbStore;
+            const { profile, projects, dailyLogs, chemicals, instruments, users, jobs } = window.dbStore;
             const isPI = profile.role === ROLES.PI;
             
-            // Logic filters based on role
             const myProjects = isPI ? projects : projects.filter(p => (p.members || []).includes(profile.uid));
+            const myJobs = isPI ? jobs : jobs.filter(j => (j.assignedTo || []).includes(profile.uid));
+            const pendingJobs = myJobs.filter(j => j.status === 'assigned' || j.status === 'submitted');
+
             const myLogs = isPI ? dailyLogs : dailyLogs.filter(l => l.userId === profile.uid);
             
-            const lowStock = chemicals.filter(c => c.quantity <= 10); // Simple threshold
+            const lowStock = chemicals.filter(c => c.quantity <= 10); 
             const pendingScholars = users.filter(u => u.status === 'pending');
+            const logsNeedingReview = dailyLogs.filter(l => l.approvalStatus === 'pending');
             
-            // Instruments needing service
             const dueInst = instruments.filter(i => {
                 if(i.condition === 'Not OK') return true;
                 if(!i.serviceDate) return false;
@@ -838,7 +922,7 @@
                 const today = new Date();
                 const diffTime = svDate - today;
                 const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                return diffDays <= 30; // Due in next 30 days or past
+                return diffDays <= 30; 
             });
 
             const recentLogs = [...myLogs].sort((a,b) => new Date(b.date) - new Date(a.date)).slice(0, 3);
@@ -847,23 +931,33 @@
                 <h1 class="text-2xl font-bold text-slate-800 mb-6">Dashboard Overview</h1>
                 
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4">
-                        <div class="p-3 bg-indigo-100 text-indigo-600 rounded-lg"><i data-lucide="folder"></i></div>
-                        <div><p class="text-sm text-slate-500 font-medium">${isPI?'Total Projects':'My Projects'}</p><p class="text-2xl font-bold text-slate-800">${myProjects.length}</p></div>
-                    </div>
-                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4">
-                        <div class="p-3 bg-emerald-100 text-emerald-600 rounded-lg"><i data-lucide="book-open"></i></div>
-                        <div><p class="text-sm text-slate-500 font-medium">${isPI?'Total Logs':'My Logs'}</p><p class="text-2xl font-bold text-slate-800">${myLogs.length}</p></div>
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4 cursor-pointer hover:bg-slate-50 transition-colors" onclick="navigate('jobs')">
+                        <div class="p-3 bg-blue-100 text-blue-600 rounded-lg"><i data-lucide="check-square"></i></div>
+                        <div><p class="text-sm text-slate-500 font-medium">${isPI?'Total Jobs':'Active Tasks'}</p><p class="text-2xl font-bold text-slate-800">${isPI ? myJobs.length : pendingJobs.length}</p></div>
                     </div>
                     ${isPI ? `
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4 cursor-pointer hover:bg-slate-50 transition-colors" onclick="navigate('daily')">
+                        <div class="p-3 bg-indigo-100 text-indigo-600 rounded-lg"><i data-lucide="inbox"></i></div>
+                        <div><p class="text-sm text-slate-500 font-medium">Logs to Review</p><p class="text-2xl font-bold text-slate-800">${logsNeedingReview.length}</p></div>
+                    </div>
                     <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4 cursor-pointer hover:bg-slate-50 transition-colors" onclick="navigate('approvals')">
                         <div class="p-3 bg-amber-100 text-amber-600 rounded-lg"><i data-lucide="user-plus"></i></div>
                         <div><p class="text-sm text-slate-500 font-medium">Pending Approvals</p><p class="text-2xl font-bold text-slate-800">${pendingScholars.length}</p></div>
                     </div>
-                    ` : ''}
+                    ` : `
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4">
+                        <div class="p-3 bg-indigo-100 text-indigo-600 rounded-lg"><i data-lucide="folder"></i></div>
+                        <div><p class="text-sm text-slate-500 font-medium">My Projects</p><p class="text-2xl font-bold text-slate-800">${myProjects.length}</p></div>
+                    </div>
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4">
+                        <div class="p-3 bg-emerald-100 text-emerald-600 rounded-lg"><i data-lucide="book-open"></i></div>
+                        <div><p class="text-sm text-slate-500 font-medium">My Logs</p><p class="text-2xl font-bold text-slate-800">${myLogs.length}</p></div>
+                    </div>
+                    `}
+                    
                     <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4 cursor-pointer hover:bg-slate-50 transition-colors" onclick="navigate('instruments')">
                         <div class="p-3 bg-red-100 text-red-600 rounded-lg"><i data-lucide="alert-triangle"></i></div>
-                        <div><p class="text-sm text-slate-500 font-medium">Service Due / Not OK</p><p class="text-2xl font-bold text-slate-800">${dueInst.length}</p></div>
+                        <div><p class="text-sm text-slate-500 font-medium">Service Due / Faulty</p><p class="text-2xl font-bold text-slate-800">${dueInst.length}</p></div>
                     </div>
                 </div>
 
@@ -875,13 +969,18 @@
                         </div>
                         <div class="space-y-4">
                             ${recentLogs.length === 0 ? '<p class="text-sm text-slate-500">No recent activity.</p>' : 
-                                recentLogs.map(log => `
-                                    <div class="border-l-2 border-blue-500 pl-3">
+                                recentLogs.map(log => {
+                                    let statusDot = log.approvalStatus === 'approved' ? 'bg-emerald-500' : (log.approvalStatus === 'rejected' ? 'bg-red-500' : 'bg-amber-500');
+                                    return `
+                                    <div class="border-l-2 border-blue-500 pl-3 relative">
                                         <p class="text-xs text-slate-500 mb-1">${formatDate(log.date)} • <span class="font-medium text-slate-700">${log.userName}</span></p>
-                                        <p class="text-xs font-bold text-indigo-600 mb-1">${log.projectName}</p>
+                                        <div class="flex items-center gap-2 mb-1">
+                                            <span class="w-2 h-2 rounded-full ${statusDot}"></span>
+                                            <p class="text-xs font-bold text-indigo-600">${log.projectName}</p>
+                                        </div>
                                         <p class="text-sm text-slate-800 line-clamp-2">${log.workDone}</p>
                                     </div>
-                                `).join('')}
+                                `}).join('')}
                         </div>
                     </div>
 
@@ -1038,9 +1137,177 @@
             `;
         }
 
+        // --- NEW: JOBS / TASKS ---
+        function generateJobsHTML() {
+            const { jobs, projects, users, profile } = window.dbStore;
+            const isPI = profile.role === ROLES.PI;
+            
+            const visibleJobs = isPI ? jobs : jobs.filter(j => (j.assignedTo || []).includes(profile.uid));
+            const sorted = [...visibleJobs].sort((a,b) => {
+                if(a.status === 'assigned' && b.status !== 'assigned') return -1;
+                return 0;
+            });
+
+            let cards = sorted.map(j => {
+                const proj = projects.find(p => p.id === j.projectId) || { title: 'Unknown Project' };
+                const assignedNames = (j.assignedTo || []).map(uid => {
+                    const prof = users.find(pr => pr.uid === uid);
+                    return prof ? prof.name : 'Unknown';
+                });
+
+                let statusBadge = '';
+                if(j.status === 'approved') statusBadge = '<span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded text-xs font-bold border border-emerald-200">Completed</span>';
+                else if(j.status === 'rejected') statusBadge = '<span class="bg-red-100 text-red-700 px-2 py-0.5 rounded text-xs font-bold border border-red-200">Rejected / Rework</span>';
+                else if(j.status === 'submitted') statusBadge = '<span class="bg-amber-100 text-amber-700 px-2 py-0.5 rounded text-xs font-bold border border-amber-200">Submitted for Review</span>';
+                else statusBadge = '<span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-xs font-bold border border-blue-200">Assigned</span>';
+
+                let deadlineDisplay = j.deadline ? `<span class="${new Date(j.deadline) < new Date() && j.status !== 'approved' ? 'text-red-600 font-bold' : 'text-slate-500'}"><i data-lucide="clock" class="w-3 h-3 inline"></i> ${formatDateShort(j.deadline)}</span>` : '';
+
+                return `
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 flex flex-col h-full hover:shadow-md transition-shadow">
+                    <div class="flex justify-between items-start mb-2">
+                        <div>
+                            <h3 class="font-bold text-lg text-slate-800">${j.title}</h3>
+                            <p class="text-xs font-medium text-indigo-600 mb-2">${proj.title}</p>
+                        </div>
+                        ${isPI ? `
+                        <div class="flex gap-1 shrink-0">
+                            <button onclick='editJob(${JSON.stringify(j).replace(/'/g, "&#39;")})' class="text-slate-400 hover:text-blue-500 p-1 bg-slate-50 rounded"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
+                            <button onclick="deleteDocHandler('jobs', '${j.id}', 'job')" class="text-slate-400 hover:text-red-500 p-1 bg-slate-50 rounded"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                        </div>
+                        ` : ''}
+                    </div>
+                    <div class="flex justify-between items-center mb-3">
+                        ${statusBadge}
+                        <div class="text-xs">${deadlineDisplay}</div>
+                    </div>
+                    <div class="flex-1 text-sm text-slate-600 mb-4 bg-slate-50 p-3 rounded-lg border border-slate-100 whitespace-pre-wrap">${j.description}</div>
+                    
+                    <div>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Assigned To</p>
+                        <div class="flex flex-wrap gap-1.5">
+                            ${assignedNames.length ? assignedNames.map(name => `<span class="px-2 py-1 bg-slate-100 text-slate-700 text-xs rounded-md font-medium border border-slate-200">${name}</span>`).join('') : '<span class="text-xs text-slate-400 italic">Unassigned</span>'}
+                        </div>
+                    </div>
+                </div>
+            `}).join('');
+
+            return `
+                <div class="flex justify-between items-center mb-6">
+                    <h1 class="text-2xl font-bold text-slate-800">${isPI ? 'Job & Task Management' : 'My Assigned Tasks'}</h1>
+                    ${isPI ? `
+                    <button onclick="openJobModal()" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center gap-2 shadow-sm">
+                        <i data-lucide="check-square" class="w-4 h-4"></i> Create Job
+                    </button>
+                    ` : ''}
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    ${cards || '<div class="col-span-full bg-white p-8 text-center rounded-xl border border-slate-100"><p class="text-slate-500">No jobs or tasks available.</p></div>'}
+                </div>
+            `;
+        }
+
+        // --- NEW: PERFORMANCE DASHBOARD ---
+        function generatePerformanceHTML() {
+            const { users, jobs, profile } = window.dbStore;
+            const isPI = profile.role === ROLES.PI;
+            
+            if (!isPI) {
+                // Scholar Self View
+                const myJobs = jobs.filter(j => (j.assignedTo || []).includes(profile.uid));
+                const total = myJobs.length;
+                const completed = myJobs.filter(j => j.status === 'approved').length;
+                const rejected = myJobs.filter(j => j.status === 'rejected').length;
+                const pending = myJobs.filter(j => j.status === 'assigned' || j.status === 'submitted').length;
+                const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
+                
+                return `
+                    <h1 class="text-2xl font-bold text-slate-800 mb-6">My Performance Dashboard</h1>
+                    <div class="bg-white p-8 rounded-xl shadow-sm border border-slate-100">
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8 text-center">
+                            <div class="bg-slate-50 rounded-lg p-4 border border-slate-100">
+                                <p class="text-slate-500 text-xs font-bold uppercase tracking-wide mb-1">Total Assigned</p>
+                                <p class="text-3xl font-extrabold text-blue-600">${total}</p>
+                            </div>
+                            <div class="bg-emerald-50 rounded-lg p-4 border border-emerald-100">
+                                <p class="text-emerald-700 text-xs font-bold uppercase tracking-wide mb-1">Completed</p>
+                                <p class="text-3xl font-extrabold text-emerald-600">${completed}</p>
+                            </div>
+                            <div class="bg-amber-50 rounded-lg p-4 border border-amber-100">
+                                <p class="text-amber-700 text-xs font-bold uppercase tracking-wide mb-1">Pending / Review</p>
+                                <p class="text-3xl font-extrabold text-amber-600">${pending}</p>
+                            </div>
+                            <div class="bg-red-50 rounded-lg p-4 border border-red-100">
+                                <p class="text-red-700 text-xs font-bold uppercase tracking-wide mb-1">Rejected</p>
+                                <p class="text-3xl font-extrabold text-red-600">${rejected}</p>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between items-end mb-2">
+                                <span class="font-bold text-slate-700">Overall Completion Rate</span>
+                                <span class="text-2xl font-extrabold ${percent >= 70 ? 'text-emerald-500' : 'text-amber-500'}">${percent}%</span>
+                            </div>
+                            <div class="w-full bg-slate-200 rounded-full h-4 overflow-hidden shadow-inner">
+                                <div class="${percent >= 70 ? 'bg-emerald-500' : 'bg-amber-500'} h-4 rounded-full transition-all duration-1000" style="width: ${percent}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // PI View
+                const scholars = users.filter(u => u.role === ROLES.SCHOLAR && u.status === 'approved');
+                
+                let rows = scholars.map(s => {
+                    const sJobs = jobs.filter(j => (j.assignedTo || []).includes(s.uid));
+                    const total = sJobs.length;
+                    const completed = sJobs.filter(j => j.status === 'approved').length;
+                    const pending = sJobs.filter(j => j.status === 'assigned' || j.status === 'submitted').length;
+                    const rejected = sJobs.filter(j => j.status === 'rejected').length;
+                    const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
+                    
+                    return `
+                    <tr class="border-b border-slate-100 hover:bg-slate-50 bg-white transition-colors">
+                        <td class="py-4 px-4 font-bold text-slate-800">${s.name}</td>
+                        <td class="py-4 px-4 text-center font-medium">${total}</td>
+                        <td class="py-4 px-4 text-center text-emerald-600 font-bold">${completed}</td>
+                        <td class="py-4 px-4 text-center text-amber-600 font-medium">${pending}</td>
+                        <td class="py-4 px-4 text-center text-red-600 font-medium">${rejected}</td>
+                        <td class="py-4 px-4 w-48">
+                            <div class="flex items-center gap-2">
+                                <div class="w-full bg-slate-200 rounded-full h-2 overflow-hidden">
+                                    <div class="${percent >= 70 ? 'bg-emerald-500' : 'bg-amber-500'} h-2 rounded-full" style="width: ${percent}%"></div>
+                                </div>
+                                <span class="text-xs font-bold text-slate-600 w-8 text-right">${percent}%</span>
+                            </div>
+                        </td>
+                    </tr>
+                    `;
+                }).join('');
+
+                return `
+                    <h1 class="text-2xl font-bold text-slate-800 mb-6">Scholar Performance Dashboard</h1>
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+                        <table class="w-full text-left border-collapse min-w-[700px]">
+                            <thead>
+                                <tr class="bg-slate-50 text-slate-500 text-xs uppercase tracking-wider border-b border-slate-200">
+                                    <th class="py-3 px-4 font-bold">Scholar Name</th>
+                                    <th class="py-3 px-4 font-bold text-center">Total Jobs</th>
+                                    <th class="py-3 px-4 font-bold text-center">Completed</th>
+                                    <th class="py-3 px-4 font-bold text-center">Pending</th>
+                                    <th class="py-3 px-4 font-bold text-center">Rejected</th>
+                                    <th class="py-3 px-4 font-bold">Completion Rate</th>
+                                </tr>
+                            </thead>
+                            <tbody>${rows || '<tr><td colspan="6" class="py-8 text-center text-slate-500 font-medium">No approved scholars to track.</td></tr>'}</tbody>
+                        </table>
+                    </div>
+                `;
+            }
+        }
+
         // --- 4. DAILY LOGS ---
         function generateDailyLogsHTML() {
-            const { dailyLogs, profile, projects } = window.dbStore;
+            const { dailyLogs, profile, projects, jobs } = window.dbStore;
             const isPI = profile.role === ROLES.PI;
             
             let visibleLogs = isPI ? dailyLogs : dailyLogs.filter(log => log.userId === profile.uid);
@@ -1049,9 +1316,15 @@
             let cards = sorted.map(log => {
                 const isAuthor = log.userId === profile.uid;
                 const canDelete = isAuthor || isPI;
+                const relatedJob = jobs.find(j => j.id === log.jobId);
                 
+                let statusBadge = '';
+                if(log.approvalStatus === 'approved') statusBadge = '<span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded text-xs font-bold border border-emerald-200">Approved</span>';
+                else if(log.approvalStatus === 'rejected') statusBadge = '<span class="bg-red-100 text-red-700 px-2 py-0.5 rounded text-xs font-bold border border-red-200">Rejected</span>';
+                else statusBadge = '<span class="bg-amber-100 text-amber-700 px-2 py-0.5 rounded text-xs font-bold border border-amber-200">Pending Review</span>';
+
                 return `
-                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 relative hover:border-blue-200 transition-colors">
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 relative hover:border-blue-200 transition-colors flex flex-col h-full">
                     <div class="flex justify-between items-start mb-3 border-b border-slate-50 pb-3">
                         <div class="flex items-center gap-3">
                             <div class="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center font-bold text-lg">${log.userName.charAt(0)}</div>
@@ -1062,17 +1335,27 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="flex gap-1">
-                            ${isAuthor ? `<button onclick='editDailyLog(${JSON.stringify(log).replace(/'/g, "&#39;")})' class="text-slate-400 hover:text-blue-600 bg-slate-50 p-1.5 rounded"><i data-lucide="edit" class="w-4 h-4"></i></button>` : ''}
-                            ${canDelete ? `<button onclick="deleteDocHandler('dailyLogs', '${log.id}', 'research log')" class="text-slate-400 hover:text-red-600 bg-slate-50 p-1.5 rounded"><i data-lucide="trash-2" class="w-4 h-4"></i></button>` : ''}
+                        <div class="flex flex-col items-end gap-2">
+                            ${statusBadge}
+                            <div class="flex gap-1">
+                                ${isAuthor && log.approvalStatus !== 'approved' ? `<button onclick='editDailyLog(${JSON.stringify(log).replace(/'/g, "&#39;")})' class="text-slate-400 hover:text-blue-600 bg-slate-50 p-1.5 rounded"><i data-lucide="edit" class="w-4 h-4"></i></button>` : ''}
+                                ${canDelete ? `<button onclick="deleteDocHandler('dailyLogs', '${log.id}', 'research log')" class="text-slate-400 hover:text-red-600 bg-slate-50 p-1.5 rounded"><i data-lucide="trash-2" class="w-4 h-4"></i></button>` : ''}
+                            </div>
                         </div>
                     </div>
                     
-                    <div class="inline-flex items-center gap-1.5 bg-indigo-50 text-indigo-700 px-2.5 py-1 rounded text-xs font-bold mb-4 border border-indigo-100">
-                        <i data-lucide="folder" class="w-3 h-3"></i> ${log.projectName}
+                    <div class="flex gap-2 mb-4 flex-wrap">
+                        <div class="inline-flex items-center gap-1.5 bg-indigo-50 text-indigo-700 px-2.5 py-1 rounded text-xs font-bold border border-indigo-100">
+                            <i data-lucide="folder" class="w-3 h-3"></i> ${log.projectName}
+                        </div>
+                        ${relatedJob ? `
+                        <div class="inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 px-2.5 py-1 rounded text-xs font-bold border border-blue-100">
+                            <i data-lucide="check-square" class="w-3 h-3"></i> ${relatedJob.title}
+                        </div>
+                        ` : ''}
                     </div>
 
-                    <div class="space-y-4 text-sm">
+                    <div class="space-y-4 text-sm flex-1">
                         <div>
                             <strong class="text-slate-800 text-xs uppercase tracking-wider mb-1 block">Work Done</strong>
                             <p class="text-slate-600 bg-slate-50/50 p-3 rounded-lg border border-slate-100 whitespace-pre-wrap leading-relaxed">${log.workDone}</p>
@@ -1086,20 +1369,36 @@
                             <strong class="text-red-700 text-xs uppercase tracking-wider mb-1 block">Issues Faced</strong>
                             <p class="text-red-700 bg-red-50 p-3 rounded-lg border border-red-100 whitespace-pre-wrap leading-relaxed">${log.issues}</p>
                         </div>` : ''}
+                        
+                        ${log.piComment ? `
+                        <div class="mt-4 bg-blue-50 border border-blue-200 p-3 rounded-lg relative overflow-hidden">
+                            <div class="absolute left-0 top-0 bottom-0 w-1 bg-blue-500"></div>
+                            <strong class="text-blue-800 text-xs uppercase tracking-wider mb-1 block">PI Feedback</strong>
+                            <p class="text-blue-700 text-sm">${log.piComment}</p>
+                        </div>` : ''}
                     </div>
+                    
+                    ${isPI && log.approvalStatus === 'pending' ? `
+                    <div class="pt-4 mt-4 border-t border-slate-100">
+                        <button onclick="openReviewModal('${log.id}', '${log.jobId || ''}')" class="w-full bg-slate-800 text-white py-2 rounded-lg text-sm font-bold hover:bg-slate-700 transition-colors flex items-center justify-center gap-2">
+                            <i data-lucide="check-circle" class="w-4 h-4"></i> Review & Take Action
+                        </button>
+                    </div>
+                    ` : ''}
                 </div>
             `}).join('');
 
-            // Only allow logging if user has projects assigned
             const assignedProjects = projects.filter(p => (p.members || []).includes(profile.uid));
             const canLog = assignedProjects.length > 0;
 
             return `
                 <div class="flex justify-between items-center mb-6">
                     <h1 class="text-2xl font-bold text-slate-800">${isPI ? 'Lab Research Notebook' : 'My Research Notebook'}</h1>
+                    ${!isPI ? `
                     <button onclick="${canLog ? 'openDailyLogModal()' : 'showToast(\'You must be assigned to a project to add a log.\', \'error\')'}" class="bg-emerald-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-emerald-700 transition-colors flex items-center gap-2 shadow-sm ${!canLog ? 'opacity-50 cursor-not-allowed' : ''}">
-                        <i data-lucide="pen-tool" class="w-4 h-4"></i> Add Log
+                        <i data-lucide="pen-tool" class="w-4 h-4"></i> Submit Log
                     </button>
+                    ` : ''}
                 </div>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     ${cards || '<div class="col-span-full bg-white p-8 text-center rounded-xl border border-slate-100"><p class="text-slate-500">No daily logs found.</p></div>'}
@@ -1270,6 +1569,107 @@
 
         // --- Modals & Forms ---
         
+        // Job / Task Modal
+        window.openJobModal = () => {
+            document.getElementById('job-modal-title').innerText = "Create Job / Task";
+            document.getElementById('job-id').value = "";
+            
+            const projSelect = document.getElementById('job-project');
+            projSelect.innerHTML = window.dbStore.projects.map(p => `<option value="${p.id}">${p.title}</option>`).join('') || '<option value="">Create a project first</option>';
+            
+            const scholarsDiv = document.getElementById('job-scholars');
+            const scholars = window.dbStore.users.filter(p => p.role === ROLES.SCHOLAR && p.status === 'approved');
+            scholarsDiv.innerHTML = scholars.map(s => `
+                <label class="flex items-center gap-2 text-sm p-1.5 hover:bg-white cursor-pointer rounded border border-transparent hover:border-slate-200">
+                    <input type="checkbox" name="job-assignees" value="${s.uid}" class="w-4 h-4 text-blue-600 rounded">
+                    <span class="font-medium">${s.name}</span>
+                </label>
+            `).join('') || '<div class="text-xs text-slate-500 p-2">No approved scholars available.</div>';
+            
+            openModal('modal-job');
+        };
+
+        window.editJob = (job) => {
+            window.openJobModal();
+            document.getElementById('job-modal-title').innerText = "Edit Job / Task";
+            document.getElementById('job-id').value = job.id;
+            document.getElementById('job-title').value = job.title;
+            document.getElementById('job-project').value = job.projectId;
+            document.getElementById('job-desc').value = job.description;
+            document.getElementById('job-deadline').value = job.deadline || '';
+            
+            const checkboxes = document.querySelectorAll('input[name="job-assignees"]');
+            checkboxes.forEach(cb => {
+                if((job.assignedTo || []).includes(cb.value)) cb.checked = true;
+            });
+        };
+
+        document.getElementById('form-job').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('job-id').value;
+            const assigned = Array.from(document.querySelectorAll('input[name="job-assignees"]:checked')).map(cb => cb.value);
+            const projId = document.getElementById('job-project').value;
+            
+            if(!projId) return showToast("Project required to create job.", "error");
+
+            const data = {
+                title: document.getElementById('job-title').value,
+                description: document.getElementById('job-desc').value,
+                projectId: projId,
+                assignedTo: assigned,
+                createdBy: window.dbStore.currentUser.uid,
+                deadline: document.getElementById('job-deadline').value || null,
+                status: id ? undefined : 'assigned', // Keep old status if editing
+                lastUpdated: new Date().toISOString()
+            };
+            if(data.status === undefined) delete data.status;
+
+            try {
+                if (id) await updateDoc(getDocRef('jobs', id), data);
+                else await addDoc(getColRef('jobs'), data);
+                closeModal('modal-job');
+                showToast(`Job ${id ? 'updated' : 'created'} successfully`);
+            } catch (err) {
+                console.error(err);
+                showToast("Error saving job", "error");
+            }
+        });
+
+        // PI Review Modal
+        window.openReviewModal = (logId, jobId) => {
+            document.getElementById('review-log-id').value = logId;
+            document.getElementById('review-job-id').value = jobId;
+            document.getElementById('review-comment').value = '';
+            openModal('modal-review-log');
+        };
+
+        document.getElementById('form-review-log').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const logId = document.getElementById('review-log-id').value;
+            const jobId = document.getElementById('review-job-id').value;
+            const status = document.getElementById('review-status').value;
+            const comment = document.getElementById('review-comment').value;
+
+            try {
+                await updateDoc(getDocRef('dailyLogs', logId), {
+                    approvalStatus: status,
+                    piComment: comment
+                });
+                
+                if(jobId) {
+                    await updateDoc(getDocRef('jobs', jobId), {
+                        status: status // 'approved' or 'rejected'
+                    });
+                }
+                
+                closeModal('modal-review-log');
+                showToast(`Log marked as ${status}.`);
+            } catch(err) {
+                console.error(err);
+                showToast("Error submitting review", "error");
+            }
+        });
+
         // Instrument Modal
         window.openInstrumentModal = () => {
             document.getElementById('inst-modal-title').innerText = "Add Instrument";
@@ -1395,44 +1795,82 @@
             // Populate assigned projects dropdown
             const projSelect = document.getElementById('log-project');
             const myProjects = window.dbStore.projects.filter(p => (p.members || []).includes(window.dbStore.profile.uid));
-            projSelect.innerHTML = myProjects.map(p => `<option value="${p.id}">${p.title}</option>`).join('');
+            projSelect.innerHTML = '<option value="">Select Project</option>' + myProjects.map(p => `<option value="${p.id}">${p.title}</option>`).join('');
             
+            window.updateJobDropdown(); // Reset job dropdown
             openModal('modal-dailylog');
         };
-        window.editDailyLog = (log) => {
-            window.openDailyLogModal(); // Set up dropdown
-            document.getElementById('log-modal-title').innerText = "Edit Daily Log";
-            document.getElementById('log-id').value = log.id;
-            document.getElementById('log-project').value = log.projectId;
-            document.getElementById('log-work').value = log.workDone;
-            document.getElementById('log-result').value = log.result;
-            document.getElementById('log-issues').value = log.issues || '';
+
+        window.updateJobDropdown = () => {
+            const projId = document.getElementById('log-project').value;
+            const jobSelect = document.getElementById('log-job');
+            if(!projId) {
+                jobSelect.innerHTML = '<option value="">Select a project first</option>';
+                return;
+            }
+            
+            const availableJobs = window.dbStore.jobs.filter(j => 
+                j.projectId === projId && 
+                j.status !== 'approved' &&
+                ((j.assignedTo || []).includes(window.dbStore.currentUser.uid) || window.dbStore.profile.role === ROLES.PI)
+            );
+            
+            jobSelect.innerHTML = availableJobs.map(j => `<option value="${j.id}">${j.title}</option>`).join('') || '<option value="">No pending jobs in this project</option>';
         };
+
+        window.editDailyLog = (log) => {
+            window.openDailyLogModal();
+            setTimeout(() => {
+                document.getElementById('log-modal-title').innerText = "Edit Daily Log";
+                document.getElementById('log-id').value = log.id;
+                document.getElementById('log-project').value = log.projectId;
+                window.updateJobDropdown();
+                setTimeout(() => {
+                    document.getElementById('log-job').value = log.jobId || '';
+                    document.getElementById('log-work').value = log.workDone;
+                    document.getElementById('log-result').value = log.result;
+                    document.getElementById('log-issues').value = log.issues || '';
+                }, 50);
+            }, 50);
+        };
+
         document.getElementById('form-dailylog').addEventListener('submit', async (e) => {
             e.preventDefault();
             const id = document.getElementById('log-id').value;
             const projId = document.getElementById('log-project').value;
+            const jobId = document.getElementById('log-job').value;
+            
+            if(!projId) return showToast("Project selection required", "error");
+
             const proj = window.dbStore.projects.find(p => p.id === projId);
 
             const data = {
                 projectId: projId,
                 projectName: proj.title,
+                jobId: jobId || null,
                 workDone: document.getElementById('log-work').value,
                 result: document.getElementById('log-result').value,
                 issues: document.getElementById('log-issues').value,
                 userId: window.dbStore.currentUser.uid,
                 userName: window.dbStore.profile.name,
+                approvalStatus: id ? undefined : 'pending', // Reset to pending if new
                 date: id ? undefined : new Date().toISOString()
             };
+            if(data.approvalStatus === undefined) delete data.approvalStatus;
             if(!data.date) delete data.date;
 
             try {
                 if (id) await updateDoc(getDocRef('dailyLogs', id), data);
                 else await addDoc(getColRef('dailyLogs'), data);
                 
+                if(jobId) {
+                    await updateDoc(getDocRef('jobs', jobId), { status: 'submitted' });
+                }
+
                 closeModal('modal-dailylog');
-                showToast(`Log ${id ? 'updated' : 'added'} successfully`);
+                showToast(`Log ${id ? 'updated' : 'submitted for review'} successfully`);
             } catch (err) {
+                console.error(err);
                 showToast("Error saving log", "error");
             }
         });
