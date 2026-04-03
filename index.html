@@ -571,6 +571,7 @@
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, doc, setDoc, getDoc, addDoc, updateDoc, deleteDoc, onSnapshot, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
+        // EXPLICIT CONFIG: Overriding any Canvas injected config to strictly use User's Firebase.
         const firebaseConfig = {
             apiKey: "AIzaSyCdtNlqjKBeo7jqD_DlDcHKKx2zpEYmwfA",
             authDomain: "lab-management-a6dc2.firebaseapp.com",
@@ -595,7 +596,7 @@
             chemicals: [],
             instruments: [],
             usageLogs: [],
-            instUsageLogs: [], // Inst. usage array added
+            instUsageLogs: [],
             dailyLogs: [],
             projects: [],
             jobs: [],
@@ -620,7 +621,7 @@
                 toast.classList.remove('toast-enter');
                 toast.classList.add('toast-exit');
                 setTimeout(() => toast.remove(), 300);
-            }, type === 'error' ? 5000 : 3000); // Error message ektu beshi shomoy thakbe
+            }, type === 'error' ? 5000 : 3000); 
         };
 
         let confirmCallback = null;
@@ -698,9 +699,8 @@
                     handleProfileState();
                 } else {
                     if (window.isRegistering) {
-                        // Registration flow is handling the creation
+                        // Wait for registration
                     } else {
-                        // Fallback corrupted state
                         await signOut(auth);
                         showScreen('screen-landing');
                     }
@@ -740,7 +740,7 @@
             lucide.createIcons();
         };
 
-        // Email & Password Login Logic
+        // Email & Password Login
         document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = e.target.querySelector('button');
@@ -753,7 +753,6 @@
 
             try {
                 await signInWithEmailAndPassword(auth, email, pass);
-                // onAuthStateChanged will handle redirection
                 btn.innerText = "Success";
             } catch (error) {
                 console.error("Login error", error);
@@ -761,6 +760,8 @@
                     showToast("Invalid email or password", "error");
                 } else if (error.code === 'auth/operation-not-allowed') {
                     showToast("Error: Enable 'Email/Password' sign-in method in Firebase Console.", "error");
+                } else if (error.code === 'auth/unauthorized-domain') {
+                    showToast("Domain Error: GitHub Pages-e test korun, ba Firebase-e domain add korun.", "error");
                 } else {
                     showToast(`Error: ${error.message}`, "error");
                 }
@@ -769,14 +770,14 @@
             }
         });
 
-        // Email & Password Registration Logic
+        // Registration
         document.getElementById('profile-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = e.target.querySelector('button[type="submit"]');
             btn.disabled = true;
             btn.innerText = "Registering...";
             
-            window.isRegistering = true; // Prevent checkProfile redirection during setDoc
+            window.isRegistering = true; 
 
             const name = document.getElementById('reg-name').value.trim();
             const email = document.getElementById('reg-email').value.trim();
@@ -784,10 +785,9 @@
             const role = document.getElementById('reg-role').value;
 
             try {
-                // Creates user securely with Email and Password
                 const userCred = await createUserWithEmailAndPassword(auth, email, pass);
-                
                 const status = role === ROLES.PI ? 'approved' : 'pending';
+                
                 const newProfile = {
                     uid: userCred.user.uid,
                     name: name,
@@ -797,6 +797,7 @@
                     institution: document.getElementById('reg-inst').value,
                     guideName: role === ROLES.SCHOLAR ? document.getElementById('reg-guide').value : '',
                     status: status,
+                    labId: role === ROLES.PI ? userCred.user.uid : '', // PI gets own UID as labId
                     createdAt: new Date().toISOString()
                 };
 
@@ -809,21 +810,15 @@
             } catch (error) {
                 window.isRegistering = false;
                 console.error("Setup error", error);
-                
                 if (error.code === 'auth/email-already-in-use') {
                     showToast("This email is already registered. Please login.", "error");
                 } else if (error.code === 'auth/weak-password') {
                     showToast("Password must be at least 6 characters.", "error");
-                } else if (error.code === 'auth/invalid-email') {
-                    showToast("Please enter a valid email address.", "error");
-                } else if (error.code === 'auth/operation-not-allowed') {
-                    showToast("Error: Enable 'Email/Password' sign-in method in Firebase Console.", "error");
-                } else if (error.code === 'permission-denied') {
-                    showToast("Permission Denied: Firebase Rules allow korche na.", "error");
+                } else if (error.code === 'auth/unauthorized-domain') {
+                    showToast("Domain Error: GitHub Pages-e test korun, ba Firebase-e domain add korun.", "error");
                 } else {
                     showToast(`Error: ${error.message}`, "error");
                 }
-                
                 btn.disabled = false;
                 btn.innerText = "Register Account";
             }
@@ -899,14 +894,32 @@
             renderView();
         };
 
-        // --- Data Listeners ---
+        // --- Data Listeners & Filtering (Multi-Tenant) ---
         function startListeners() {
             if(!window.dbStore.currentUser) return;
-            const collections = ['users', 'chemicals', 'instruments', 'usageLogs', 'instUsageLogs', 'dailyLogs', 'projects', 'jobs']; // instUsageLogs added
+            const collections = ['users', 'chemicals', 'instruments', 'usageLogs', 'instUsageLogs', 'dailyLogs', 'projects', 'jobs']; 
             
             collections.forEach(colName => {
                 const unsubscribe = onSnapshot(getColRef(colName), (snapshot) => {
-                    window.dbStore[colName] = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+                    let rawData = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+                    
+                    // --- MULTI-TENANT FILTERING ---
+                    if (window.dbStore.profile && window.dbStore.profile.labId) {
+                        const myLabId = window.dbStore.profile.labId;
+                        if (colName === 'users') {
+                            if (window.dbStore.profile.role === ROLES.PI) {
+                                rawData = rawData.filter(u => u.labId === myLabId || (u.status === 'pending' && (u.guideName === window.dbStore.profile.name || u.labName === window.dbStore.profile.labName)));
+                            } else {
+                                rawData = rawData.filter(u => u.labId === myLabId);
+                            }
+                        } else {
+                            rawData = rawData.filter(item => item.labId === myLabId);
+                        }
+                    } else if (window.dbStore.profile && window.dbStore.profile.status === 'pending') {
+                        if (colName !== 'users') rawData = [];
+                    }
+                    
+                    window.dbStore[colName] = rawData;
                     
                     // Update badges
                     if(colName === 'users' && window.dbStore.profile.role === ROLES.PI) {
@@ -951,7 +964,7 @@
                 case 'inventory': html = generateInventoryHTML(); break;
                 case 'instruments': html = generateInstrumentsHTML(); break;
                 case 'usage': html = generateUsageHTML(); break;
-                case 'instUsage': html = generateInstUsageHTML(); break; // New View added
+                case 'instUsage': html = generateInstUsageHTML(); break; 
             }
             container.innerHTML = html;
             if(window.lucide) lucide.createIcons();
@@ -968,7 +981,7 @@
 
             const myLogs = isPI ? dailyLogs : dailyLogs.filter(l => l.userId === profile.uid);
             
-            const lowStock = chemicals.filter(c => c.quantity <= 10); 
+            const lowStock = chemicals.filter(c => Number(c.quantity) <= (Number(c.lowStockThreshold) || 10)); 
             const pendingScholars = users.filter(u => u.status === 'pending');
             const logsNeedingReview = dailyLogs.filter(l => l.approvalStatus === 'pending');
             
@@ -977,8 +990,7 @@
                 if(!i.serviceDate) return false;
                 const svDate = new Date(i.serviceDate);
                 const today = new Date();
-                const diffTime = svDate - today;
-                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                const diffDays = Math.ceil((svDate - today) / (1000 * 60 * 60 * 24));
                 return diffDays <= 30; 
             });
 
@@ -1002,11 +1014,11 @@
                         <div><p class="text-sm text-slate-500 font-medium">Pending Approvals</p><p class="text-2xl font-bold text-slate-800">${pendingScholars.length}</p></div>
                     </div>
                     ` : `
-                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4">
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4 cursor-pointer hover:bg-slate-50 transition-colors" onclick="navigate('projects')">
                         <div class="p-3 bg-indigo-100 text-indigo-600 rounded-lg"><i data-lucide="folder"></i></div>
                         <div><p class="text-sm text-slate-500 font-medium">My Projects</p><p class="text-2xl font-bold text-slate-800">${myProjects.length}</p></div>
                     </div>
-                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4">
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4 cursor-pointer hover:bg-slate-50 transition-colors" onclick="navigate('daily')">
                         <div class="p-3 bg-emerald-100 text-emerald-600 rounded-lg"><i data-lucide="book-open"></i></div>
                         <div><p class="text-sm text-slate-500 font-medium">My Logs</p><p class="text-2xl font-bold text-slate-800">${myLogs.length}</p></div>
                     </div>
@@ -1127,7 +1139,11 @@
             const actionText = status === 'approved' ? 'approve' : 'reject';
             openConfirm(`${actionText.charAt(0).toUpperCase() + actionText.slice(1)} Scholar`, `Are you sure you want to ${actionText} this scholar?`, async () => {
                 try {
-                    await updateDoc(getDocRef('users', uid), { status: status });
+                    const updateData = { status: status };
+                    if (status === 'approved') {
+                        updateData.labId = window.dbStore.profile.labId;
+                    }
+                    await updateDoc(getDocRef('users', uid), updateData);
                     showToast(`Scholar ${status} successfully.`);
                 } catch(e) {
                     console.error(e);
@@ -1141,7 +1157,6 @@
             const { projects, users, profile } = window.dbStore;
             const isPI = profile.role === ROLES.PI;
             
-            // Scholars only see projects they are assigned to
             const visibleProjects = isPI ? projects : projects.filter(p => (p.members || []).includes(profile.uid));
 
             let cards = visibleProjects.map(p => {
@@ -1194,7 +1209,7 @@
             `;
         }
 
-        // --- NEW: JOBS / TASKS ---
+        // --- 4. JOBS / TASKS ---
         function generateJobsHTML() {
             const { jobs, projects, users, profile } = window.dbStore;
             const isPI = profile.role === ROLES.PI;
@@ -1264,13 +1279,12 @@
             `;
         }
 
-        // --- NEW: PERFORMANCE DASHBOARD ---
+        // --- 5. PERFORMANCE DASHBOARD ---
         function generatePerformanceHTML() {
             const { users, jobs, profile } = window.dbStore;
             const isPI = profile.role === ROLES.PI;
             
             if (!isPI) {
-                // Scholar Self View
                 const myJobs = jobs.filter(j => (j.assignedTo || []).includes(profile.uid));
                 const total = myJobs.length;
                 const completed = myJobs.filter(j => j.status === 'approved').length;
@@ -1311,7 +1325,6 @@
                     </div>
                 `;
             } else {
-                // PI View
                 const scholars = users.filter(u => u.role === ROLES.SCHOLAR && u.status === 'approved');
                 
                 let rows = scholars.map(s => {
@@ -1362,7 +1375,7 @@
             }
         }
 
-        // --- 4. DAILY LOGS ---
+        // --- 6. DAILY LOGS ---
         function generateDailyLogsHTML() {
             const { dailyLogs, profile, projects, jobs } = window.dbStore;
             const isPI = profile.role === ROLES.PI;
@@ -1463,7 +1476,7 @@
             `;
         }
 
-        // --- 5. CHEMICAL INVENTORY ---
+        // --- 7. CHEMICAL INVENTORY ---
         function generateInventoryHTML() {
             const { chemicals } = window.dbStore;
             const sorted = [...chemicals].sort((a,b) => a.name.localeCompare(b.name));
@@ -1517,7 +1530,7 @@
             `;
         }
 
-        // --- 6. INSTRUMENT INVENTORY ---
+        // --- 8. INSTRUMENT INVENTORY ---
         function generateInstrumentsHTML() {
             const { instruments } = window.dbStore;
             const sorted = [...instruments].sort((a,b) => a.name.localeCompare(b.name));
@@ -1543,7 +1556,7 @@
                     <td class="py-3 px-4">${statusBadge}</td>
                     <td class="py-3 px-4 text-right">
                         <button onclick='editInstrument(${JSON.stringify(i).replace(/'/g, "&#39;")})' class="text-blue-500 hover:bg-blue-100 p-1.5 rounded transition-colors"><i data-lucide="edit-2" class="w-4 h-4"></i></button>
-                        <button onclick="deleteDocHandler('instruments', '${c.id}', 'instrument')" class="text-red-500 hover:bg-red-100 p-1.5 rounded transition-colors ml-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                        <button onclick="deleteDocHandler('instruments', '${i.id}', 'instrument')" class="text-red-500 hover:bg-red-100 p-1.5 rounded transition-colors ml-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                     </td>
                 </tr>
                 `;
@@ -1573,7 +1586,7 @@
             `;
         }
 
-        // --- 7. USAGE LOGS ---
+        // --- 9. USAGE LOGS ---
         function generateUsageHTML() {
             const { usageLogs } = window.dbStore;
             const sorted = [...usageLogs].sort((a,b) => new Date(b.date) - new Date(a.date));
@@ -1617,7 +1630,7 @@
             `;
         }
 
-        // --- NEW: INSTRUMENT USAGE LOGS ---
+        // --- 10. INSTRUMENT USAGE LOGS ---
         function generateInstUsageHTML() {
             const { instUsageLogs } = window.dbStore;
             const sorted = [...instUsageLogs].sort((a,b) => new Date(b.date) - new Date(a.date));
@@ -1726,8 +1739,9 @@
                 assignedTo: assigned,
                 createdBy: window.dbStore.currentUser.uid,
                 deadline: document.getElementById('job-deadline').value || null,
-                status: id ? undefined : 'assigned', // Keep old status if editing
-                lastUpdated: new Date().toISOString()
+                status: id ? undefined : 'assigned', 
+                lastUpdated: new Date().toISOString(),
+                labId: window.dbStore.profile.labId
             };
             if(data.status === undefined) delete data.status;
 
@@ -1765,7 +1779,7 @@
                 
                 if(jobId) {
                     await updateDoc(getDocRef('jobs', jobId), {
-                        status: status // 'approved' or 'rejected'
+                        status: status
                     });
                 }
                 
@@ -1802,6 +1816,7 @@
                 amc: document.getElementById('inst-amc').value,
                 condition: document.getElementById('inst-condition').value,
                 serviceDate: document.getElementById('inst-service').value,
+                labId: window.dbStore.profile.labId
             };
 
             try {
@@ -1844,7 +1859,8 @@
                 country: document.getElementById('chem-country').value,
                 expiryDate: document.getElementById('chem-expiry').value || null,
                 lowStockThreshold: Number(document.getElementById('chem-threshold').value),
-                lastUpdated: new Date().toISOString()
+                lastUpdated: new Date().toISOString(),
+                labId: window.dbStore.profile.labId
             };
 
             try {
@@ -1882,7 +1898,6 @@
             if (qtyUsed > currentQty) return showToast(`Insufficient quantity. Max available: ${currentQty}`, "error");
 
             try {
-                // Chemical usage submission er bug thik kora hoyeche
                 await addDoc(getColRef('usageLogs'), {
                     chemicalId: chem.id,
                     chemicalName: chem.name,
@@ -1890,7 +1905,8 @@
                     purpose: purpose,
                     userId: window.dbStore.currentUser.uid,
                     userName: window.dbStore.profile.name,
-                    date: new Date().toISOString()
+                    date: new Date().toISOString(),
+                    labId: window.dbStore.profile.labId
                 });
                 
                 await updateDoc(getDocRef('chemicals', chemId), {
@@ -1931,7 +1947,8 @@
                     purpose: purpose,
                     userId: window.dbStore.currentUser.uid,
                     userName: window.dbStore.profile.name,
-                    date: new Date().toISOString()
+                    date: new Date().toISOString(),
+                    labId: window.dbStore.profile.labId
                 });
 
                 closeModal('modal-inst-usage');
@@ -1947,12 +1964,11 @@
             document.getElementById('log-modal-title').innerText = "Add Daily Log";
             document.getElementById('log-id').value = "";
             
-            // Populate assigned projects dropdown
             const projSelect = document.getElementById('log-project');
             const myProjects = window.dbStore.projects.filter(p => (p.members || []).includes(window.dbStore.profile.uid));
             projSelect.innerHTML = '<option value="">Select Project</option>' + myProjects.map(p => `<option value="${p.id}">${p.title}</option>`).join('');
             
-            window.updateJobDropdown(); // Reset job dropdown
+            window.updateJobDropdown(); 
             openModal('modal-dailylog');
         };
 
@@ -2008,8 +2024,9 @@
                 issues: document.getElementById('log-issues').value,
                 userId: window.dbStore.currentUser.uid,
                 userName: window.dbStore.profile.name,
-                approvalStatus: id ? undefined : 'pending', // Reset to pending if new
-                date: id ? undefined : new Date().toISOString()
+                approvalStatus: id ? undefined : 'pending',
+                date: id ? undefined : new Date().toISOString(),
+                labId: window.dbStore.profile.labId
             };
             if(data.approvalStatus === undefined) delete data.approvalStatus;
             if(!data.date) delete data.date;
@@ -2072,7 +2089,8 @@
                 progress: parseInt(document.getElementById('project-progress').value),
                 description: document.getElementById('project-desc').value,
                 members: assigned,
-                createdBy: window.dbStore.currentUser.uid
+                createdBy: window.dbStore.currentUser.uid,
+                labId: window.dbStore.profile.labId
             };
 
             try {
